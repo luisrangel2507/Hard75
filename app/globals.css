@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #14130f;
+  color: #edeae1;
+}
+
+::selection {
+  background-color: #b8923a;
+  color: #14130f;
+}
+
+@layer utilities {
+  .label-caps {
+    @apply uppercase tracking-widest text-xs font-semibold text-muted;
+  }
+  .num {
+    @apply font-mono tabular-nums;
+  }
+  .card-base {
+    @apply bg-card border border-border rounded-lg;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
