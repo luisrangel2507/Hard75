@@ -160,8 +160,6 @@ export function DayEditor({
       />
 
       <PhotoSlot
-        dayNumber={dayNumber}
-        slot="progress"
         label={t("progressPhoto")}
         currentUrl={day.progress_photo_url}
         onChange={(url) => handlePhotoChange("progress_photo_url", url)}
@@ -170,22 +168,16 @@ export function DayEditor({
 
       <div className="grid grid-cols-3 gap-2.5">
         <PhotoSlot
-          dayNumber={dayNumber}
-          slot="breakfast"
           label={t("breakfast")}
           currentUrl={day.breakfast_photo_url}
           onChange={(url) => handlePhotoChange("breakfast_photo_url", url)}
         />
         <PhotoSlot
-          dayNumber={dayNumber}
-          slot="lunch"
           label={t("lunch")}
           currentUrl={day.lunch_photo_url}
           onChange={(url) => handlePhotoChange("lunch_photo_url", url)}
         />
         <PhotoSlot
-          dayNumber={dayNumber}
-          slot="dinner"
           label={t("dinner")}
           currentUrl={day.dinner_photo_url}
           onChange={(url) => handlePhotoChange("dinner_photo_url", url)}

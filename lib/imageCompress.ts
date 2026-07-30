@@ -1,4 +1,8 @@
-export async function compressImage(file: File, maxWidth = 800, quality = 0.7): Promise<Blob> {
+export async function compressImageToDataUrl(
+  file: File,
+  maxWidth = 800,
+  quality = 0.7
+): Promise<string> {
   const bitmap = await createImageBitmap(file);
   const scale = Math.min(1, maxWidth / bitmap.width);
   const width = Math.round(bitmap.width * scale);
@@ -11,11 +15,5 @@ export async function compressImage(file: File, maxWidth = 800, quality = 0.7): 
   if (!ctx) throw new Error("Canvas not supported");
   ctx.drawImage(bitmap, 0, 0, width, height);
 
-  return new Promise((resolve, reject) => {
-    canvas.toBlob(
-      (blob) => (blob ? resolve(blob) : reject(new Error("Compression failed"))),
-      "image/jpeg",
-      quality
-    );
-  });
+  return canvas.toDataURL("image/jpeg", quality);
 }

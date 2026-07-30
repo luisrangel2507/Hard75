@@ -6,8 +6,7 @@ lectura y respaldo.
 ## Stack
 
 - Next.js 14 (App Router) + TypeScript
-- Neon (PostgreSQL) para persistencia
-- Cloudflare R2 (S3-compatible) para almacenamiento de fotos
+- Neon (PostgreSQL) para persistencia — datos y fotos en un solo lugar
 - Tailwind CSS
 - lucide-react
 - recharts
@@ -40,33 +39,24 @@ lectura y respaldo.
 | Variable | Descripción |
 | --- | --- |
 | `DATABASE_URL` | Cadena de conexión de Neon (Postgres). Requiere `sslmode=require`. |
-| `R2_ACCOUNT_ID` | ID de cuenta de Cloudflare. |
-| `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY` | Credenciales del token API R2 (con permisos de lectura/escritura sobre el bucket). |
-| `R2_BUCKET_NAME` | Nombre del bucket R2 donde se guardan las fotos. |
-| `R2_PUBLIC_URL` | URL pública del bucket (dominio `r2.dev` o dominio personalizado conectado al bucket), sin `/` al final. |
 | `APP_PASSCODE` | Código de acceso simple. Si se deja vacío, la app queda sin autenticación (útil solo en local). |
 
 ## Configurar Neon
 
 1. Crea un proyecto en [neon.tech](https://neon.tech).
 2. Copia la cadena de conexión (`DATABASE_URL`) desde el dashboard.
-3. Corre `npm run migrate` (local o vía `railway run npm run migrate` una vez desplegado) para crear las tablas `challenge_days` y `app_settings`.
+3. Crea las tablas `challenge_days` y `app_settings` corriendo `db/schema.sql` — ya sea con `npm run migrate` (local, o vía `railway run npm run migrate` una vez desplegado) o pegando el contenido de `db/schema.sql` en el **SQL Editor** de Neon.
 
-## Configurar Cloudflare R2
+## Fotos
 
-1. Crea un bucket R2 en el dashboard de Cloudflare.
-2. Habilita acceso público (dominio `r2.dev` o conecta un dominio propio) y copia esa URL como `R2_PUBLIC_URL`.
-3. Crea un token de API R2 con permiso de lectura/escritura sobre el bucket → usa el Access Key ID / Secret como `R2_ACCESS_KEY_ID` / `R2_SECRET_ACCESS_KEY`.
-4. El `R2_ACCOUNT_ID` está en la URL del dashboard de Cloudflare o en la sección R2 → Overview.
-
-Las fotos se comprimen en el cliente (máx. ~800px de ancho, JPEG calidad 0.7) antes de subirse directamente al bucket mediante URLs firmadas (presigned), sin pasar por el servidor de Next.js.
+Las fotos se comprimen en el navegador (máx. ~800px de ancho, JPEG calidad 0.7) y se guardan directamente en Neon como texto base64 en las columnas `*_photo_url` — no se usa ningún servicio de almacenamiento externo. Con la compresión, cada foto pesa entre 50 y 200 KB, así que los 75 días completos (4 fotos/día) ocupan unos pocos MB, muy por debajo del límite gratuito de Neon.
 
 ## Deploy en Railway
 
 1. Crea un nuevo proyecto en Railway y conéctalo a este repositorio.
 2. Railway detecta Next.js automáticamente (Nixpacks) — no se necesita configuración adicional.
-3. Configura las variables de entorno de la tabla de arriba en el servicio de Railway.
-4. Después del primer deploy, corre la migración una vez:
+3. Configura `DATABASE_URL` y `APP_PASSCODE` en las variables del servicio de Railway.
+4. Después del primer deploy, corre la migración una vez (o ya la habrás corrido manualmente en el SQL Editor de Neon):
 
    ```bash
    railway run npm run migrate
@@ -84,4 +74,4 @@ Las fotos se comprimen en el cliente (máx. ~800px de ancho, JPEG calidad 0.7) a
 
 ## Respaldo
 
-Desde la pantalla de Progreso puedes exportar todo el progreso como JSON descargable, o importar un JSON para restaurar (esto reemplaza los datos actuales).
+Desde la pantalla de Progreso puedes exportar todo el progreso como JSON descargable (incluye las fotos en base64), o importar un JSON para restaurar (esto reemplaza los datos actuales).

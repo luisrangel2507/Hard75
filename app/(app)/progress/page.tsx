@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-import Image from "next/image";
 import { query } from "@/lib/db";
 import { t } from "@/lib/i18n";
 import { ChallengeDay, Lang } from "@/lib/types";
@@ -29,12 +28,11 @@ export default async function ProgressPage() {
           <div className="grid grid-cols-2 gap-2.5">
             <div className="flex flex-col gap-1.5">
               <div className="relative aspect-[3/4] rounded-lg overflow-hidden border border-border">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={first.progress_photo_url as string}
                   alt={t(lang, "before")}
-                  fill
-                  className="object-cover"
-                  unoptimized
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
               <span className="text-xs text-muted text-center">
@@ -43,12 +41,11 @@ export default async function ProgressPage() {
             </div>
             <div className="flex flex-col gap-1.5">
               <div className="relative aspect-[3/4] rounded-lg overflow-hidden border border-brass">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={last.progress_photo_url as string}
                   alt={t(lang, "after")}
-                  fill
-                  className="object-cover"
-                  unoptimized
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
               </div>
               <span className="text-xs text-brass text-center">
@@ -68,12 +65,11 @@ export default async function ProgressPage() {
             {withProgressPhoto.map((d) => (
               <div key={d.id} className="shrink-0 flex flex-col items-center gap-1">
                 <div className="relative h-28 w-24 rounded-lg overflow-hidden border border-border">
-                  <Image
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={d.progress_photo_url as string}
                     alt={`Day ${d.day_number}`}
-                    fill
-                    className="object-cover"
-                    unoptimized
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
                 <span className="num text-xs text-muted">{d.day_number}</span>
