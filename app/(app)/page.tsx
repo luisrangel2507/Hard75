@@ -1,8 +1,8 @@
-import { cookies } from "next/headers";
 import { Dumbbell, Bike, BookOpen, Wine, UtensilsCrossed, Camera } from "lucide-react";
 import { query } from "@/lib/db";
 import { t } from "@/lib/i18n";
-import { Lang, ChallengeDay, WATER_GOAL_ML, defaultDay } from "@/lib/types";
+import { resolveLang } from "@/lib/langServer";
+import { ChallengeDay, WATER_GOAL_ML, defaultDay } from "@/lib/types";
 import {
   buildDaysMap,
   completedTaskCount,
@@ -39,7 +39,7 @@ function StatusRow({
 }
 
 export default async function DashboardPage() {
-  const lang: Lang = cookies().get("ff75_lang")?.value === "en" ? "en" : "es";
+  const lang = resolveLang();
   const rows = await query<ChallengeDay>("SELECT * FROM challenge_days ORDER BY day_number ASC");
   const daysMap = buildDaysMap(rows);
   const streak = computeStreak(daysMap);

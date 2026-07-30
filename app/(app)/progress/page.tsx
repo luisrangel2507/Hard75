@@ -1,14 +1,14 @@
-import { cookies } from "next/headers";
 import { query } from "@/lib/db";
 import { t } from "@/lib/i18n";
-import { ChallengeDay, Lang } from "@/lib/types";
+import { resolveLang } from "@/lib/langServer";
+import { ChallengeDay } from "@/lib/types";
 import { WeightChart } from "@/components/WeightChart";
 import { BackupPanel } from "@/components/BackupPanel";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProgressPage() {
-  const lang: Lang = cookies().get("ff75_lang")?.value === "en" ? "en" : "es";
+  const lang = resolveLang();
   const rows = await query<ChallengeDay>("SELECT * FROM challenge_days ORDER BY day_number ASC");
 
   const withProgressPhoto = rows.filter((d) => d.progress_photo_url);

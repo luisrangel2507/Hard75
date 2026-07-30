@@ -148,3 +148,10 @@ export type DictKey = keyof typeof dictionary.es;
 export function t(lang: Lang, key: DictKey): string {
   return dictionary[lang][key] ?? dictionary.es[key];
 }
+
+/** Picks es/en from a browser Accept-Language header, e.g. "en-US,en;q=0.9,es;q=0.8". */
+export function detectLangFromAcceptLanguage(header: string | null | undefined): Lang {
+  if (!header) return "es";
+  const first = header.split(",")[0]?.trim().toLowerCase();
+  return first?.startsWith("en") ? "en" : "es";
+}

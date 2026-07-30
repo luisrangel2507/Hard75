@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Oswald, JetBrains_Mono } from "next/font/google";
-import { cookies } from "next/headers";
 import "./globals.css";
 import { I18nProvider } from "@/components/I18nProvider";
-import { Lang } from "@/lib/types";
+import { resolveLang } from "@/lib/langServer";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -23,8 +22,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const cookieLang = cookies().get("ff75_lang")?.value;
-  const initialLang: Lang = cookieLang === "en" ? "en" : "es";
+  const initialLang = resolveLang();
 
   return (
     <html lang={initialLang} className={`${oswald.variable} ${jetbrainsMono.variable}`}>
