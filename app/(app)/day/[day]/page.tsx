@@ -22,7 +22,7 @@ export default async function DayPage({ params }: { params: { day: string } }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <DayEditor initialDays={rows} dayNumber={dayNumber} />
+      <DayEditor key={dayNumber} initialDays={rows} dayNumber={dayNumber} />
     </div>
   );
 }
