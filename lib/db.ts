@@ -17,12 +17,14 @@ function createPool(): Pool {
   });
 }
 
-export const pool = global.__ff75Pool ?? createPool();
-if (process.env.NODE_ENV !== "production") {
-  global.__ff75Pool = pool;
+export function getPool(): Pool {
+  if (!global.__ff75Pool) {
+    global.__ff75Pool = createPool();
+  }
+  return global.__ff75Pool;
 }
 
 export async function query<T = unknown>(text: string, params?: unknown[]) {
-  const result = await pool.query(text, params);
+  const result = await getPool().query(text, params);
   return result.rows as T[];
 }
