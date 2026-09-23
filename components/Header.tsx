@@ -39,7 +39,14 @@ export function Header() {
     <header className="sticky top-0 z-10 bg-bg/90 backdrop-blur-md border-b border-border/70 shadow-[0_1px_12px_rgba(40,33,26,0.04)]">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.png" alt="75 Rise" width={63} height={42} className="h-[42px] w-auto rounded" priority />
+          <Image
+            src="/logo-mark.png"
+            alt="75 Rise"
+            width={71}
+            height={44}
+            className="h-11 w-auto"
+            priority
+          />
           <span className="font-semibold tracking-widest text-sm text-ink hidden sm:inline">
             75 <span className="text-brass">RISE</span>
           </span>

@@ -46,7 +46,7 @@ export default function LoginPage() {
             alt="75 Rise"
             width={125}
             height={83}
-            className="h-[83px] w-auto rounded-2xl shadow-[0_6px_18px_rgba(255,107,69,0.25)]"
+            className="h-[83px] w-auto drop-shadow-[0_6px_14px_rgba(255,107,69,0.35)]"
             priority
           />
           <h1 className="text-xl font-semibold tracking-wide text-ink">
