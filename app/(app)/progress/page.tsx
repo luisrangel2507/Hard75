@@ -2,14 +2,21 @@ import { query } from "@/lib/db";
 import { t } from "@/lib/i18n";
 import { resolveLang } from "@/lib/langServer";
 import { ChallengeDay } from "@/lib/types";
+import { buildDaysMap, computeStreak, maxNavigableDay } from "@/lib/challenge";
 import { WeightChart } from "@/components/WeightChart";
 import { BackupPanel } from "@/components/BackupPanel";
+import { AchievementBadges } from "@/components/AchievementBadges";
+import { BookShelf } from "@/components/BookShelf";
+import { ShareProgress } from "@/components/ShareProgress";
 
 export const dynamic = "force-dynamic";
 
 export default async function ProgressPage() {
   const lang = resolveLang();
   const rows = await query<ChallengeDay>("SELECT * FROM challenge_days ORDER BY day_number ASC");
+  const daysMap = buildDaysMap(rows);
+  const streak = computeStreak(daysMap);
+  const currentDayNumber = maxNavigableDay(streak);
 
   const withProgressPhoto = rows.filter((d) => d.progress_photo_url);
   const first = withProgressPhoto[0];
@@ -20,6 +27,11 @@ export default async function ProgressPage() {
       <section className="card-base p-4 flex flex-col gap-2">
         <span className="label-caps">{t(lang, "weightChart")}</span>
         <WeightChart days={rows} />
+      </section>
+
+      <section className="flex flex-col gap-2">
+        <span className="label-caps">{t(lang, "achievements")}</span>
+        <AchievementBadges streak={streak} lang={lang} />
       </section>
 
       {first && last && first.id !== last.id && (
@@ -78,6 +90,17 @@ export default async function ProgressPage() {
           </div>
         )}
       </section>
+
+      <section className="flex flex-col gap-2">
+        <span className="label-caps">{t(lang, "myLibrary")}</span>
+        <BookShelf />
+      </section>
+
+      <ShareProgress
+        dayNumber={currentDayNumber}
+        streak={streak}
+        photoUrl={last?.progress_photo_url ?? first?.progress_photo_url ?? null}
+      />
 
       <BackupPanel />
     </>

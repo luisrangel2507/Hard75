@@ -23,7 +23,7 @@ export function Header() {
     return (
       <Link
         href={href}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs uppercase tracking-wide font-semibold transition ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs uppercase tracking-wide font-semibold transition active:scale-95 ${
           active ? "bg-brass/15 text-brass border border-brass/40" : "text-muted hover:text-ink"
         }`}
       >
@@ -51,7 +51,7 @@ export function Header() {
           <button
             onClick={handleLogout}
             title={t("logout")}
-            className="p-1.5 rounded-md text-muted hover:text-ember transition"
+            className="p-1.5 rounded-md text-muted hover:text-ember active:scale-90 transition"
           >
             <LogOut className="h-4 w-4" />
           </button>

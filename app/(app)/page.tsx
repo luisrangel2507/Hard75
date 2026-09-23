@@ -1,6 +1,6 @@
 import { Dumbbell, Bike, BookOpen, Wine, UtensilsCrossed, Camera } from "lucide-react";
 import { query } from "@/lib/db";
-import { t } from "@/lib/i18n";
+import { t, DictKey } from "@/lib/i18n";
 import { resolveLang } from "@/lib/langServer";
 import { ChallengeDay, WATER_GOAL_ML, defaultDay } from "@/lib/types";
 import {
@@ -12,6 +12,7 @@ import {
 import { StreakFlame } from "@/components/StreakFlame";
 import { CelebrationBanner } from "@/components/CelebrationBanner";
 import { DayGrid } from "@/components/DayGrid";
+import { ProgressRing } from "@/components/ProgressRing";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -20,10 +21,12 @@ function StatusRow({
   icon: Icon,
   label,
   ok,
+  value,
 }: {
   icon: typeof Dumbbell;
   label: string;
   ok: boolean;
+  value?: string | null;
 }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-border last:border-b-0">
@@ -32,7 +35,7 @@ function StatusRow({
         {label}
       </span>
       <span className={`text-xs font-semibold uppercase tracking-wide ${ok ? "text-brass" : "text-muted"}`}>
-        {ok ? "✓" : "×"}
+        {ok && value ? value : ok ? "✓" : "×"}
       </span>
     </div>
   );
@@ -62,13 +65,7 @@ export default async function DashboardPage() {
 
       <section className="card-base p-5 flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="label-caps mb-1">{t(lang, "day")}</p>
-            <p className="num text-4xl font-bold text-ink">
-              {currentDayNumber}
-              <span className="text-lg text-muted">/75</span>
-            </p>
-          </div>
+          <ProgressRing value={currentDayNumber} max={75} label={`${t(lang, "day")} / 75`} />
           <StreakFlame streak={streak} label={t(lang, "streak")} />
         </div>
 
@@ -89,15 +86,37 @@ export default async function DashboardPage() {
 
         <Link
           href={`/day/${currentDayNumber}`}
-          className="text-center bg-brass text-bg font-semibold uppercase tracking-wide text-sm rounded-md py-2.5 hover:brightness-110 transition"
+          className="text-center bg-brass text-bg font-semibold uppercase tracking-wide text-sm rounded-md py-2.5 hover:brightness-110 active:scale-[0.97] transition"
         >
           {t(lang, "goToDay")} {currentDayNumber}
         </Link>
       </section>
 
       <section className="card-base p-1">
-        <StatusRow icon={Dumbbell} label={t(lang, "indoorWorkout")} ok={currentDay.indoor_workout} />
-        <StatusRow icon={Bike} label={t(lang, "outdoorWorkout")} ok={currentDay.outdoor_workout} />
+        <StatusRow
+          icon={Dumbbell}
+          label={t(lang, "indoorWorkout")}
+          ok={currentDay.indoor_workout}
+          value={
+            currentDay.indoor_type === "other"
+              ? currentDay.indoor_type_custom
+              : currentDay.indoor_type
+                ? t(lang, `ex_${currentDay.indoor_type}` as DictKey)
+                : null
+          }
+        />
+        <StatusRow
+          icon={Bike}
+          label={t(lang, "outdoorWorkout")}
+          ok={currentDay.outdoor_workout}
+          value={
+            currentDay.outdoor_type === "other"
+              ? currentDay.outdoor_type_custom
+              : currentDay.outdoor_type
+                ? t(lang, `ex_${currentDay.outdoor_type}` as DictKey)
+                : null
+          }
+        />
         <StatusRow icon={Camera} label={t(lang, "progressPhoto")} ok={!!currentDay.progress_photo_url} />
         <StatusRow icon={UtensilsCrossed} label={`${t(lang, "meals")} ${mealsDone}/3`} ok={mealsDone === 3} />
         <StatusRow icon={BookOpen} label={t(lang, "book")} ok={currentDay.book} />

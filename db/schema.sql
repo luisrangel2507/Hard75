@@ -15,6 +15,12 @@ CREATE TABLE IF NOT EXISTS challenge_days (
   updated_at TIMESTAMPTZ DEFAULT now()
 );
 
+ALTER TABLE challenge_days ADD COLUMN IF NOT EXISTS indoor_type TEXT;
+ALTER TABLE challenge_days ADD COLUMN IF NOT EXISTS indoor_type_custom TEXT;
+ALTER TABLE challenge_days ADD COLUMN IF NOT EXISTS outdoor_type TEXT;
+ALTER TABLE challenge_days ADD COLUMN IF NOT EXISTS outdoor_type_custom TEXT;
+ALTER TABLE challenge_days ADD COLUMN IF NOT EXISTS calories INTEGER;
+
 CREATE TABLE IF NOT EXISTS app_settings (
   key TEXT PRIMARY KEY,
   value TEXT NOT NULL
@@ -23,3 +29,22 @@ CREATE TABLE IF NOT EXISTS app_settings (
 INSERT INTO app_settings (key, value)
 VALUES ('lang', 'es')
 ON CONFLICT (key) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS books (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  author TEXT,
+  total_pages INTEGER,
+  current_page INTEGER DEFAULT 0,
+  cover_url TEXT,
+  status TEXT DEFAULT 'reading',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS quotes (
+  id TEXT PRIMARY KEY,
+  book_id TEXT NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+  text TEXT NOT NULL,
+  page INTEGER,
+  created_at TIMESTAMPTZ DEFAULT now()
+);

@@ -23,7 +23,7 @@ export function DayGrid({
         const isCurrent = n === currentDay;
 
         const base =
-          "aspect-square rounded-md flex items-center justify-center text-[11px] num border transition";
+          "aspect-square rounded-md flex items-center justify-center text-[11px] num border transition active:scale-90";
 
         if (locked) {
           return (

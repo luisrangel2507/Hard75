@@ -47,7 +47,7 @@ export function WaterTracker({
           type="button"
           disabled={disabled}
           onClick={() => bump(-250)}
-          className="flex-1 flex items-center justify-center gap-1 rounded-md border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink hover:border-steel/50 transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1 rounded-md border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink hover:border-steel/50 active:scale-95 transition disabled:opacity-50"
         >
           <Minus className="h-3.5 w-3.5" /> 250
         </button>
@@ -55,7 +55,7 @@ export function WaterTracker({
           type="button"
           disabled={disabled}
           onClick={() => bump(250)}
-          className="flex-1 flex items-center justify-center gap-1 rounded-md border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1 rounded-md border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 active:scale-95 transition disabled:opacity-50"
         >
           <Plus className="h-3.5 w-3.5" /> 250
         </button>
@@ -63,7 +63,7 @@ export function WaterTracker({
           type="button"
           disabled={disabled}
           onClick={() => bump(500)}
-          className="flex-1 flex items-center justify-center gap-1 rounded-md border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1 rounded-md border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 active:scale-95 transition disabled:opacity-50"
         >
           <Plus className="h-3.5 w-3.5" /> 500
         </button>

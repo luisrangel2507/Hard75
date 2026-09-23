@@ -25,8 +25,13 @@ export async function GET(_req: NextRequest, { params }: { params: { day: string
 
 const EDITABLE_FIELDS = [
   "indoor_workout",
+  "indoor_type",
+  "indoor_type_custom",
   "outdoor_workout",
+  "outdoor_type",
+  "outdoor_type_custom",
   "diet",
+  "calories",
   "book",
   "water_ml",
   "weight_kg",
@@ -72,13 +77,20 @@ export async function PATCH(req: NextRequest, { params }: { params: { day: strin
 
   const rows = await query<ChallengeDay>(
     `INSERT INTO challenge_days (
-       day_number, indoor_workout, outdoor_workout, diet, book, water_ml,
+       day_number, indoor_workout, indoor_type, indoor_type_custom,
+       outdoor_workout, outdoor_type, outdoor_type_custom,
+       diet, calories, book, water_ml,
        weight_kg, notes, progress_photo_url, breakfast_photo_url, lunch_photo_url, dinner_photo_url, updated_at
-     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12, now())
+     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17, now())
      ON CONFLICT (day_number) DO UPDATE SET
        indoor_workout = EXCLUDED.indoor_workout,
+       indoor_type = EXCLUDED.indoor_type,
+       indoor_type_custom = EXCLUDED.indoor_type_custom,
        outdoor_workout = EXCLUDED.outdoor_workout,
+       outdoor_type = EXCLUDED.outdoor_type,
+       outdoor_type_custom = EXCLUDED.outdoor_type_custom,
        diet = EXCLUDED.diet,
+       calories = EXCLUDED.calories,
        book = EXCLUDED.book,
        water_ml = EXCLUDED.water_ml,
        weight_kg = EXCLUDED.weight_kg,
@@ -92,8 +104,13 @@ export async function PATCH(req: NextRequest, { params }: { params: { day: strin
     [
       dayNumber,
       merged.indoor_workout,
+      merged.indoor_type,
+      merged.indoor_type_custom,
       merged.outdoor_workout,
+      merged.outdoor_type,
+      merged.outdoor_type_custom,
       merged.diet,
+      merged.calories,
       merged.book,
       merged.water_ml,
       merged.weight_kg,

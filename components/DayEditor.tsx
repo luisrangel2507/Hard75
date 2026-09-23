@@ -2,15 +2,18 @@
 
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Dumbbell, Bike, BookOpen, Wine } from "lucide-react";
+import { ChevronLeft, ChevronRight, Dumbbell, Bike, Wine } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
-import { TaskToggle } from "@/components/TaskToggle";
+import { WorkoutCard } from "@/components/WorkoutCard";
+import { ReadingCard } from "@/components/ReadingCard";
 import { WaterTracker } from "@/components/WaterTracker";
 import { WeightInput } from "@/components/WeightInput";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { useDebouncedCallback } from "@/lib/useDebounce";
-import { ChallengeDay, defaultDay, PhotoSlotKey, TOTAL_DAYS } from "@/lib/types";
-import { buildDaysMap, isDayComplete, weightTrend } from "@/lib/challenge";
+import { celebrate } from "@/lib/celebrate";
+import { isAchievementUnlock } from "@/lib/achievements";
+import { ChallengeDay, defaultDay, INDOOR_TYPES, OUTDOOR_TYPES, PhotoSlotKey, TOTAL_DAYS } from "@/lib/types";
+import { buildDaysMap, computeStreak, isDayComplete, weightTrend } from "@/lib/challenge";
 
 export function DayEditor({
   initialDays,
@@ -46,6 +49,8 @@ export function DayEditor({
 
   async function persist(patch: Partial<ChallengeDay>) {
     setSaveStatus("saving");
+    const wasComplete = isDayComplete(day);
+    const streakBefore = computeStreak(daysMap);
     try {
       const res = await fetch(`/api/days/${dayNumber}`, {
         method: "PATCH",
@@ -58,6 +63,10 @@ export function DayEditor({
         setDaysMap((prev) => {
           const next = new Map(prev);
           next.set(dayNumber, updated);
+          const streakAfter = computeStreak(next);
+          if ((!wasComplete && isDayComplete(updated)) || isAchievementUnlock(streakBefore, streakAfter)) {
+            celebrate();
+          }
           return next;
         });
         setSaveStatus("saved");
@@ -119,34 +128,67 @@ export function DayEditor({
       </div>
 
       <div className="flex flex-col gap-2.5">
-        <TaskToggle
+        <WorkoutCard
           icon={Dumbbell}
           label={t("indoorWorkout")}
           checked={day.indoor_workout}
           accent="ember"
-          onChange={(v) => updateField("indoor_workout", v)}
+          types={INDOOR_TYPES}
+          typeValue={day.indoor_type}
+          customValue={day.indoor_type_custom}
+          onToggle={(v) => updateField("indoor_workout", v)}
+          onTypeChange={(v) => updateField("indoor_type", v)}
+          onCustomChange={(v) => updateField("indoor_type_custom", v)}
+          onTimerComplete={() => updateField("indoor_workout", true)}
         />
-        <TaskToggle
+        <WorkoutCard
           icon={Bike}
           label={t("outdoorWorkout")}
           checked={day.outdoor_workout}
           accent="olive"
-          onChange={(v) => updateField("outdoor_workout", v)}
+          types={OUTDOOR_TYPES}
+          typeValue={day.outdoor_type}
+          customValue={day.outdoor_type_custom}
+          onToggle={(v) => updateField("outdoor_workout", v)}
+          onTypeChange={(v) => updateField("outdoor_type", v)}
+          onCustomChange={(v) => updateField("outdoor_type_custom", v)}
+          onTimerComplete={() => updateField("outdoor_workout", true)}
         />
-        <TaskToggle
-          icon={BookOpen}
-          label={t("book")}
+        <ReadingCard
           checked={day.book}
-          accent="steel"
-          onChange={(v) => updateField("book", v)}
+          onToggle={(v) => updateField("book", v)}
+          onPagesLogged={() => {}}
         />
-        <TaskToggle
-          icon={Wine}
-          label={t("diet")}
-          checked={day.diet}
-          accent="olive"
-          onChange={(v) => updateField("diet", v)}
-        />
+        <div className="w-full rounded-lg border border-border bg-card px-4 py-3.5 flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => updateField("diet", !day.diet)}
+            className="w-full flex items-center justify-between gap-3 active:scale-[0.97] transition-transform"
+          >
+            <span className="flex items-center gap-3">
+              <Wine className={`h-4 w-4 ${day.diet ? "text-olive" : "text-muted"}`} />
+              <span className={`label-caps ${day.diet ? "text-ink" : ""}`}>{t("diet")}</span>
+            </span>
+            <span className={`h-5 w-9 rounded-full relative transition-colors ${day.diet ? "bg-olive" : "bg-border"}`}>
+              <span
+                className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-ink transition-transform ${
+                  day.diet ? "translate-x-4" : ""
+                }`}
+              />
+            </span>
+          </button>
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] uppercase tracking-wide text-muted">{t("calories")}</span>
+            <input
+              type="text"
+              inputMode="numeric"
+              value={day.calories ?? ""}
+              onChange={(e) => updateField("calories", e.target.value ? Number(e.target.value.replace(/\D/g, "")) : null)}
+              placeholder={t("caloriesPlaceholder")}
+              className="num bg-bg border border-border rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-olive"
+            />
+          </div>
+        </div>
       </div>
 
       <WaterTracker waterMl={day.water_ml} onChange={(v) => updateField("water_ml", v)} />
