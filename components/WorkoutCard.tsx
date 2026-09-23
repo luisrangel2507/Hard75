@@ -8,11 +8,35 @@ import { DictKey } from "@/lib/i18n";
 
 export type Accent = "ember" | "olive" | "steel" | "brass";
 
-const ACCENT_STYLES: Record<Accent, { border: string; text: string; bg: string; solidBg: string }> = {
-  ember: { border: "border-ember", text: "text-ember", bg: "bg-ember/10", solidBg: "bg-ember" },
-  olive: { border: "border-olive", text: "text-olive", bg: "bg-olive/10", solidBg: "bg-olive" },
-  steel: { border: "border-steel", text: "text-steel", bg: "bg-steel/10", solidBg: "bg-steel" },
-  brass: { border: "border-brass", text: "text-brass", bg: "bg-brass/10", solidBg: "bg-brass" },
+const ACCENT_STYLES: Record<Accent, { border: string; text: string; bg: string; solidBg: string; shadow: string }> = {
+  ember: {
+    border: "border-ember",
+    text: "text-ember",
+    bg: "bg-ember/10",
+    solidBg: "bg-ember",
+    shadow: "shadow-[0_4px_14px_rgba(255,61,127,0.18)]",
+  },
+  olive: {
+    border: "border-olive",
+    text: "text-olive",
+    bg: "bg-olive/10",
+    solidBg: "bg-olive",
+    shadow: "shadow-[0_4px_14px_rgba(15,191,160,0.18)]",
+  },
+  steel: {
+    border: "border-steel",
+    text: "text-steel",
+    bg: "bg-steel/10",
+    solidBg: "bg-steel",
+    shadow: "shadow-[0_4px_14px_rgba(47,173,240,0.18)]",
+  },
+  brass: {
+    border: "border-brass",
+    text: "text-brass",
+    bg: "bg-brass/10",
+    solidBg: "bg-brass",
+    shadow: "shadow-[0_4px_14px_rgba(255,107,69,0.18)]",
+  },
 };
 
 export function WorkoutCard({
@@ -46,20 +70,28 @@ export function WorkoutCard({
 
   return (
     <div
-      className={`w-full rounded-lg border px-4 py-3.5 transition flex flex-col gap-3 ${
-        checked ? `${styles.border} ${styles.bg}` : "border-border bg-card"
+      className={`w-full rounded-2xl border px-4 py-3.5 transition flex flex-col gap-3 ${
+        checked
+          ? `${styles.border} ${styles.bg} ${styles.shadow}`
+          : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
       }`}
     >
       <div className="flex items-center justify-between gap-3">
         <button type="button" onClick={() => onToggle(!checked)} className="flex items-center gap-3 active:scale-[0.97] transition-transform">
-          <Icon className={`h-4 w-4 ${checked ? styles.text : "text-muted"}`} />
+          <span
+            className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+              checked ? `${styles.solidBg} text-white` : "bg-border/40 text-muted"
+            }`}
+          >
+            <Icon className="h-4 w-4" />
+          </span>
           <span className={`label-caps ${checked ? "text-ink" : ""}`}>{label}</span>
         </button>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setShowTimer((s) => !s)}
-            className={`p-1.5 rounded-md border transition active:scale-90 ${
+            className={`p-1.5 rounded-xl border transition active:scale-90 ${
               showTimer ? `${styles.border} ${styles.text}` : "border-border text-muted hover:text-ink"
             }`}
             title={t("workoutTimer")}
@@ -105,7 +137,7 @@ export function WorkoutCard({
           value={customValue ?? ""}
           onChange={(e) => onCustomChange(e.target.value)}
           placeholder={t("customTypePlaceholder")}
-          className="bg-bg border border-border rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass"
+          className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass"
         />
       )}
 

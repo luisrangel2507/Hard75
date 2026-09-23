@@ -70,7 +70,7 @@ export function BookShelf() {
             {bookQuotes.length > 0 && (
               <div className="flex flex-col gap-1.5">
                 {bookQuotes.map((q) => (
-                  <div key={q.id} className="flex items-start gap-1.5 rounded-md bg-bg border border-border px-2.5 py-2">
+                  <div key={q.id} className="flex items-start gap-1.5 rounded-xl bg-bg border border-border px-2.5 py-2">
                     <QuoteIcon className="h-3 w-3 text-muted shrink-0 mt-0.5" />
                     <p className="text-xs text-ink italic leading-snug">
                       "{q.text}"{q.page ? <span className="text-muted not-italic"> · p.{q.page}</span> : null}

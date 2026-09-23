@@ -41,7 +41,14 @@ export default function LoginPage() {
         className="card-base w-full max-w-sm p-6 flex flex-col gap-5 animate-fade-in"
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <Image src="/logo.png" alt="75 Rise" width={96} height={64} className="h-16 w-auto rounded-lg" priority />
+          <Image
+            src="/logo.png"
+            alt="75 Rise"
+            width={96}
+            height={64}
+            className="h-16 w-auto rounded-2xl shadow-[0_6px_18px_rgba(255,107,69,0.25)]"
+            priority
+          />
           <h1 className="text-xl font-semibold tracking-wide text-ink">
             75 <span className="text-brass">RISE</span>
           </h1>
@@ -57,14 +64,14 @@ export default function LoginPage() {
             value={passcode}
             onChange={(e) => setPasscode(e.target.value)}
             placeholder={t("passcodePlaceholder")}
-            className="bg-bg border border-border rounded-md px-3 py-2 text-ink placeholder:text-muted focus:outline-none focus:border-brass"
+            className="bg-bg border border-border rounded-xl px-3 py-2.5 text-ink placeholder:text-muted focus:outline-none focus:border-brass"
           />
           {error && <p className="text-sm text-ember">{t("invalidPasscode")}</p>}
         </div>
         <button
           type="submit"
           disabled={loading}
-          className="bg-brass text-bg font-semibold uppercase tracking-wide text-sm rounded-md py-2.5 hover:brightness-110 transition disabled:opacity-60"
+          className="bg-gradient-to-r from-brass to-ember text-white font-semibold uppercase tracking-wide text-sm rounded-xl py-3 shadow-[0_6px_16px_rgba(255,107,69,0.35)] hover:brightness-105 active:scale-[0.97] transition disabled:opacity-60"
         >
           {t("login")}
         </button>

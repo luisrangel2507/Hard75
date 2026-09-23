@@ -40,7 +40,7 @@ export function BackupPanel() {
       <div className="flex gap-2.5">
         <button
           onClick={handleExport}
-          className="flex-1 flex items-center justify-center gap-2 rounded-md border border-border py-2.5 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink hover:border-brass/50 transition"
+          className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-border py-2.5 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink hover:border-brass/50 transition"
         >
           <Download className="h-3.5 w-3.5" />
           {t("exportJson")}
@@ -48,7 +48,7 @@ export function BackupPanel() {
         <button
           disabled={busy}
           onClick={() => inputRef.current?.click()}
-          className="flex-1 flex items-center justify-center gap-2 rounded-md border border-border py-2.5 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink hover:border-brass/50 transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-border py-2.5 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink hover:border-brass/50 transition disabled:opacity-50"
         >
           <Upload className="h-3.5 w-3.5" />
           {t("importJson")}

@@ -116,10 +116,22 @@ export function ReadingCard({
     : null;
 
   return (
-    <div className={`w-full rounded-lg border px-4 py-3.5 flex flex-col gap-3 transition ${checked ? "border-steel bg-steel/10" : "border-border bg-card"}`}>
+    <div
+      className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
+        checked
+          ? "border-steel bg-steel/10 shadow-[0_4px_14px_rgba(47,173,240,0.18)]"
+          : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
+      }`}
+    >
       <div className="flex items-center justify-between gap-3">
         <button type="button" onClick={() => onToggle(!checked)} className="flex items-center gap-3 active:scale-[0.97] transition-transform">
-          <BookOpen className={`h-4 w-4 ${checked ? "text-steel" : "text-muted"}`} />
+          <span
+            className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+              checked ? "bg-steel text-white" : "bg-border/40 text-muted"
+            }`}
+          >
+            <BookOpen className="h-4 w-4" />
+          </span>
           <span className={`label-caps ${checked ? "text-ink" : ""}`}>{t("book")}</span>
         </button>
         <button
@@ -132,28 +144,28 @@ export function ReadingCard({
       </div>
 
       {loading ? (
-        <div className="h-16 rounded-md bg-border/40 animate-pulse" />
+        <div className="h-16 rounded-xl bg-border/40 animate-pulse" />
       ) : newBook ? (
         <div className="flex flex-col gap-2">
           <input
             value={newBook.title}
             onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
             placeholder={t("bookTitle")}
-            className="bg-bg border border-border rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+            className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
           />
           <div className="flex gap-2">
             <input
               value={newBook.author}
               onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
               placeholder={t("bookAuthor")}
-              className="flex-1 bg-bg border border-border rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+              className="flex-1 bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
             />
             <input
               value={newBook.totalPages}
               onChange={(e) => setNewBook({ ...newBook, totalPages: e.target.value.replace(/\D/g, "") })}
               placeholder={t("bookPages")}
               inputMode="numeric"
-              className="w-24 bg-bg border border-border rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+              className="w-24 bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
             />
           </div>
           <PhotoSlot
@@ -166,14 +178,14 @@ export function ReadingCard({
             <button
               type="button"
               onClick={() => setNewBook(null)}
-              className="flex-1 rounded-md border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink transition active:scale-95"
+              className="flex-1 rounded-xl border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink transition active:scale-95"
             >
               {t("cancel")}
             </button>
             <button
               type="button"
               onClick={createBook}
-              className="flex-1 rounded-md border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95"
+              className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95"
             >
               {t("save")}
             </button>
@@ -183,7 +195,7 @@ export function ReadingCard({
         <button
           type="button"
           onClick={() => setNewBook({ title: "", author: "", totalPages: "", coverUrl: null })}
-          className="flex items-center justify-center gap-2 rounded-md border border-dashed border-border py-3 text-xs uppercase tracking-wide font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
+          className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border py-3 text-xs uppercase tracking-wide font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
         >
           <Plus className="h-3.5 w-3.5" /> {t("addFirstBook")}
         </button>
@@ -194,7 +206,7 @@ export function ReadingCard({
               <select
                 value={activeBookId ?? ""}
                 onChange={(e) => setActiveBook(e.target.value)}
-                className="flex-1 bg-bg border border-border rounded-md px-2 py-1.5 text-xs text-ink focus:outline-none focus:border-steel"
+                className="flex-1 bg-bg border border-border rounded-xl px-2 py-1.5 text-xs text-ink focus:outline-none focus:border-steel"
               >
                 {books.map((b) => (
                   <option key={b.id} value={b.id}>
@@ -206,7 +218,7 @@ export function ReadingCard({
             <button
               type="button"
               onClick={() => setNewBook({ title: "", author: "", totalPages: "", coverUrl: null })}
-              className="p-1.5 rounded-md border border-border text-muted hover:text-steel transition active:scale-90"
+              className="p-1.5 rounded-xl border border-border text-muted hover:text-steel transition active:scale-90"
               title={t("addFirstBook")}
             >
               <Plus className="h-3.5 w-3.5" />
@@ -244,12 +256,12 @@ export function ReadingCard({
               onChange={(e) => setPagesInput(e.target.value.replace(/\D/g, ""))}
               placeholder={t("pagesReadToday")}
               inputMode="numeric"
-              className="flex-1 num bg-bg border border-border rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+              className="flex-1 num bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
             />
             <button
               type="button"
               onClick={addPages}
-              className="rounded-md border border-steel/40 bg-steel/10 px-3 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95"
+              className="rounded-xl border border-steel/40 bg-steel/10 px-3 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95"
             >
               {t("logPages")}
             </button>
@@ -263,7 +275,7 @@ export function ReadingCard({
               <p className="text-xs text-muted">{t("noQuotesYet")}</p>
             ) : (
               bookQuotes.map((q) => (
-                <div key={q.id} className="flex items-start justify-between gap-2 rounded-md bg-bg border border-border px-2.5 py-2">
+                <div key={q.id} className="flex items-start justify-between gap-2 rounded-xl bg-bg border border-border px-2.5 py-2">
                   <p className="text-xs text-ink italic leading-snug">
                     "{q.text}"{q.page ? <span className="text-muted not-italic"> · p.{q.page}</span> : null}
                   </p>
@@ -278,19 +290,19 @@ export function ReadingCard({
                 value={quoteText}
                 onChange={(e) => setQuoteText(e.target.value)}
                 placeholder={t("quotePlaceholder")}
-                className="flex-1 bg-bg border border-border rounded-md px-3 py-2 text-xs text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+                className="flex-1 bg-bg border border-border rounded-xl px-3 py-2 text-xs text-ink placeholder:text-muted focus:outline-none focus:border-steel"
               />
               <input
                 value={quotePage}
                 onChange={(e) => setQuotePage(e.target.value.replace(/\D/g, ""))}
                 placeholder={t("page")}
                 inputMode="numeric"
-                className="w-16 num bg-bg border border-border rounded-md px-2 py-2 text-xs text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+                className="w-16 num bg-bg border border-border rounded-xl px-2 py-2 text-xs text-ink placeholder:text-muted focus:outline-none focus:border-steel"
               />
               <button
                 type="button"
                 onClick={addQuote}
-                className="p-2 rounded-md border border-steel/40 bg-steel/10 text-steel hover:brightness-110 transition active:scale-95"
+                className="p-2 rounded-xl border border-steel/40 bg-steel/10 text-steel hover:brightness-110 transition active:scale-95"
               >
                 <Plus className="h-3.5 w-3.5" />
               </button>

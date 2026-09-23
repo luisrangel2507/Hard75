@@ -87,7 +87,7 @@ export function ShareProgress({
       type="button"
       onClick={generate}
       disabled={busy}
-      className="flex items-center justify-center gap-2 rounded-md border border-brass/40 bg-brass/10 py-2.5 text-xs uppercase tracking-wide font-semibold text-brass hover:brightness-110 transition active:scale-95 disabled:opacity-50"
+      className="flex items-center justify-center gap-2 rounded-xl border border-brass/40 bg-brass/10 py-2.5 text-xs uppercase tracking-wide font-semibold text-brass hover:brightness-110 transition active:scale-95 disabled:opacity-50"
     >
       {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Share2 className="h-3.5 w-3.5" />}
       {t("shareProgress")}

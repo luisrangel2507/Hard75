@@ -98,7 +98,7 @@ export function DayEditor({
           type="button"
           disabled={prevDisabled}
           onClick={() => router.push(`/day/${dayNumber - 1}`)}
-          className="p-2 rounded-md border border-border text-muted hover:text-ink disabled:opacity-30 transition"
+          className="p-2.5 rounded-full border border-border bg-card text-muted hover:text-ink active:scale-90 disabled:opacity-30 transition"
         >
           <ChevronLeft className="h-4 w-4" />
         </button>
@@ -115,7 +115,7 @@ export function DayEditor({
           type="button"
           disabled={nextDisabled}
           onClick={() => router.push(`/day/${dayNumber + 1}`)}
-          className="p-2 rounded-md border border-border text-muted hover:text-ink disabled:opacity-30 transition"
+          className="p-2.5 rounded-full border border-border bg-card text-muted hover:text-ink active:scale-90 disabled:opacity-30 transition"
         >
           <ChevronRight className="h-4 w-4" />
         </button>
@@ -159,14 +159,26 @@ export function DayEditor({
           onToggle={(v) => updateField("book", v)}
           onPagesLogged={() => {}}
         />
-        <div className="w-full rounded-lg border border-border bg-card px-4 py-3.5 flex flex-col gap-3">
+        <div
+          className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
+            day.diet
+              ? "border-olive bg-olive/10 shadow-[0_4px_14px_rgba(15,191,160,0.18)]"
+              : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
+          }`}
+        >
           <button
             type="button"
             onClick={() => updateField("diet", !day.diet)}
             className="w-full flex items-center justify-between gap-3 active:scale-[0.97] transition-transform"
           >
             <span className="flex items-center gap-3">
-              <Wine className={`h-4 w-4 ${day.diet ? "text-olive" : "text-muted"}`} />
+              <span
+                className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                  day.diet ? "bg-olive text-white" : "bg-border/40 text-muted"
+                }`}
+              >
+                <Wine className="h-4 w-4" />
+              </span>
               <span className={`label-caps ${day.diet ? "text-ink" : ""}`}>{t("diet")}</span>
             </span>
             <span className={`h-5 w-9 rounded-full relative transition-colors ${day.diet ? "bg-olive" : "bg-border"}`}>
@@ -185,7 +197,7 @@ export function DayEditor({
               value={day.calories ?? ""}
               onChange={(e) => updateField("calories", e.target.value ? Number(e.target.value.replace(/\D/g, "")) : null)}
               placeholder={t("caloriesPlaceholder")}
-              className="num bg-bg border border-border rounded-md px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-olive"
+              className="num bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-olive"
             />
           </div>
         </div>
@@ -233,7 +245,7 @@ export function DayEditor({
           onChange={(e) => updateField("notes", e.target.value)}
           placeholder={t("notesPlaceholder")}
           rows={4}
-          className="bg-card border border-border rounded-lg px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass resize-none"
+          className="bg-card border border-border rounded-2xl px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass resize-none"
         />
       </div>
     </>

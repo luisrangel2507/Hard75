@@ -48,7 +48,7 @@ export function WorkoutTimer({ accentClass, onComplete }: { accentClass: string;
           type="button"
           onClick={() => setRunning((r) => !r)}
           disabled={secondsLeft === 0}
-          className="p-2 rounded-md border border-border text-ink hover:border-current active:scale-90 transition disabled:opacity-40"
+          className="p-2 rounded-xl border border-border text-ink hover:border-current active:scale-90 transition disabled:opacity-40"
           title={running ? t("pause") : t("start")}
         >
           {running ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
@@ -56,7 +56,7 @@ export function WorkoutTimer({ accentClass, onComplete }: { accentClass: string;
         <button
           type="button"
           onClick={reset}
-          className="p-2 rounded-md border border-border text-muted hover:text-ink active:scale-90 transition"
+          className="p-2 rounded-xl border border-border text-muted hover:text-ink active:scale-90 transition"
           title={t("resetTimer")}
         >
           <RotateCcw className="h-3.5 w-3.5" />

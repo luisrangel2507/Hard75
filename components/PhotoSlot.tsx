@@ -45,8 +45,8 @@ export function PhotoSlot({
     <div className="flex flex-col gap-1.5">
       <span className="label-caps">{label}</span>
       <div
-        className={`relative rounded-lg border overflow-hidden ${aspectClass} ${
-          currentUrl ? "border-brass" : "border-border border-dashed"
+        className={`relative rounded-2xl border overflow-hidden ${aspectClass} ${
+          currentUrl ? "border-brass shadow-[0_4px_14px_rgba(255,107,69,0.18)]" : "border-border border-dashed"
         } bg-card`}
       >
         {currentUrl ? (

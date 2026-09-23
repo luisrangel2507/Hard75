@@ -8,6 +8,10 @@ html {
 
 body {
   background-color: #fbf6ec;
+  background-image:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(255, 107, 69, 0.1), transparent),
+    radial-gradient(ellipse 700px 500px at 100% 0%, rgba(255, 61, 127, 0.08), transparent);
+  background-attachment: fixed;
   color: #28211a;
 }
 
@@ -24,7 +28,7 @@ body {
     @apply font-mono tabular-nums;
   }
   .card-base {
-    @apply bg-card border border-border rounded-lg;
+    @apply bg-card border border-border/70 rounded-2xl shadow-[0_2px_10px_rgba(40,33,26,0.05)];
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;

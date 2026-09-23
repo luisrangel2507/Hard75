@@ -40,7 +40,9 @@ export function WeightInput({
   return (
     <div className="card-base border-olive/40 p-4 flex flex-col gap-2.5">
       <span className="flex items-center gap-2 label-caps">
-        <Scale className="h-4 w-4 text-olive" />
+        <span className="h-7 w-7 rounded-full bg-olive/15 text-olive flex items-center justify-center">
+          <Scale className="h-3.5 w-3.5" />
+        </span>
         {t("weight")}
       </span>
       <div className="flex items-center gap-2">
@@ -55,7 +57,7 @@ export function WeightInput({
             onChange(raw === "" ? null : Number(raw));
           }}
           placeholder="—"
-          className="num w-24 bg-bg border border-border rounded-md px-3 py-2 text-ink text-lg focus:outline-none focus:border-olive"
+          className="num w-24 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-olive"
         />
         <span className="label-caps">{t("kg")}</span>
       </div>

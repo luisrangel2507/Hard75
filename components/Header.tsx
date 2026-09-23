@@ -23,8 +23,10 @@ export function Header() {
     return (
       <Link
         href={href}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs uppercase tracking-wide font-semibold transition active:scale-95 ${
-          active ? "bg-brass/15 text-brass border border-brass/40" : "text-muted hover:text-ink"
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs uppercase tracking-wide font-semibold transition active:scale-95 ${
+          active
+            ? "bg-gradient-to-r from-brass to-ember text-white shadow-[0_3px_8px_rgba(255,107,69,0.35)]"
+            : "text-muted hover:text-ink"
         }`}
       >
         <Icon className="h-3.5 w-3.5" />
@@ -34,7 +36,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 bg-bg/95 backdrop-blur border-b border-border">
+    <header className="sticky top-0 z-10 bg-bg/90 backdrop-blur-md border-b border-border/70 shadow-[0_1px_12px_rgba(40,33,26,0.04)]">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.png" alt="75 Rise" width={40} height={27} className="h-8 w-auto rounded" priority />
@@ -51,7 +53,7 @@ export function Header() {
           <button
             onClick={handleLogout}
             title={t("logout")}
-            className="p-1.5 rounded-md text-muted hover:text-ember active:scale-90 transition"
+            className="p-1.5 rounded-full text-muted hover:text-ember hover:bg-ember/10 active:scale-90 transition"
           >
             <LogOut className="h-4 w-4" />
           </button>

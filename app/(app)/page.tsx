@@ -29,9 +29,15 @@ function StatusRow({
   value?: string | null;
 }) {
   return (
-    <div className="flex items-center justify-between py-2 border-b border-border last:border-b-0">
-      <span className="flex items-center gap-2.5 text-sm text-ink">
-        <Icon className="h-4 w-4 text-muted" />
+    <div className="flex items-center justify-between py-2.5 border-b border-border/70 last:border-b-0">
+      <span className="flex items-center gap-3 text-sm text-ink">
+        <span
+          className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${
+            ok ? "bg-brass/15 text-brass" : "bg-border/40 text-muted"
+          }`}
+        >
+          <Icon className="h-4 w-4" />
+        </span>
         {label}
       </span>
       <span className={`text-xs font-semibold uppercase tracking-wide ${ok ? "text-brass" : "text-muted"}`}>
@@ -75,7 +81,10 @@ export default async function DashboardPage() {
             <span className="num text-muted">{waterPct}%</span>
           </div>
           <div className="h-2 w-full rounded-full bg-border overflow-hidden">
-            <div className="h-full bg-steel transition-all" style={{ width: `${waterPct}%` }} />
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-steel to-olive transition-all"
+              style={{ width: `${waterPct}%` }}
+            />
           </div>
         </div>
 
@@ -86,13 +95,13 @@ export default async function DashboardPage() {
 
         <Link
           href={`/day/${currentDayNumber}`}
-          className="text-center bg-brass text-bg font-semibold uppercase tracking-wide text-sm rounded-md py-2.5 hover:brightness-110 active:scale-[0.97] transition"
+          className="text-center bg-gradient-to-r from-brass to-ember text-white font-semibold uppercase tracking-wide text-sm rounded-xl py-3 shadow-[0_6px_16px_rgba(255,107,69,0.35)] hover:brightness-105 active:scale-[0.97] transition"
         >
           {t(lang, "goToDay")} {currentDayNumber}
         </Link>
       </section>
 
-      <section className="card-base p-1">
+      <section className="card-base px-3 py-1">
         <StatusRow
           icon={Dumbbell}
           label={t(lang, "indoorWorkout")}

@@ -10,7 +10,7 @@ export default function DashboardLoading() {
           </div>
         </div>
         <div className="h-2 w-full rounded-full bg-border/50" />
-        <div className="h-9 w-full rounded-md bg-border/60" />
+        <div className="h-9 w-full rounded-xl bg-border/60" />
       </div>
       <div className="card-base p-4 flex flex-col gap-3">
         {Array.from({ length: 6 }).map((_, i) => (
@@ -19,7 +19,7 @@ export default function DashboardLoading() {
       </div>
       <div className="grid grid-cols-8 sm:grid-cols-10 gap-1.5">
         {Array.from({ length: 40 }).map((_, i) => (
-          <div key={i} className="aspect-square rounded-md bg-border/40" />
+          <div key={i} className="aspect-square rounded-xl bg-border/40" />
         ))}
       </div>
     </div>
