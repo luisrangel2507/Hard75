@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { BookOpen, Quote as QuoteIcon } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { Book, Quote } from "@/lib/types";
 
 export function BookShelf() {
@@ -12,7 +13,7 @@ export function BookShelf() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/books")
+    fetchWithTimeout("/api/books")
       .then((r) => r.json())
       .then((res) => {
         setBooks(res.books ?? []);

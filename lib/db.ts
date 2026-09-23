@@ -14,6 +14,9 @@ function createPool(): Pool {
     connectionString,
     ssl: connectionString.includes("localhost") ? false : { rejectUnauthorized: false },
     max: 5,
+    connectionTimeoutMillis: 8000,
+    statement_timeout: 10000,
+    query_timeout: 10000,
   });
 }
 

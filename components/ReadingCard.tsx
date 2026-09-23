@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { BookOpen, Plus, Quote as QuoteIcon, Trash2 } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { PhotoSlot } from "@/components/PhotoSlot";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { Book, Quote } from "@/lib/types";
 
 export function ReadingCard({
@@ -29,8 +30,8 @@ export function ReadingCard({
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/books").then((r) => r.json()),
-      fetch("/api/settings").then((r) => r.json()),
+      fetchWithTimeout("/api/books").then((r) => r.json()),
+      fetchWithTimeout("/api/settings").then((r) => r.json()),
     ])
       .then(([booksRes, settingsRes]) => {
         setBooks(booksRes.books ?? []);

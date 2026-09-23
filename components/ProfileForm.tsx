@@ -5,6 +5,7 @@ import { BookOpen, Plus, Ruler, Scale } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { useDebouncedCallback } from "@/lib/useDebounce";
+import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { Book } from "@/lib/types";
 
 export function ProfileForm() {
@@ -22,7 +23,10 @@ export function ProfileForm() {
   const pendingPatch = useRef<Record<string, number>>({});
 
   useEffect(() => {
-    Promise.all([fetch("/api/settings").then((r) => r.json()), fetch("/api/books").then((r) => r.json())])
+    Promise.all([
+      fetchWithTimeout("/api/settings").then((r) => r.json()),
+      fetchWithTimeout("/api/books").then((r) => r.json()),
+    ])
       .then(([settingsRes, booksRes]) => {
         setHeightCm(settingsRes.heightCm ? String(settingsRes.heightCm) : "");
         setStartingWeightKg(settingsRes.startingWeightKg ? String(settingsRes.startingWeightKg) : "");
