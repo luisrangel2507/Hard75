@@ -44,9 +44,9 @@ export default function LoginPage() {
           <Image
             src="/logo.png"
             alt="75 Rise"
-            width={96}
-            height={64}
-            className="h-16 w-auto rounded-2xl shadow-[0_6px_18px_rgba(255,107,69,0.25)]"
+            width={125}
+            height={83}
+            className="h-[83px] w-auto rounded-2xl shadow-[0_6px_18px_rgba(255,107,69,0.25)]"
             priority
           />
           <h1 className="text-xl font-semibold tracking-wide text-ink">
