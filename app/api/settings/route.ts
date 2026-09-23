@@ -8,6 +8,7 @@ const FIELD_MAP = {
   activeBookId: "active_book_id",
   heightCm: "height_cm",
   startingWeightKg: "starting_weight_kg",
+  units: "units",
 } as const;
 
 type FieldKey = keyof typeof FIELD_MAP;
@@ -18,6 +19,7 @@ function validate(field: FieldKey, value: unknown): string | null {
   if (field === "heightCm" || field === "startingWeightKg") {
     return typeof value === "number" && value > 0 ? String(value) : null;
   }
+  if (field === "units") return value === "metric" || value === "imperial" ? String(value) : null;
   return null;
 }
 
@@ -35,10 +37,18 @@ export async function GET() {
       activeBookId: map.active_book_id ?? null,
       heightCm: map.height_cm ? Number(map.height_cm) : null,
       startingWeightKg: map.starting_weight_kg ? Number(map.starting_weight_kg) : null,
+      units: map.units === "imperial" ? "imperial" : "metric",
     });
   } catch (err) {
     return NextResponse.json(
-      { error: (err as Error).message, lang: "es", activeBookId: null, heightCm: null, startingWeightKg: null },
+      {
+        error: (err as Error).message,
+        lang: "es",
+        activeBookId: null,
+        heightCm: null,
+        startingWeightKg: null,
+        units: "metric",
+      },
       { status: 500 }
     );
   }

@@ -6,21 +6,26 @@ import { useI18n } from "@/components/I18nProvider";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { useDebouncedCallback } from "@/lib/useDebounce";
 import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
+import { cmToFeetInches, feetInchesToCm, kgToLbs, lbsToKg, round1, UnitSystem } from "@/lib/units";
 import { Book } from "@/lib/types";
 
 export function ProfileForm() {
   const { t } = useI18n();
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
+  const [units, setUnitsState] = useState<UnitSystem>("metric");
   const [heightCm, setHeightCm] = useState("");
   const [startingWeightKg, setStartingWeightKg] = useState("");
+  const [heightFeetInput, setHeightFeetInput] = useState("");
+  const [heightInchesInput, setHeightInchesInput] = useState("");
+  const [weightLbsInput, setWeightLbsInput] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [newBook, setNewBook] = useState<{ title: string; author: string; totalPages: string; coverUrl: string | null } | null>(
     null
   );
-  const pendingPatch = useRef<Record<string, number>>({});
+  const pendingPatch = useRef<Record<string, number | string>>({});
 
   useEffect(() => {
     Promise.all([
@@ -28,8 +33,17 @@ export function ProfileForm() {
       fetchWithTimeout("/api/books").then((r) => r.json()),
     ])
       .then(([settingsRes, booksRes]) => {
-        setHeightCm(settingsRes.heightCm ? String(settingsRes.heightCm) : "");
-        setStartingWeightKg(settingsRes.startingWeightKg ? String(settingsRes.startingWeightKg) : "");
+        const cm = settingsRes.heightCm ? String(settingsRes.heightCm) : "";
+        const kg = settingsRes.startingWeightKg ? String(settingsRes.startingWeightKg) : "";
+        setHeightCm(cm);
+        setStartingWeightKg(kg);
+        if (cm) {
+          const { feet, inches } = cmToFeetInches(Number(cm));
+          setHeightFeetInput(String(feet));
+          setHeightInchesInput(String(inches));
+        }
+        if (kg) setWeightLbsInput(String(round1(kgToLbs(Number(kg)))));
+        setUnitsState(settingsRes.units === "imperial" ? "imperial" : "metric");
         setActiveBookId(settingsRes.activeBookId ?? booksRes.books?.[0]?.id ?? null);
         setBooks(booksRes.books ?? []);
         setLoading(false);
@@ -53,6 +67,20 @@ export function ProfileForm() {
     setSaveStatus(res.ok ? "saved" : "idle");
   }, 500);
 
+  function handleUnitsChange(next: UnitSystem) {
+    if (next === "imperial") {
+      if (heightCm) {
+        const { feet, inches } = cmToFeetInches(Number(heightCm));
+        setHeightFeetInput(String(feet));
+        setHeightInchesInput(String(inches));
+      }
+      if (startingWeightKg) setWeightLbsInput(String(round1(kgToLbs(Number(startingWeightKg)))));
+    }
+    setUnitsState(next);
+    pendingPatch.current.units = next;
+    debouncedSave();
+  }
+
   function handleHeightChange(value: string) {
     const cleaned = value.replace(/[^\d]/g, "");
     setHeightCm(cleaned);
@@ -62,6 +90,30 @@ export function ProfileForm() {
     }
   }
 
+  function handleFeetChange(value: string) {
+    const cleaned = value.replace(/\D/g, "");
+    setHeightFeetInput(cleaned);
+    const feet = Number(cleaned) || 0;
+    const inches = Number(heightInchesInput) || 0;
+    if (!feet && !inches) return;
+    const cm = Math.round(feetInchesToCm(feet, inches));
+    setHeightCm(String(cm));
+    pendingPatch.current.heightCm = cm;
+    debouncedSave();
+  }
+
+  function handleInchesChange(value: string) {
+    const cleaned = value.replace(/\D/g, "");
+    setHeightInchesInput(cleaned);
+    const inches = Number(cleaned) || 0;
+    const feet = Number(heightFeetInput) || 0;
+    if (!feet && !inches) return;
+    const cm = Math.round(feetInchesToCm(feet, inches));
+    setHeightCm(String(cm));
+    pendingPatch.current.heightCm = cm;
+    debouncedSave();
+  }
+
   function handleWeightChange(value: string) {
     const cleaned = value.replace(/[^\d.]/g, "");
     setStartingWeightKg(cleaned);
@@ -69,6 +121,16 @@ export function ProfileForm() {
       pendingPatch.current.startingWeightKg = Number(cleaned);
       debouncedSave();
     }
+  }
+
+  function handleWeightLbsChange(value: string) {
+    const cleaned = value.replace(/[^\d.]/g, "");
+    setWeightLbsInput(cleaned);
+    if (!cleaned) return;
+    const kg = round1(lbsToKg(Number(cleaned)));
+    setStartingWeightKg(String(kg));
+    pendingPatch.current.startingWeightKg = kg;
+    debouncedSave();
   }
 
   function setActiveBook(id: string) {
@@ -144,7 +206,27 @@ export function ProfileForm() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex justify-end -mb-2">
+      <div className="flex items-center justify-between -mb-2">
+        <div className="flex rounded-full border border-border p-0.5 bg-card">
+          <button
+            type="button"
+            onClick={() => handleUnitsChange("metric")}
+            className={`px-3 py-1 rounded-full text-[11px] uppercase tracking-wide font-semibold transition active:scale-95 ${
+              units === "metric" ? "bg-gradient-to-r from-brass to-ember text-white" : "text-muted"
+            }`}
+          >
+            {t("metric")}
+          </button>
+          <button
+            type="button"
+            onClick={() => handleUnitsChange("imperial")}
+            className={`px-3 py-1 rounded-full text-[11px] uppercase tracking-wide font-semibold transition active:scale-95 ${
+              units === "imperial" ? "bg-gradient-to-r from-brass to-ember text-white" : "text-muted"
+            }`}
+          >
+            {t("imperial")}
+          </button>
+        </div>
         <span className="text-[11px] uppercase tracking-wide text-muted">
           {saveStatus === "saving" ? t("saving") : saveStatus === "saved" ? t("profileSaved") : ""}
         </span>
@@ -156,16 +238,37 @@ export function ProfileForm() {
         </span>
         <div className="flex-1 flex flex-col gap-1">
           <span className="label-caps">{t("height")}</span>
-          <div className="flex items-center gap-2">
-            <input
-              value={heightCm}
-              onChange={(e) => handleHeightChange(e.target.value)}
-              placeholder={t("heightPlaceholder")}
-              inputMode="numeric"
-              className="num w-24 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-olive"
-            />
-            <span className="text-sm text-muted">cm</span>
-          </div>
+          {units === "metric" ? (
+            <div className="flex items-center gap-2">
+              <input
+                value={heightCm}
+                onChange={(e) => handleHeightChange(e.target.value)}
+                placeholder={t("heightPlaceholder")}
+                inputMode="numeric"
+                className="num w-24 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-olive"
+              />
+              <span className="text-sm text-muted">cm</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <input
+                value={heightFeetInput}
+                onChange={(e) => handleFeetChange(e.target.value)}
+                placeholder="5"
+                inputMode="numeric"
+                className="num w-16 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-olive"
+              />
+              <span className="text-sm text-muted">{t("ft")}</span>
+              <input
+                value={heightInchesInput}
+                onChange={(e) => handleInchesChange(e.target.value)}
+                placeholder="10"
+                inputMode="numeric"
+                className="num w-16 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-olive"
+              />
+              <span className="text-sm text-muted">{t("in")}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -177,13 +280,13 @@ export function ProfileForm() {
           <span className="label-caps">{t("startingWeight")}</span>
           <div className="flex items-center gap-2">
             <input
-              value={startingWeightKg}
-              onChange={(e) => handleWeightChange(e.target.value)}
+              value={units === "metric" ? startingWeightKg : weightLbsInput}
+              onChange={(e) => (units === "metric" ? handleWeightChange(e.target.value) : handleWeightLbsChange(e.target.value))}
               placeholder={t("startingWeightPlaceholder")}
               inputMode="decimal"
               className="num w-24 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-brass"
             />
-            <span className="text-sm text-muted">{t("kg")}</span>
+            <span className="text-sm text-muted">{units === "metric" ? t("kg") : t("lbs")}</span>
           </div>
         </div>
       </div>

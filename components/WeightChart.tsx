@@ -3,13 +3,19 @@
 import { Scale } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useI18n } from "@/components/I18nProvider";
+import { useUnits } from "@/lib/useUnits";
+import { kgToLbs, round1 } from "@/lib/units";
 import { ChallengeDay } from "@/lib/types";
 
 export function WeightChart({ days }: { days: ChallengeDay[] }) {
   const { t } = useI18n();
+  const { units } = useUnits();
   const data = days
     .filter((d) => d.weight_kg != null)
-    .map((d) => ({ day: d.day_number, weight: Number(d.weight_kg) }));
+    .map((d) => ({
+      day: d.day_number,
+      weight: units === "imperial" ? round1(kgToLbs(Number(d.weight_kg))) : Number(d.weight_kg),
+    }));
 
   if (data.length < 2) {
     return (
@@ -50,6 +56,7 @@ export function WeightChart({ days }: { days: ChallengeDay[] }) {
               color: "#28211A",
               fontSize: 12,
             }}
+            formatter={(value: number) => [`${value} ${units === "imperial" ? t("lbs") : t("kg")}`, t("weight")]}
             labelFormatter={(label) => `${t("day")} ${label}`}
           />
           <Line

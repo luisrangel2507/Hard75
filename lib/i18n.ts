@@ -120,6 +120,11 @@ export const dictionary = {
     loadErrorTitle: "No se pudo cargar",
     loadErrorMessage: "Revisa tu conexión o intenta de nuevo en un momento.",
     retry: "Reintentar",
+    metric: "Métrico",
+    imperial: "Imperial",
+    ft: "ft",
+    in: "in",
+    lbs: "lb",
   },
   en: {
     appName: "FIT FOR 75",
@@ -240,6 +245,11 @@ export const dictionary = {
     loadErrorTitle: "Couldn't load",
     loadErrorMessage: "Check your connection or try again in a moment.",
     retry: "Retry",
+    metric: "Metric",
+    imperial: "Imperial",
+    ft: "ft",
+    in: "in",
+    lbs: "lb",
   },
 } as const;
 
