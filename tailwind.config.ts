@@ -5,15 +5,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#14130F",
-        card: "#1D1B16",
-        border: "#332F26",
-        ink: "#EDEAE1",
-        muted: "#8C8879",
-        ember: "#C4501C",
-        olive: "#78815C",
-        steel: "#5C7A87",
-        brass: "#B8923A",
+        bg: "#FBF6EC",
+        card: "#FFFFFF",
+        border: "#EDE1CC",
+        ink: "#28211A",
+        muted: "#9A8C77",
+        ember: "#FF3D7F",
+        olive: "#0FBFA0",
+        steel: "#2FADF0",
+        brass: "#FF6B45",
       },
       fontFamily: {
         sans: ["var(--font-label)", "ui-sans-serif", "system-ui", "sans-serif"],
