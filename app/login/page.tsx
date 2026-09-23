@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Lock } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 
 export default function LoginPage() {
@@ -41,10 +41,10 @@ export default function LoginPage() {
         className="card-base w-full max-w-sm p-6 flex flex-col gap-5 animate-fade-in"
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <div className="h-12 w-12 rounded-full bg-brass/15 border border-brass/40 flex items-center justify-center">
-            <Lock className="h-5 w-5 text-brass" />
-          </div>
-          <h1 className="text-xl font-semibold tracking-wide text-ink">FIT FOR 75</h1>
+          <Image src="/logo.png" alt="75 Rise" width={96} height={64} className="h-16 w-auto rounded-lg" priority />
+          <h1 className="text-xl font-semibold tracking-wide text-ink">
+            75 <span className="text-brass">RISE</span>
+          </h1>
         </div>
         <div className="flex flex-col gap-2">
           <label className="label-caps" htmlFor="passcode">

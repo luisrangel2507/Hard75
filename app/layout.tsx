@@ -17,7 +17,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fit for 75",
+  title: "75 RISE",
   description: "Tracker del reto de 75 días de disciplina.",
 };
 

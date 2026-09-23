@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { LayoutGrid, LineChart, LogOut } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
@@ -35,8 +36,11 @@ export function Header() {
   return (
     <header className="sticky top-0 z-10 bg-bg/95 backdrop-blur border-b border-border">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
-        <Link href="/" className="font-semibold tracking-widest text-sm text-ink">
-          FIT<span className="text-brass">FOR75</span>
+        <Link href="/" className="flex items-center gap-2">
+          <Image src="/logo.png" alt="75 Rise" width={40} height={27} className="h-8 w-auto rounded" priority />
+          <span className="font-semibold tracking-widest text-sm text-ink hidden sm:inline">
+            75 <span className="text-brass">RISE</span>
+          </span>
         </Link>
         <nav className="flex items-center gap-2">
           {navItem("/", t("dashboard"), LayoutGrid)}

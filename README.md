@@ -1,4 +1,4 @@
-# Fit for 75
+# 75 RISE
 
 Tracker de un reto tipo "75 Hard" a 75 días, bilingüe (ES/EN), con fotos, agua, peso, dieta,
 lectura y respaldo.
