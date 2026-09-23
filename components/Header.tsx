@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutGrid, LineChart, LogOut } from "lucide-react";
+import { LayoutGrid, LineChart, LogOut, User } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
 
@@ -49,6 +49,15 @@ export function Header() {
           {navItem("/progress", t("progress"), LineChart)}
         </nav>
         <div className="flex items-center gap-2">
+          <Link
+            href="/profile"
+            title={t("profile")}
+            className={`p-1.5 rounded-full transition active:scale-90 ${
+              pathname === "/profile" ? "text-brass bg-brass/10" : "text-muted hover:text-ink hover:bg-border/40"
+            }`}
+          >
+            <User className="h-4 w-4" />
+          </Link>
           <LanguageToggle />
           <button
             onClick={handleLogout}

@@ -3,42 +3,68 @@ import { query } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
+const FIELD_MAP = {
+  lang: "lang",
+  activeBookId: "active_book_id",
+  heightCm: "height_cm",
+  startingWeightKg: "starting_weight_kg",
+} as const;
+
+type FieldKey = keyof typeof FIELD_MAP;
+
+function validate(field: FieldKey, value: unknown): string | null {
+  if (field === "lang") return value === "es" || value === "en" ? String(value) : null;
+  if (field === "activeBookId") return typeof value === "string" ? value : null;
+  if (field === "heightCm" || field === "startingWeightKg") {
+    return typeof value === "number" && value > 0 ? String(value) : null;
+  }
+  return null;
+}
+
 export async function GET() {
   const rows = await query<{ key: string; value: string }>(
-    "SELECT key, value FROM app_settings WHERE key IN ('lang', 'active_book_id')"
+    `SELECT key, value FROM app_settings WHERE key IN (${Object.values(FIELD_MAP)
+      .map((_, i) => `$${i + 1}`)
+      .join(", ")})`,
+    Object.values(FIELD_MAP)
   );
   const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
-  return NextResponse.json({ lang: map.lang ?? "es", activeBookId: map.active_book_id ?? null });
+  return NextResponse.json({
+    lang: map.lang ?? "es",
+    activeBookId: map.active_book_id ?? null,
+    heightCm: map.height_cm ? Number(map.height_cm) : null,
+    startingWeightKg: map.starting_weight_kg ? Number(map.starting_weight_kg) : null,
+  });
 }
 
 export async function PUT(req: NextRequest) {
   const body = await req.json().catch(() => null);
-
-  if ("lang" in (body ?? {})) {
-    const lang = body.lang;
-    if (lang !== "es" && lang !== "en") {
-      return NextResponse.json({ error: "invalid lang" }, { status: 400 });
-    }
-    await query(
-      `INSERT INTO app_settings (key, value) VALUES ('lang', $1)
-       ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
-      [lang]
-    );
-    return NextResponse.json({ ok: true, lang });
+  if (!body || typeof body !== "object") {
+    return NextResponse.json({ error: "invalid payload" }, { status: 400 });
   }
 
-  if ("activeBookId" in (body ?? {})) {
-    const activeBookId = body.activeBookId;
-    if (typeof activeBookId !== "string") {
-      return NextResponse.json({ error: "invalid activeBookId" }, { status: 400 });
+  const updates: Record<string, string> = {};
+  for (const field of Object.keys(FIELD_MAP) as FieldKey[]) {
+    if (field in body) {
+      const validated = validate(field, body[field]);
+      if (validated === null) {
+        return NextResponse.json({ error: `invalid ${field}` }, { status: 400 });
+      }
+      updates[FIELD_MAP[field]] = validated;
     }
-    await query(
-      `INSERT INTO app_settings (key, value) VALUES ('active_book_id', $1)
-       ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
-      [activeBookId]
-    );
-    return NextResponse.json({ ok: true, activeBookId });
   }
 
-  return NextResponse.json({ error: "invalid payload" }, { status: 400 });
+  if (Object.keys(updates).length === 0) {
+    return NextResponse.json({ error: "invalid payload" }, { status: 400 });
+  }
+
+  for (const [key, value] of Object.entries(updates)) {
+    await query(
+      `INSERT INTO app_settings (key, value) VALUES ($1, $2)
+       ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value`,
+      [key, value]
+    );
+  }
+
+  return NextResponse.json({ ok: true });
 }

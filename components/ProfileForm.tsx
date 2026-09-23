@@ -1,0 +1,287 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { BookOpen, Plus, Ruler, Scale } from "lucide-react";
+import { useI18n } from "@/components/I18nProvider";
+import { PhotoSlot } from "@/components/PhotoSlot";
+import { useDebouncedCallback } from "@/lib/useDebounce";
+import { Book } from "@/lib/types";
+
+export function ProfileForm() {
+  const { t } = useI18n();
+  const [loading, setLoading] = useState(true);
+  const [heightCm, setHeightCm] = useState("");
+  const [startingWeightKg, setStartingWeightKg] = useState("");
+  const [books, setBooks] = useState<Book[]>([]);
+  const [activeBookId, setActiveBookId] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [newBook, setNewBook] = useState<{ title: string; author: string; totalPages: string; coverUrl: string | null } | null>(
+    null
+  );
+  const pendingPatch = useRef<Record<string, number>>({});
+
+  useEffect(() => {
+    Promise.all([fetch("/api/settings").then((r) => r.json()), fetch("/api/books").then((r) => r.json())]).then(
+      ([settingsRes, booksRes]) => {
+        setHeightCm(settingsRes.heightCm ? String(settingsRes.heightCm) : "");
+        setStartingWeightKg(settingsRes.startingWeightKg ? String(settingsRes.startingWeightKg) : "");
+        setActiveBookId(settingsRes.activeBookId ?? booksRes.books?.[0]?.id ?? null);
+        setBooks(booksRes.books ?? []);
+        setLoading(false);
+      }
+    );
+  }, []);
+
+  const debouncedSave = useDebouncedCallback(async () => {
+    const patch = pendingPatch.current;
+    pendingPatch.current = {};
+    if (Object.keys(patch).length === 0) return;
+    setSaveStatus("saving");
+    const res = await fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(patch),
+    });
+    setSaveStatus(res.ok ? "saved" : "idle");
+  }, 500);
+
+  function handleHeightChange(value: string) {
+    const cleaned = value.replace(/[^\d]/g, "");
+    setHeightCm(cleaned);
+    if (cleaned) {
+      pendingPatch.current.heightCm = Number(cleaned);
+      debouncedSave();
+    }
+  }
+
+  function handleWeightChange(value: string) {
+    const cleaned = value.replace(/[^\d.]/g, "");
+    setStartingWeightKg(cleaned);
+    if (cleaned) {
+      pendingPatch.current.startingWeightKg = Number(cleaned);
+      debouncedSave();
+    }
+  }
+
+  function setActiveBook(id: string) {
+    setActiveBookId(id);
+    fetch("/api/settings", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ activeBookId: id }),
+    }).catch(() => {});
+  }
+
+  async function createBook() {
+    if (!newBook || !newBook.title.trim()) return;
+    const res = await fetch("/api/books", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        title: newBook.title.trim(),
+        author: newBook.author.trim() || null,
+        total_pages: newBook.totalPages ? Number(newBook.totalPages) : null,
+        cover_url: newBook.coverUrl,
+      }),
+    });
+    if (res.ok) {
+      const { book } = await res.json();
+      setBooks((prev) => [...prev, book]);
+      setActiveBook(book.id);
+      setNewBook(null);
+    }
+  }
+
+  async function updateTotalPages(totalPages: string) {
+    if (!activeBook) return;
+    const value = totalPages ? Number(totalPages) : null;
+    const res = await fetch(`/api/books/${activeBook.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ total_pages: value }),
+    });
+    if (res.ok) {
+      const { book } = await res.json();
+      setBooks((prev) => prev.map((b) => (b.id === book.id ? book : b)));
+    }
+  }
+
+  const activeBook = books.find((b) => b.id === activeBookId) ?? null;
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-3 animate-pulse">
+        <div className="h-24 rounded-2xl bg-border/40" />
+        <div className="h-24 rounded-2xl bg-border/40" />
+        <div className="h-40 rounded-2xl bg-border/40" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex justify-end -mb-2">
+        <span className="text-[11px] uppercase tracking-wide text-muted">
+          {saveStatus === "saving" ? t("saving") : saveStatus === "saved" ? t("profileSaved") : ""}
+        </span>
+      </div>
+
+      <div className="card-base p-4 flex items-center gap-3">
+        <span className="h-9 w-9 rounded-full bg-olive/15 text-olive flex items-center justify-center shrink-0">
+          <Ruler className="h-4 w-4" />
+        </span>
+        <div className="flex-1 flex flex-col gap-1">
+          <span className="label-caps">{t("height")}</span>
+          <div className="flex items-center gap-2">
+            <input
+              value={heightCm}
+              onChange={(e) => handleHeightChange(e.target.value)}
+              placeholder={t("heightPlaceholder")}
+              inputMode="numeric"
+              className="num w-24 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-olive"
+            />
+            <span className="text-sm text-muted">cm</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="card-base p-4 flex items-center gap-3">
+        <span className="h-9 w-9 rounded-full bg-brass/15 text-brass flex items-center justify-center shrink-0">
+          <Scale className="h-4 w-4" />
+        </span>
+        <div className="flex-1 flex flex-col gap-1">
+          <span className="label-caps">{t("startingWeight")}</span>
+          <div className="flex items-center gap-2">
+            <input
+              value={startingWeightKg}
+              onChange={(e) => handleWeightChange(e.target.value)}
+              placeholder={t("startingWeightPlaceholder")}
+              inputMode="decimal"
+              className="num w-24 bg-bg border border-border rounded-xl px-3 py-2 text-ink text-lg focus:outline-none focus:border-brass"
+            />
+            <span className="text-sm text-muted">{t("kg")}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="card-base p-4 flex flex-col gap-3">
+        <span className="flex items-center gap-2 label-caps">
+          <span className="h-7 w-7 rounded-full bg-steel/15 text-steel flex items-center justify-center">
+            <BookOpen className="h-3.5 w-3.5" />
+          </span>
+          {t("currentBook")}
+        </span>
+
+        {newBook ? (
+          <div className="flex flex-col gap-2">
+            <input
+              value={newBook.title}
+              onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+              placeholder={t("bookTitle")}
+              className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+            />
+            <div className="flex gap-2">
+              <input
+                value={newBook.author}
+                onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+                placeholder={t("bookAuthor")}
+                className="flex-1 bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+              />
+              <input
+                value={newBook.totalPages}
+                onChange={(e) => setNewBook({ ...newBook, totalPages: e.target.value.replace(/\D/g, "") })}
+                placeholder={t("bookPages")}
+                inputMode="numeric"
+                className="w-24 bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+              />
+            </div>
+            <PhotoSlot
+              label={t("bookCover")}
+              currentUrl={newBook.coverUrl}
+              onChange={(url) => setNewBook({ ...newBook, coverUrl: url })}
+              aspect="portrait"
+            />
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => setNewBook(null)}
+                className="flex-1 rounded-xl border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink transition active:scale-95"
+              >
+                {t("cancel")}
+              </button>
+              <button
+                type="button"
+                onClick={createBook}
+                className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95"
+              >
+                {t("save")}
+              </button>
+            </div>
+          </div>
+        ) : !activeBook ? (
+          <button
+            type="button"
+            onClick={() => setNewBook({ title: "", author: "", totalPages: "", coverUrl: null })}
+            className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border py-3 text-xs uppercase tracking-wide font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
+          >
+            <Plus className="h-3.5 w-3.5" /> {t("addFirstBook")}
+          </button>
+        ) : (
+          <>
+            <div className="flex items-center gap-3">
+              {activeBook.cover_url ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={activeBook.cover_url}
+                  alt={activeBook.title}
+                  className="h-16 w-12 rounded object-cover border border-border shrink-0"
+                />
+              ) : (
+                <div className="h-16 w-12 rounded bg-border/40 flex items-center justify-center shrink-0">
+                  <BookOpen className="h-4 w-4 text-muted" />
+                </div>
+              )}
+              <div className="flex-1 flex flex-col gap-1">
+                <p className="text-sm font-semibold text-ink leading-tight">{activeBook.title}</p>
+                {activeBook.author && <p className="text-xs text-muted">{activeBook.author}</p>}
+                <div className="flex items-center gap-2 mt-1">
+                  <input
+                    defaultValue={activeBook.total_pages ?? ""}
+                    onBlur={(e) => updateTotalPages(e.target.value.replace(/\D/g, ""))}
+                    placeholder={t("bookPages")}
+                    inputMode="numeric"
+                    className="num w-20 bg-bg border border-border rounded-xl px-2 py-1 text-xs text-ink placeholder:text-muted focus:outline-none focus:border-steel"
+                  />
+                  <span className="text-[11px] text-muted">{t("bookPages")}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {books.length > 1 && (
+                <select
+                  value={activeBookId ?? ""}
+                  onChange={(e) => setActiveBook(e.target.value)}
+                  className="flex-1 bg-bg border border-border rounded-xl px-2 py-1.5 text-xs text-ink focus:outline-none focus:border-steel"
+                >
+                  {books.map((b) => (
+                    <option key={b.id} value={b.id}>
+                      {b.title}
+                    </option>
+                  ))}
+                </select>
+              )}
+              <button
+                type="button"
+                onClick={() => setNewBook({ title: "", author: "", totalPages: "", coverUrl: null })}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-border text-xs uppercase tracking-wide font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
+              >
+                <Plus className="h-3.5 w-3.5" /> {t("changeBook")}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
