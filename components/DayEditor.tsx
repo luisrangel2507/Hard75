@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Dumbbell, Bike, Wine } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
@@ -29,8 +29,15 @@ export function DayEditor({
   const [day, setDay] = useState<ChallengeDay>(
     () => initialDays.find((d) => d.day_number === dayNumber) ?? defaultDay(dayNumber)
   );
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const pendingPatch = useRef<Partial<ChallengeDay>>({});
+  const retryTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (retryTimeout.current) clearTimeout(retryTimeout.current);
+    };
+  }, []);
 
   const trendMap = useMemo(() => {
     const m = new Map(daysMap);
@@ -70,10 +77,24 @@ export function DayEditor({
           return next;
         });
         setSaveStatus("saved");
+      } else {
+        handleSaveFailure(patch);
       }
     } catch {
-      // best-effort; leave status as-is
+      handleSaveFailure(patch);
     }
+  }
+
+  function handleSaveFailure(patch: Partial<ChallengeDay>) {
+    setSaveStatus("error");
+    // keep newer edits (already queued) ahead of the failed patch, then retry shortly
+    pendingPatch.current = { ...patch, ...pendingPatch.current };
+    if (retryTimeout.current) clearTimeout(retryTimeout.current);
+    retryTimeout.current = setTimeout(() => {
+      const retryPatch = pendingPatch.current;
+      pendingPatch.current = {};
+      if (Object.keys(retryPatch).length > 0) persist(retryPatch);
+    }, 4000);
   }
 
   function updateField<K extends keyof ChallengeDay>(key: K, value: ChallengeDay[K]) {
@@ -122,8 +143,16 @@ export function DayEditor({
       </div>
 
       <div className="flex justify-end -mt-3">
-        <span className="text-[11px] uppercase tracking-wide text-muted">
-          {saveStatus === "saving" ? t("saving") : saveStatus === "saved" ? t("saved") : ""}
+        <span
+          className={`text-[11px] uppercase tracking-wide ${saveStatus === "error" ? "text-ember font-semibold" : "text-muted"}`}
+        >
+          {saveStatus === "saving"
+            ? t("saving")
+            : saveStatus === "saved"
+              ? t("saved")
+              : saveStatus === "error"
+                ? t("saveError")
+                : ""}
         </span>
       </div>
 
