@@ -5,9 +5,13 @@ import { Book, Quote } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const books = await query<Book>("SELECT * FROM books ORDER BY created_at ASC");
-  const quotes = await query<Quote>("SELECT * FROM quotes ORDER BY created_at ASC");
-  return NextResponse.json({ books, quotes });
+  try {
+    const books = await query<Book>("SELECT * FROM books ORDER BY created_at ASC");
+    const quotes = await query<Quote>("SELECT * FROM quotes ORDER BY created_at ASC");
+    return NextResponse.json({ books, quotes });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message, books: [], quotes: [] }, { status: 500 });
+  }
 }
 
 export async function POST(req: NextRequest) {

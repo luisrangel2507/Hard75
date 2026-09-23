@@ -117,6 +117,9 @@ export const dictionary = {
     profileSaved: "Guardado",
     changeBook: "Cambiar libro",
     allDays: "Los 75 días",
+    loadErrorTitle: "No se pudo cargar",
+    loadErrorMessage: "Revisa tu conexión o intenta de nuevo en un momento.",
+    retry: "Reintentar",
   },
   en: {
     appName: "FIT FOR 75",
@@ -234,6 +237,9 @@ export const dictionary = {
     profileSaved: "Saved",
     changeBook: "Change book",
     allDays: "All 75 days",
+    loadErrorTitle: "Couldn't load",
+    loadErrorMessage: "Check your connection or try again in a moment.",
+    retry: "Retry",
   },
 } as const;
 

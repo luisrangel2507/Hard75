@@ -31,14 +31,16 @@ export function ReadingCard({
     Promise.all([
       fetch("/api/books").then((r) => r.json()),
       fetch("/api/settings").then((r) => r.json()),
-    ]).then(([booksRes, settingsRes]) => {
-      setBooks(booksRes.books ?? []);
-      setQuotes(booksRes.quotes ?? []);
-      const active = settingsRes.activeBookId;
-      const fallback = booksRes.books?.[0]?.id ?? null;
-      setActiveBookId(active && booksRes.books?.some((b: Book) => b.id === active) ? active : fallback);
-      setLoading(false);
-    });
+    ])
+      .then(([booksRes, settingsRes]) => {
+        setBooks(booksRes.books ?? []);
+        setQuotes(booksRes.quotes ?? []);
+        const active = settingsRes.activeBookId;
+        const fallback = booksRes.books?.[0]?.id ?? null;
+        setActiveBookId(active && booksRes.books?.some((b: Book) => b.id === active) ? active : fallback);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   const activeBook = books.find((b) => b.id === activeBookId) ?? null;

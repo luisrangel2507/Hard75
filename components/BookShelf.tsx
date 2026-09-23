@@ -18,7 +18,8 @@ export function BookShelf() {
         setBooks(res.books ?? []);
         setQuotes(res.quotes ?? []);
         setLoading(false);
-      });
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   if (loading) {

@@ -22,19 +22,26 @@ function validate(field: FieldKey, value: unknown): string | null {
 }
 
 export async function GET() {
-  const rows = await query<{ key: string; value: string }>(
-    `SELECT key, value FROM app_settings WHERE key IN (${Object.values(FIELD_MAP)
-      .map((_, i) => `$${i + 1}`)
-      .join(", ")})`,
-    Object.values(FIELD_MAP)
-  );
-  const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
-  return NextResponse.json({
-    lang: map.lang ?? "es",
-    activeBookId: map.active_book_id ?? null,
-    heightCm: map.height_cm ? Number(map.height_cm) : null,
-    startingWeightKg: map.starting_weight_kg ? Number(map.starting_weight_kg) : null,
-  });
+  try {
+    const rows = await query<{ key: string; value: string }>(
+      `SELECT key, value FROM app_settings WHERE key IN (${Object.values(FIELD_MAP)
+        .map((_, i) => `$${i + 1}`)
+        .join(", ")})`,
+      Object.values(FIELD_MAP)
+    );
+    const map = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+    return NextResponse.json({
+      lang: map.lang ?? "es",
+      activeBookId: map.active_book_id ?? null,
+      heightCm: map.height_cm ? Number(map.height_cm) : null,
+      startingWeightKg: map.starting_weight_kg ? Number(map.starting_weight_kg) : null,
+    });
+  } catch (err) {
+    return NextResponse.json(
+      { error: (err as Error).message, lang: "es", activeBookId: null, heightCm: null, startingWeightKg: null },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(req: NextRequest) {

@@ -10,6 +10,7 @@ import { Book } from "@/lib/types";
 export function ProfileForm() {
   const { t } = useI18n();
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [heightCm, setHeightCm] = useState("");
   const [startingWeightKg, setStartingWeightKg] = useState("");
   const [books, setBooks] = useState<Book[]>([]);
@@ -21,15 +22,18 @@ export function ProfileForm() {
   const pendingPatch = useRef<Record<string, number>>({});
 
   useEffect(() => {
-    Promise.all([fetch("/api/settings").then((r) => r.json()), fetch("/api/books").then((r) => r.json())]).then(
-      ([settingsRes, booksRes]) => {
+    Promise.all([fetch("/api/settings").then((r) => r.json()), fetch("/api/books").then((r) => r.json())])
+      .then(([settingsRes, booksRes]) => {
         setHeightCm(settingsRes.heightCm ? String(settingsRes.heightCm) : "");
         setStartingWeightKg(settingsRes.startingWeightKg ? String(settingsRes.startingWeightKg) : "");
         setActiveBookId(settingsRes.activeBookId ?? booksRes.books?.[0]?.id ?? null);
         setBooks(booksRes.books ?? []);
         setLoading(false);
-      }
-    );
+      })
+      .catch(() => {
+        setLoadError(true);
+        setLoading(false);
+      });
   }, []);
 
   const debouncedSave = useDebouncedCallback(async () => {
@@ -114,6 +118,22 @@ export function ProfileForm() {
         <div className="h-24 rounded-2xl bg-border/40" />
         <div className="h-24 rounded-2xl bg-border/40" />
         <div className="h-40 rounded-2xl bg-border/40" />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="card-base p-5 flex flex-col items-center gap-2 text-center">
+        <p className="text-sm text-ink font-semibold">{t("loadErrorTitle")}</p>
+        <p className="text-xs text-muted">{t("loadErrorMessage")}</p>
+        <button
+          type="button"
+          onClick={() => window.location.reload()}
+          className="mt-2 rounded-xl border border-brass/40 bg-brass/10 px-4 py-2 text-xs uppercase tracking-wide font-semibold text-brass hover:brightness-110 transition active:scale-95"
+        >
+          {t("retry")}
+        </button>
       </div>
     );
   }
