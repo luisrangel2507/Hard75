@@ -27,6 +27,8 @@ export function ReadingCard({
   const [newBook, setNewBook] = useState<{ title: string; author: string; totalPages: string; coverUrl: string | null } | null>(
     null
   );
+  const [bookError, setBookError] = useState<string | null>(null);
+  const [savingBook, setSavingBook] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -58,21 +60,31 @@ export function ReadingCard({
 
   async function createBook() {
     if (!newBook || !newBook.title.trim()) return;
-    const res = await fetch("/api/books", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: newBook.title.trim(),
-        author: newBook.author.trim() || null,
-        total_pages: newBook.totalPages ? Number(newBook.totalPages) : null,
-        cover_url: newBook.coverUrl,
-      }),
-    });
-    if (res.ok) {
-      const { book } = await res.json();
-      setBooks((prev) => [...prev, book]);
-      setActiveBook(book.id);
-      setNewBook(null);
+    setSavingBook(true);
+    setBookError(null);
+    try {
+      const res = await fetch("/api/books", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: newBook.title.trim(),
+          author: newBook.author.trim() || null,
+          total_pages: newBook.totalPages ? Number(newBook.totalPages) : null,
+          cover_url: newBook.coverUrl,
+        }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.book) {
+        setBooks((prev) => [...prev, data.book]);
+        setActiveBook(data.book.id);
+        setNewBook(null);
+      } else {
+        setBookError(data?.error ?? t("loadErrorMessage"));
+      }
+    } catch {
+      setBookError(t("loadErrorMessage"));
+    } finally {
+      setSavingBook(false);
     }
   }
 
@@ -177,6 +189,7 @@ export function ReadingCard({
             onChange={(url) => setNewBook({ ...newBook, coverUrl: url })}
             aspect="portrait"
           />
+          {bookError && <p className="text-xs text-ember">{bookError}</p>}
           <div className="flex gap-2">
             <button
               type="button"
@@ -188,9 +201,10 @@ export function ReadingCard({
             <button
               type="button"
               onClick={createBook}
-              className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95"
+              disabled={savingBook}
+              className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95 disabled:opacity-50"
             >
-              {t("save")}
+              {savingBook ? t("saving") : t("save")}
             </button>
           </div>
         </div>

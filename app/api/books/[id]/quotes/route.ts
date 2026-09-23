@@ -12,10 +12,14 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   }
   const page = typeof body?.page === "number" ? body.page : null;
 
-  const id = crypto.randomUUID();
-  const rows = await query<Quote>(
-    `INSERT INTO quotes (id, book_id, text, page) VALUES ($1, $2, $3, $4) RETURNING *`,
-    [id, params.id, text.trim(), page]
-  );
-  return NextResponse.json({ quote: rows[0] });
+  try {
+    const id = crypto.randomUUID();
+    const rows = await query<Quote>(
+      `INSERT INTO quotes (id, book_id, text, page) VALUES ($1, $2, $3, $4) RETURNING *`,
+      [id, params.id, text.trim(), page]
+    );
+    return NextResponse.json({ quote: rows[0] });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+  }
 }

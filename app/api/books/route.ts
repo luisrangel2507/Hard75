@@ -24,10 +24,14 @@ export async function POST(req: NextRequest) {
   const totalPages = typeof body?.total_pages === "number" ? body.total_pages : null;
   const coverUrl = typeof body?.cover_url === "string" ? body.cover_url : null;
 
-  const id = crypto.randomUUID();
-  const rows = await query<Book>(
-    `INSERT INTO books (id, title, author, total_pages, cover_url) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-    [id, title.trim(), author, totalPages, coverUrl]
-  );
-  return NextResponse.json({ book: rows[0] });
+  try {
+    const id = crypto.randomUUID();
+    const rows = await query<Book>(
+      `INSERT INTO books (id, title, author, total_pages, cover_url) VALUES ($1, $2, $3, $4, $5) RETURNING *`,
+      [id, title.trim(), author, totalPages, coverUrl]
+    );
+    return NextResponse.json({ book: rows[0] });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+  }
 }
