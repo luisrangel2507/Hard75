@@ -9,6 +9,7 @@ import { BackupPanel } from "@/components/BackupPanel";
 import { AchievementBadges } from "@/components/AchievementBadges";
 import { BookShelf } from "@/components/BookShelf";
 import { ShareProgress } from "@/components/ShareProgress";
+import { DayGrid } from "@/components/DayGrid";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +26,11 @@ export default async function ProgressPage() {
 
   return (
     <>
+      <section className="flex flex-col gap-2">
+        <p className="label-caps">{t(lang, "allDays")}</p>
+        <DayGrid daysByNumber={daysMap} streak={streak} currentDay={currentDayNumber} />
+      </section>
+
       <section className="card-base p-4 flex flex-col gap-2">
         <span className="label-caps">{t(lang, "weightChart")}</span>
         <WeightChart days={rows} />

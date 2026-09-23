@@ -11,7 +11,6 @@ import {
 } from "@/lib/challenge";
 import { StreakFlame } from "@/components/StreakFlame";
 import { CelebrationBanner } from "@/components/CelebrationBanner";
-import { DayGrid } from "@/components/DayGrid";
 import { ProgressRing } from "@/components/ProgressRing";
 import Link from "next/link";
 
@@ -130,13 +129,6 @@ export default async function DashboardPage() {
         <StatusRow icon={UtensilsCrossed} label={`${t(lang, "meals")} ${mealsDone}/3`} ok={mealsDone === 3} />
         <StatusRow icon={BookOpen} label={t(lang, "book")} ok={currentDay.book} />
         <StatusRow icon={Wine} label={t(lang, "diet")} ok={currentDay.diet} />
-      </section>
-
-      <section className="flex flex-col gap-3">
-        <p className="label-caps">
-          {t(lang, "dashboard")} · {t(lang, "of75")}
-        </p>
-        <DayGrid daysByNumber={daysMap} streak={streak} currentDay={currentDayNumber} />
       </section>
     </>
   );

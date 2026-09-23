@@ -116,6 +116,7 @@ export const dictionary = {
     noBookYet: "Aún no has elegido un libro",
     profileSaved: "Guardado",
     changeBook: "Cambiar libro",
+    allDays: "Los 75 días",
   },
   en: {
     appName: "FIT FOR 75",
@@ -232,6 +233,7 @@ export const dictionary = {
     noBookYet: "You haven't picked a book yet",
     profileSaved: "Saved",
     changeBook: "Change book",
+    allDays: "All 75 days",
   },
 } as const;
 

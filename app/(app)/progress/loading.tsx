@@ -1,6 +1,11 @@
 export default function ProgressLoading() {
   return (
     <div className="flex flex-col gap-5 animate-pulse">
+      <div className="grid grid-cols-8 sm:grid-cols-10 gap-1.5">
+        {Array.from({ length: 40 }).map((_, i) => (
+          <div key={i} className="aspect-square rounded-xl bg-border/40" />
+        ))}
+      </div>
       <div className="card-base p-4 h-48 bg-border/40" />
       <div className="grid grid-cols-4 gap-2.5">
         {Array.from({ length: 4 }).map((_, i) => (

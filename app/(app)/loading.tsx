@@ -17,11 +17,6 @@ export default function DashboardLoading() {
           <div key={i} className="h-4 w-full rounded bg-border/40" />
         ))}
       </div>
-      <div className="grid grid-cols-8 sm:grid-cols-10 gap-1.5">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <div key={i} className="aspect-square rounded-xl bg-border/40" />
-        ))}
-      </div>
     </div>
   );
 }
