@@ -1,3 +1,4 @@
+import { Image as ImageIcon } from "lucide-react";
 import { query } from "@/lib/db";
 import { t } from "@/lib/i18n";
 import { resolveLang } from "@/lib/langServer";
@@ -71,7 +72,12 @@ export default async function ProgressPage() {
       <section className="flex flex-col gap-2">
         <span className="label-caps">{t(lang, "gallery")}</span>
         {withProgressPhoto.length === 0 ? (
-          <p className="text-sm text-muted">{t(lang, "noPhotosYet")}</p>
+          <div className="flex flex-col items-center gap-2 py-6 text-center">
+            <div className="h-12 w-12 rounded-full bg-border/40 flex items-center justify-center">
+              <ImageIcon className="h-5 w-5 text-muted" />
+            </div>
+            <p className="text-sm text-muted">{t(lang, "noPhotosYet")}</p>
+          </div>
         ) : (
           <div className="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
             {withProgressPhoto.map((d) => (

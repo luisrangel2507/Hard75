@@ -1,17 +1,23 @@
 "use client";
 
+import { Scale } from "lucide-react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useI18n } from "@/components/I18nProvider";
 import { ChallengeDay } from "@/lib/types";
 
 export function WeightChart({ days }: { days: ChallengeDay[] }) {
+  const { t } = useI18n();
   const data = days
     .filter((d) => d.weight_kg != null)
     .map((d) => ({ day: d.day_number, weight: Number(d.weight_kg) }));
 
   if (data.length < 2) {
     return (
-      <div className="h-56 flex items-center justify-center text-sm text-muted">
-        —
+      <div className="h-56 flex flex-col items-center justify-center gap-2 text-center">
+        <div className="h-12 w-12 rounded-full bg-border/40 flex items-center justify-center">
+          <Scale className="h-5 w-5 text-muted" />
+        </div>
+        <p className="text-sm text-muted">{t("noWeightYet")}</p>
       </div>
     );
   }
@@ -20,16 +26,16 @@ export function WeightChart({ days }: { days: ChallengeDay[] }) {
     <div className="h-56 -ml-4">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
-          <CartesianGrid stroke="#332F26" strokeDasharray="3 3" vertical={false} />
+          <CartesianGrid stroke="#EDE1CC" strokeDasharray="3 3" vertical={false} />
           <XAxis
             dataKey="day"
-            stroke="#8C8879"
+            stroke="#9A8C77"
             fontSize={11}
             tickLine={false}
-            axisLine={{ stroke: "#332F26" }}
+            axisLine={{ stroke: "#EDE1CC" }}
           />
           <YAxis
-            stroke="#8C8879"
+            stroke="#9A8C77"
             fontSize={11}
             tickLine={false}
             axisLine={false}
@@ -38,20 +44,20 @@ export function WeightChart({ days }: { days: ChallengeDay[] }) {
           />
           <Tooltip
             contentStyle={{
-              background: "#1D1B16",
-              border: "1px solid #332F26",
+              background: "#FFFFFF",
+              border: "1px solid #EDE1CC",
               borderRadius: 8,
-              color: "#EDEAE1",
+              color: "#28211A",
               fontSize: 12,
             }}
-            labelFormatter={(label) => `Día ${label}`}
+            labelFormatter={(label) => `${t("day")} ${label}`}
           />
           <Line
             type="monotone"
             dataKey="weight"
-            stroke="#B8923A"
+            stroke="#FF6B45"
             strokeWidth={2}
-            dot={{ r: 2, fill: "#B8923A" }}
+            dot={{ r: 2, fill: "#FF6B45" }}
             activeDot={{ r: 4 }}
           />
         </LineChart>
