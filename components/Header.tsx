@@ -22,7 +22,7 @@ export function Header() {
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/sun-logo.png" alt="75 Rise" width={80} height={80} className="h-10 w-auto shrink-0" priority />
-          <span className="font-semibold tracking-widest text-sm text-ink hidden sm:inline whitespace-nowrap">
+          <span className="font-semibold text-sm text-ink hidden sm:inline whitespace-nowrap">
             75 <span className="text-brass">RISE</span>
           </span>
         </Link>

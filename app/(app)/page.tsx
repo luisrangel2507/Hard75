@@ -40,7 +40,7 @@ function StatusRow({
         </span>
         {label}
       </span>
-      <span className={`text-xs font-semibold uppercase tracking-wide ${ok ? "text-brass" : "text-muted"}`}>
+      <span className={`text-xs font-semibold ${ok ? "text-brass" : "text-muted"}`}>
         {ok && value ? value : ok ? "✓" : "×"}
       </span>
     </div>
@@ -82,7 +82,7 @@ export default async function DashboardPage() {
           </div>
           <div className="h-2 w-full rounded-full bg-border overflow-hidden">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-steel to-olive transition-all"
+              className="h-full rounded-full bg-steel transition-all"
               style={{ width: `${waterPct}%` }}
             />
           </div>
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
 
         <Link
           href={`/day/${currentDayNumber}`}
-          className="text-center bg-gradient-to-r from-brass to-ember text-white font-semibold uppercase tracking-wide text-sm rounded-xl py-3 shadow-[0_6px_16px_rgba(255,107,69,0.35)] hover:brightness-105 active:scale-[0.97] transition"
+          className="text-center bg-brass text-white font-semibold text-sm rounded-xl py-3 hover:brightness-105 active:scale-[0.97] transition"
         >
           {t(lang, "goToDay")} {currentDayNumber}
         </Link>

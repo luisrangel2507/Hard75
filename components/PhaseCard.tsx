@@ -16,7 +16,7 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
           <span className={`label-caps ${TEXT[phase.color]}`}>
             {es ? "Fase" : "Phase"} {phase.id} {es ? "de" : "of"} {PHASES.length}
           </span>
-          <h2 className="text-2xl font-bold uppercase tracking-wide text-ink leading-tight">{phase.name[lang]}</h2>
+          <h2 className="text-2xl font-bold text-ink leading-tight">{phase.name[lang]}</h2>
         </div>
         <span className="num text-xs text-muted text-right shrink-0 pt-1">
           {es ? "Día" : "Day"} {dayInPhase}/{phaseLength}
@@ -33,7 +33,7 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
               <div className="h-2 rounded-full bg-border overflow-hidden">
                 <div className={`h-full rounded-full ${BG[p.color]} transition-all`} style={{ width: `${fill}%` }} />
               </div>
-              <span className={`text-[10px] uppercase tracking-wide ${p.id === phase.id ? TEXT[p.color] : "text-muted"}`}>
+              <span className={`text-[10px] ${p.id === phase.id ? TEXT[p.color] : "text-muted"}`}>
                 {p.name[lang]}
               </span>
             </div>

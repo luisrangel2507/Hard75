@@ -134,7 +134,7 @@ export function Onboarding() {
             {Array.from({ length: STEPS }).map((_, i) => (
               <div key={i} className="h-1 flex-1 rounded-full bg-border overflow-hidden">
                 <div
-                  className={`h-full bg-gradient-to-r from-brass to-ember transition-all duration-500 ${
+                  className={`h-full bg-brass transition-all duration-500 ${
                     i <= step ? "w-full" : "w-0"
                   }`}
                 />
@@ -145,7 +145,7 @@ export function Onboarding() {
             <button
               type="button"
               onClick={finish}
-              className="text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink transition px-1 py-2"
+              className="text-xs font-semibold text-muted hover:text-ink transition px-1 py-2"
             >
               {c.skip}
             </button>
@@ -158,14 +158,14 @@ export function Onboarding() {
               <div className="flex-1 flex flex-col items-center justify-center gap-2 py-6">
                 <div className="relative">
                   <div className="absolute inset-0 -m-8 rounded-full bg-gradient-to-br from-brass/25 to-ember/20 blur-2xl" />
-                  <p className="relative num font-bold leading-none text-[9rem] bg-gradient-to-br from-brass to-ember bg-clip-text text-transparent">
+                  <p className="relative num font-bold leading-none text-[9rem] bg-brass bg-clip-text text-transparent">
                     {TOTAL_DAYS}
                   </p>
                 </div>
                 <span className="label-caps">{c.heroKicker}</span>
               </div>
               <div className="flex flex-col gap-3">
-                <h1 className="text-4xl font-bold uppercase tracking-wide text-ink leading-tight">{c.heroTitle}</h1>
+                <h1 className="text-4xl font-bold text-ink leading-tight">{c.heroTitle}</h1>
                 <p className="text-sm text-ink/75 leading-relaxed">{c.heroBody}</p>
               </div>
             </>
@@ -174,7 +174,7 @@ export function Onboarding() {
           {step === 1 && (
             <>
               <div className="flex flex-col gap-1.5">
-                <h2 className="text-3xl font-bold uppercase tracking-wide text-ink leading-tight">{c.rulesTitle}</h2>
+                <h2 className="text-3xl font-bold text-ink leading-tight">{c.rulesTitle}</h2>
                 <p className="text-sm text-muted">{c.rulesBody}</p>
               </div>
               <ul className="flex flex-col gap-2">
@@ -197,7 +197,7 @@ export function Onboarding() {
           {step === 2 && (
             <>
               <div className="flex flex-col gap-1.5">
-                <h2 className="text-3xl font-bold uppercase tracking-wide text-ink leading-tight">{c.phasesTitle}</h2>
+                <h2 className="text-3xl font-bold text-ink leading-tight">{c.phasesTitle}</h2>
                 <p className="text-sm text-muted">{c.phasesBody}</p>
               </div>
               <ol className="flex flex-col">
@@ -213,7 +213,7 @@ export function Onboarding() {
                     </div>
                     <div className={`flex flex-col gap-1 ${i < PHASES.length - 1 ? "pb-5" : ""}`}>
                       <div className="flex items-baseline gap-2 flex-wrap">
-                        <h3 className={`text-lg font-bold uppercase tracking-wide ${TEXT[p.color]}`}>{p.name[lang]}</h3>
+                        <h3 className={`text-lg font-bold ${TEXT[p.color]}`}>{p.name[lang]}</h3>
                         <span className="num text-[11px] text-muted">
                           {c.days} {p.start}–{p.end}
                         </span>
@@ -231,7 +231,7 @@ export function Onboarding() {
             <>
               <div className="flex-1 flex flex-col justify-center gap-5">
                 <div className="flex flex-col gap-2">
-                  <h2 className="text-4xl font-bold uppercase tracking-wide text-ink leading-tight">{c.readyTitle}</h2>
+                  <h2 className="text-4xl font-bold text-ink leading-tight">{c.readyTitle}</h2>
                   <p className="text-sm text-ink/75 leading-relaxed">{c.readyBody}</p>
                 </div>
                 <div className="card-base p-4 flex items-start gap-3 border-brass/40">
@@ -253,7 +253,7 @@ export function Onboarding() {
             <button
               type="button"
               onClick={() => setStep((s) => s - 1)}
-              className="rounded-xl border border-border bg-card px-5 py-3 text-sm uppercase tracking-wide font-semibold text-muted hover:text-ink active:scale-95 transition"
+              className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-muted hover:text-ink active:scale-95 transition"
             >
               {c.back}
             </button>
@@ -261,7 +261,7 @@ export function Onboarding() {
           <button
             type="button"
             onClick={() => (last ? finish() : setStep((s) => s + 1))}
-            className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-brass to-ember text-white font-semibold uppercase tracking-wide text-sm rounded-xl py-3.5 shadow-[0_6px_16px_rgba(255,107,69,0.35)] hover:brightness-105 active:scale-[0.97] transition"
+            className="flex-1 flex items-center justify-center gap-2 bg-brass text-white font-semibold text-sm rounded-xl py-3.5 hover:brightness-105 active:scale-[0.97] transition"
           >
             {last ? c.start : c.next}
             <ArrowRight className="h-4 w-4" />

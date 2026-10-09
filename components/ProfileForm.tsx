@@ -208,7 +208,7 @@ export function ProfileForm() {
         <button
           type="button"
           onClick={() => window.location.reload()}
-          className="mt-2 rounded-xl border border-brass/40 bg-brass/10 px-4 py-2 text-xs uppercase tracking-wide font-semibold text-brass hover:brightness-110 transition active:scale-95"
+          className="mt-2 rounded-xl border border-brass/40 bg-brass/10 px-4 py-2 text-xs font-semibold text-brass hover:brightness-110 transition active:scale-95"
         >
           {t("retry")}
         </button>
@@ -223,8 +223,8 @@ export function ProfileForm() {
           <button
             type="button"
             onClick={() => handleUnitsChange("metric")}
-            className={`px-3 py-1 rounded-full text-[11px] uppercase tracking-wide font-semibold transition active:scale-95 ${
-              units === "metric" ? "bg-gradient-to-r from-brass to-ember text-white" : "text-muted"
+            className={`px-3 py-1 rounded-full text-[11px] font-semibold transition active:scale-95 ${
+              units === "metric" ? "bg-brass text-white" : "text-muted"
             }`}
           >
             {t("metric")}
@@ -232,14 +232,14 @@ export function ProfileForm() {
           <button
             type="button"
             onClick={() => handleUnitsChange("imperial")}
-            className={`px-3 py-1 rounded-full text-[11px] uppercase tracking-wide font-semibold transition active:scale-95 ${
-              units === "imperial" ? "bg-gradient-to-r from-brass to-ember text-white" : "text-muted"
+            className={`px-3 py-1 rounded-full text-[11px] font-semibold transition active:scale-95 ${
+              units === "imperial" ? "bg-brass text-white" : "text-muted"
             }`}
           >
             {t("imperial")}
           </button>
         </div>
-        <span className="text-[11px] uppercase tracking-wide text-muted">
+        <span className="text-[11px] text-muted">
           {saveStatus === "saving" ? t("saving") : saveStatus === "saved" ? t("profileSaved") : ""}
         </span>
       </div>
@@ -345,7 +345,7 @@ export function ProfileForm() {
               <button
                 type="button"
                 onClick={() => setNewBook(null)}
-                className="flex-1 rounded-xl border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink transition active:scale-95"
+                className="flex-1 rounded-xl border border-border py-2 text-xs font-semibold text-muted hover:text-ink transition active:scale-95"
               >
                 {t("cancel")}
               </button>
@@ -353,7 +353,7 @@ export function ProfileForm() {
                 type="button"
                 onClick={createBook}
                 disabled={savingBook}
-                className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95 disabled:opacity-50"
+                className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs font-semibold text-steel hover:brightness-110 transition active:scale-95 disabled:opacity-50"
               >
                 {savingBook ? t("saving") : t("save")}
               </button>
@@ -363,7 +363,7 @@ export function ProfileForm() {
           <button
             type="button"
             onClick={() => setNewBook({ title: "", author: "", totalPages: "", coverUrl: null })}
-            className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border py-3 text-xs uppercase tracking-wide font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
+            className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border py-3 text-xs font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
           >
             <Plus className="h-3.5 w-3.5" /> {t("addFirstBook")}
           </button>
@@ -415,7 +415,7 @@ export function ProfileForm() {
               <button
                 type="button"
                 onClick={() => setNewBook({ title: "", author: "", totalPages: "", coverUrl: null })}
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-border text-xs uppercase tracking-wide font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-border text-xs font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
               >
                 <Plus className="h-3.5 w-3.5" /> {t("changeBook")}
               </button>

@@ -46,7 +46,7 @@ export function PhotoSlot({
       <span className="label-caps">{label}</span>
       <div
         className={`relative rounded-2xl border overflow-hidden ${aspectClass} ${
-          currentUrl ? "border-brass shadow-[0_4px_14px_rgba(255,107,69,0.18)]" : "border-border border-dashed"
+          currentUrl ? "border-border" : "border-border border-dashed"
         } bg-card`}
       >
         {currentUrl ? (
@@ -73,7 +73,7 @@ export function PhotoSlot({
             ) : (
               <>
                 <Camera className="h-5 w-5" />
-                <span className="text-[10px] uppercase tracking-wide">{t("uploadPhoto")}</span>
+                <span className="text-[10px] ">{t("uploadPhoto")}</span>
               </>
             )}
           </button>

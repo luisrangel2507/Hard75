@@ -5,22 +5,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#FBF6EC",
+        bg: "#F2F2F7",
         card: "#FFFFFF",
-        border: "#EDE1CC",
-        ink: "#28211A",
-        muted: "#9A8C77",
-        ember: "#FF3D7F",
-        olive: "#0FBFA0",
-        steel: "#2FADF0",
-        brass: "#FF6B45",
+        border: "#E5E5EA",
+        ink: "#1C1C1E",
+        muted: "#8E8E93",
+        ember: "#E5484D",
+        olive: "#34C759",
+        steel: "#0A84FF",
+        brass: "#F2711C",
       },
       fontFamily: {
-        sans: ["var(--font-label)", "ui-sans-serif", "system-ui", "sans-serif"],
-        mono: ["var(--font-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
+        sans: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
+        mono: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        card: "0 1px 0 0 rgba(0,0,0,0.4)",
+        card: "0 1px 2px rgba(0,0,0,0.04)",
       },
       keyframes: {
         "fade-in": {

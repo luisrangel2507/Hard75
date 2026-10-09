@@ -20,7 +20,7 @@ export default function AppError({ error, reset }: { error: Error & { digest?: s
       <button
         type="button"
         onClick={() => reset()}
-        className="mt-2 flex items-center gap-2 rounded-xl border border-brass/40 bg-brass/10 px-4 py-2.5 text-xs uppercase tracking-wide font-semibold text-brass hover:brightness-110 transition active:scale-95"
+        className="mt-2 flex items-center gap-2 rounded-xl border border-brass/40 bg-brass/10 px-4 py-2.5 text-xs font-semibold text-brass hover:brightness-110 transition active:scale-95"
       >
         <RefreshCw className="h-3.5 w-3.5" />
         Reintentar

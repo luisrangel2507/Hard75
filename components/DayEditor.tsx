@@ -144,7 +144,7 @@ export function DayEditor({
 
       <div className="flex justify-end -mt-3">
         <span
-          className={`text-[11px] uppercase tracking-wide ${saveStatus === "error" ? "text-ember font-semibold" : "text-muted"}`}
+          className={`text-[11px] ${saveStatus === "error" ? "text-ember font-semibold" : "text-muted"}`}
         >
           {saveStatus === "saving"
             ? t("saving")
@@ -191,7 +191,7 @@ export function DayEditor({
         <div
           className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
             day.diet
-              ? "border-olive bg-olive/10 shadow-[0_4px_14px_rgba(15,191,160,0.18)]"
+              ? "border-border bg-card"
               : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
           }`}
         >
@@ -212,14 +212,14 @@ export function DayEditor({
             </span>
             <span className={`h-5 w-9 rounded-full relative transition-colors ${day.diet ? "bg-olive" : "bg-border"}`}>
               <span
-                className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-ink transition-transform ${
+                className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
                   day.diet ? "translate-x-4" : ""
                 }`}
               />
             </span>
           </button>
           <div className="flex flex-col gap-1">
-            <span className="text-[11px] uppercase tracking-wide text-muted">{t("calories")}</span>
+            <span className="text-[11px] text-muted">{t("calories")}</span>
             <input
               type="text"
               inputMode="numeric"

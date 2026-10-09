@@ -12,7 +12,7 @@ export function ProgressRing({ value, max, label }: { value: number; max: number
   const offset = circumference * (1 - pct);
 
   return (
-    <div className="relative h-24 w-24 shrink-0 drop-shadow-[0_4px_10px_rgba(255,107,69,0.25)]">
+    <div className="relative h-24 w-24 shrink-0">
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -36,7 +36,7 @@ export function ProgressRing({ value, max, label }: { value: number; max: number
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="num text-2xl font-bold text-ink leading-none">{animated}</span>
-        <span className="text-[10px] uppercase tracking-wide text-muted mt-0.5">{label}</span>
+        <span className="text-[10px] text-muted mt-0.5">{label}</span>
       </div>
     </div>
   );

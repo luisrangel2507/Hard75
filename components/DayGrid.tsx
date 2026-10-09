@@ -43,7 +43,7 @@ export function DayGrid({
             href={`/day/${n}`}
             className={`${base} ${
               complete
-                ? "border-transparent bg-gradient-to-br from-brass to-ember text-white font-semibold shadow-[0_3px_8px_rgba(255,107,69,0.35)]"
+                ? "border-transparent bg-brass text-white font-semibold"
                 : isCurrent
                   ? "border-2 border-brass text-ink bg-card font-semibold"
                   : "border-border text-muted hover:text-ink hover:border-ink/40 bg-card"

@@ -13,19 +13,19 @@ export function AchievementBadges({ streak, lang }: { streak: number; lang: Lang
             key={d}
             className={`flex flex-col items-center gap-1.5 rounded-2xl border p-3 transition ${
               unlocked
-                ? "border-brass bg-brass/10 shadow-[0_4px_14px_rgba(255,107,69,0.18)]"
+                ? "border-border bg-card"
                 : "border-border bg-card opacity-50"
             }`}
           >
             <div
               className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                unlocked ? "bg-gradient-to-br from-brass to-ember text-white" : "bg-border/40 text-muted"
+                unlocked ? "bg-brass text-white" : "bg-border/40 text-muted"
               }`}
             >
               <Award className="h-4.5 w-4.5" />
             </div>
             <span className={`num text-sm font-bold ${unlocked ? "text-ink" : "text-muted"}`}>{d}</span>
-            <span className="text-[10px] uppercase tracking-wide text-muted">{t(lang, "days")}</span>
+            <span className="text-[10px] text-muted">{t(lang, "days")}</span>
           </div>
         );
       })}

@@ -134,7 +134,7 @@ export function ReadingCard({
     <div
       className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
         checked
-          ? "border-steel bg-steel/10 shadow-[0_4px_14px_rgba(47,173,240,0.18)]"
+          ? "border-border bg-card"
           : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
       }`}
     >
@@ -154,7 +154,7 @@ export function ReadingCard({
           onClick={() => onToggle(!checked)}
           className={`h-5 w-9 rounded-full relative transition-colors active:scale-95 ${checked ? "bg-steel" : "bg-border"}`}
         >
-          <span className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-ink transition-transform ${checked ? "translate-x-4" : ""}`} />
+          <span className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${checked ? "translate-x-4" : ""}`} />
         </button>
       </div>
 
@@ -194,7 +194,7 @@ export function ReadingCard({
             <button
               type="button"
               onClick={() => setNewBook(null)}
-              className="flex-1 rounded-xl border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink transition active:scale-95"
+              className="flex-1 rounded-xl border border-border py-2 text-xs font-semibold text-muted hover:text-ink transition active:scale-95"
             >
               {t("cancel")}
             </button>
@@ -202,7 +202,7 @@ export function ReadingCard({
               type="button"
               onClick={createBook}
               disabled={savingBook}
-              className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95 disabled:opacity-50"
+              className="flex-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs font-semibold text-steel hover:brightness-110 transition active:scale-95 disabled:opacity-50"
             >
               {savingBook ? t("saving") : t("save")}
             </button>
@@ -212,7 +212,7 @@ export function ReadingCard({
         <button
           type="button"
           onClick={() => setNewBook({ title: "", author: "", totalPages: "", coverUrl: null })}
-          className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border py-3 text-xs uppercase tracking-wide font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
+          className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-border py-3 text-xs font-semibold text-muted hover:text-steel hover:border-steel/50 transition active:scale-95"
         >
           <Plus className="h-3.5 w-3.5" /> {t("addFirstBook")}
         </button>
@@ -278,14 +278,14 @@ export function ReadingCard({
             <button
               type="button"
               onClick={addPages}
-              className="rounded-xl border border-steel/40 bg-steel/10 px-3 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 transition active:scale-95"
+              className="rounded-xl border border-steel/40 bg-steel/10 px-3 py-2 text-xs font-semibold text-steel hover:brightness-110 transition active:scale-95"
             >
               {t("logPages")}
             </button>
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <span className="flex items-center gap-1.5 text-[11px] uppercase tracking-wide font-semibold text-muted">
+            <span className="flex items-center gap-1.5 text-[11px] font-semibold text-muted">
               <QuoteIcon className="h-3 w-3" /> {t("quotes")}
             </span>
             {bookQuotes.length === 0 ? (

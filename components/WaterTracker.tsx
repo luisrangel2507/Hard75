@@ -45,7 +45,7 @@ export function WaterTracker({
 
       <div className="relative h-28 w-full rounded-xl overflow-hidden border border-border bg-bg">
         <div
-          className="absolute inset-x-0 bottom-0 overflow-hidden bg-gradient-to-b from-steel/85 to-steel transition-[height] duration-500 ease-out"
+          className="absolute inset-x-0 bottom-0 overflow-hidden bg-steel/80 transition-[height] duration-500 ease-out"
           style={{ height: `${fillPct}%` }}
         >
           <svg
@@ -99,7 +99,7 @@ export function WaterTracker({
           type="button"
           disabled={disabled}
           onClick={() => bump(-250)}
-          className="flex-1 flex items-center justify-center gap-1 rounded-xl border border-border py-2 text-xs uppercase tracking-wide font-semibold text-muted hover:text-ink hover:border-steel/50 active:scale-95 transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1 rounded-xl border border-border py-2 text-xs font-semibold text-muted hover:text-ink hover:border-steel/50 active:scale-95 transition disabled:opacity-50"
         >
           <Minus className="h-3.5 w-3.5" /> 250
         </button>
@@ -107,7 +107,7 @@ export function WaterTracker({
           type="button"
           disabled={disabled}
           onClick={() => bump(250)}
-          className="flex-1 flex items-center justify-center gap-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 active:scale-95 transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs font-semibold text-steel hover:brightness-110 active:scale-95 transition disabled:opacity-50"
         >
           <Plus className="h-3.5 w-3.5" /> 250
         </button>
@@ -115,7 +115,7 @@ export function WaterTracker({
           type="button"
           disabled={disabled}
           onClick={() => bump(500)}
-          className="flex-1 flex items-center justify-center gap-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs uppercase tracking-wide font-semibold text-steel hover:brightness-110 active:scale-95 transition disabled:opacity-50"
+          className="flex-1 flex items-center justify-center gap-1 rounded-xl border border-steel/40 bg-steel/10 py-2 text-xs font-semibold text-steel hover:brightness-110 active:scale-95 transition disabled:opacity-50"
         >
           <Plus className="h-3.5 w-3.5" /> 500
         </button>

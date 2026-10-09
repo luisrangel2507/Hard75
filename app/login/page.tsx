@@ -46,10 +46,10 @@ export default function LoginPage() {
             alt="75 Rise"
             width={125}
             height={83}
-            className="h-[83px] w-auto drop-shadow-[0_6px_14px_rgba(255,107,69,0.35)]"
+            className="h-[83px] w-auto"
             priority
           />
-          <h1 className="text-xl font-semibold tracking-wide text-ink">
+          <h1 className="text-xl font-semibold text-ink">
             75 <span className="text-brass">RISE</span>
           </h1>
         </div>
@@ -71,7 +71,7 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="bg-gradient-to-r from-brass to-ember text-white font-semibold uppercase tracking-wide text-sm rounded-xl py-3 shadow-[0_6px_16px_rgba(255,107,69,0.35)] hover:brightness-105 active:scale-[0.97] transition disabled:opacity-60"
+          className="bg-brass text-white font-semibold text-sm rounded-xl py-3 hover:brightness-105 active:scale-[0.97] transition disabled:opacity-60"
         >
           {t("login")}
         </button>
