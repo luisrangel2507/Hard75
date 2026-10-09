@@ -1,8 +1,11 @@
 import { Pool } from "pg";
+import { SCHEMA_STATEMENTS } from "./schema";
 
 declare global {
   // eslint-disable-next-line no-var
   var __ff75Pool: Pool | undefined;
+  // eslint-disable-next-line no-var
+  var __ff75Migration: Promise<void> | undefined;
 }
 
 function createPool(): Pool {
@@ -27,7 +30,23 @@ export function getPool(): Pool {
   return global.__ff75Pool;
 }
 
+function ensureSchema(): Promise<void> {
+  if (!global.__ff75Migration) {
+    const pool = getPool();
+    global.__ff75Migration = (async () => {
+      for (const statement of SCHEMA_STATEMENTS) {
+        await pool.query(statement);
+      }
+    })().catch((err) => {
+      global.__ff75Migration = undefined;
+      throw err;
+    });
+  }
+  return global.__ff75Migration;
+}
+
 export async function query<T = unknown>(text: string, params?: unknown[]) {
+  await ensureSchema();
   const result = await getPool().query(text, params);
   return result.rows as T[];
 }
