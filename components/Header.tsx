@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { LayoutGrid, LineChart, LogOut, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
 
 export function Header() {
   const { t } = useI18n();
-  const pathname = usePathname();
   const router = useRouter();
 
   async function handleLogout() {
@@ -17,23 +16,6 @@ export function Header() {
     router.push("/login");
     router.refresh();
   }
-
-  const navItem = (href: string, label: string, Icon: typeof LayoutGrid) => {
-    const active = pathname === href;
-    return (
-      <Link
-        href={href}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs uppercase tracking-wide font-semibold transition active:scale-95 ${
-          active
-            ? "bg-gradient-to-r from-brass to-ember text-white shadow-[0_3px_8px_rgba(255,107,69,0.35)]"
-            : "text-muted hover:text-ink"
-        }`}
-      >
-        <Icon className="h-3.5 w-3.5" />
-        {label}
-      </Link>
-    );
-  };
 
   return (
     <header className="sticky top-0 z-10 bg-bg/90 backdrop-blur-md border-b border-border/70 shadow-[0_1px_12px_rgba(40,33,26,0.04)]">
@@ -44,20 +26,7 @@ export function Header() {
             75 <span className="text-brass">RISE</span>
           </span>
         </Link>
-        <nav className="flex items-center gap-2">
-          {navItem("/", t("dashboard"), LayoutGrid)}
-          {navItem("/progress", t("progress"), LineChart)}
-        </nav>
         <div className="flex items-center gap-2">
-          <Link
-            href="/profile"
-            title={t("profile")}
-            className={`p-1.5 rounded-full transition active:scale-90 ${
-              pathname === "/profile" ? "text-brass bg-brass/10" : "text-muted hover:text-ink hover:bg-border/40"
-            }`}
-          >
-            <User className="h-4 w-4" />
-          </Link>
           <LanguageToggle />
           <button
             onClick={handleLogout}
