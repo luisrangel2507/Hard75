@@ -12,6 +12,7 @@ import {
 import { StreakFlame } from "@/components/StreakFlame";
 import { CelebrationBanner } from "@/components/CelebrationBanner";
 import { ProgressRing } from "@/components/ProgressRing";
+import { PhaseCard } from "@/components/PhaseCard";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -99,6 +100,8 @@ export default async function DashboardPage() {
           {t(lang, "goToDay")} {currentDayNumber}
         </Link>
       </section>
+
+      <PhaseCard day={currentDayNumber} lang={lang} />
 
       <section className="card-base px-3 py-1">
         <StatusRow
