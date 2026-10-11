@@ -32,16 +32,16 @@ export function WeightChart({ days }: { days: ChallengeDay[] }) {
     <div className="h-56 -ml-4">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data} margin={{ top: 8, right: 16, bottom: 0, left: 0 }}>
-          <CartesianGrid stroke="#EDE1CC" strokeDasharray="3 3" vertical={false} />
+          <CartesianGrid stroke="#1F2C45" strokeDasharray="3 3" vertical={false} />
           <XAxis
             dataKey="day"
-            stroke="#9A8C77"
+            stroke="#8B98B0"
             fontSize={11}
             tickLine={false}
-            axisLine={{ stroke: "#EDE1CC" }}
+            axisLine={{ stroke: "#1F2C45" }}
           />
           <YAxis
-            stroke="#9A8C77"
+            stroke="#8B98B0"
             fontSize={11}
             tickLine={false}
             axisLine={false}
@@ -50,10 +50,10 @@ export function WeightChart({ days }: { days: ChallengeDay[] }) {
           />
           <Tooltip
             contentStyle={{
-              background: "#FFFFFF",
-              border: "1px solid #EDE1CC",
+              background: "#101A2E",
+              border: "1px solid #1F2C45",
               borderRadius: 8,
-              color: "#28211A",
+              color: "#F2F5FA",
               fontSize: 12,
             }}
             formatter={(value: number) => [`${value} ${units === "imperial" ? t("lbs") : t("kg")}`, t("weight")]}
@@ -62,9 +62,9 @@ export function WeightChart({ days }: { days: ChallengeDay[] }) {
           <Line
             type="monotone"
             dataKey="weight"
-            stroke="#FF6B45"
+            stroke="#FF5A1F"
             strokeWidth={2}
-            dot={{ r: 2, fill: "#FF6B45" }}
+            dot={{ r: 2, fill: "#FF5A1F" }}
             activeDot={{ r: 4 }}
           />
         </LineChart>

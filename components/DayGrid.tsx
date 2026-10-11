@@ -25,7 +25,7 @@ export function DayGrid({
         const isBoss = (BOSS_DAYS as readonly number[]).includes(n);
 
         const base =
-          `aspect-square ${isBoss ? "ring-2 ring-ink/80 ring-offset-1 ring-offset-bg" : ""} rounded-lg flex items-center justify-center text-[11px] num border transition active:scale-90`;
+          `aspect-square ${isBoss ? "ring-2 ring-white/70 ring-offset-1 ring-offset-bg" : ""} rounded-lg flex items-center justify-center text-[11px] num border transition active:scale-90`;
 
         if (locked) {
           return (

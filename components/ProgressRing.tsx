@@ -16,8 +16,8 @@ export function ProgressRing({ value, max, label }: { value: number; max: number
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id="ring-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF6B45" />
-            <stop offset="100%" stopColor="#FF3D7F" />
+            <stop offset="0%" stopColor="#FF5A1F" />
+            <stop offset="100%" stopColor="#FF7A3D" />
           </linearGradient>
         </defs>
         <circle cx={size / 2} cy={size / 2} r={radius} strokeWidth={stroke} className="stroke-border" fill="none" />

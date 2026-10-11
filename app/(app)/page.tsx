@@ -1,53 +1,17 @@
-import { Dumbbell, Bike, BookOpen, Wine, UtensilsCrossed, Camera } from "lucide-react";
-import { query } from "@/lib/db";
-import { t, DictKey } from "@/lib/i18n";
-import { resolveLang } from "@/lib/langServer";
-import { ChallengeDay, WATER_GOAL_ML, defaultDay } from "@/lib/types";
-import {
-  buildDaysMap,
-  completedTaskCount,
-  computeStreak,
-  maxNavigableDay,
-} from "@/lib/challenge";
-import { StreakFlame } from "@/components/StreakFlame";
-import { CelebrationBanner } from "@/components/CelebrationBanner";
-import { ProgressRing } from "@/components/ProgressRing";
-import { PlayerCard } from "@/components/PlayerCard";
-import { totalXp } from "@/lib/game";
-import { PhaseCard } from "@/components/PhaseCard";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { query } from "@/lib/db";
+import { t } from "@/lib/i18n";
+import { resolveLang } from "@/lib/langServer";
+import { ChallengeDay, defaultDay } from "@/lib/types";
+import { buildDaysMap, computeStreak, maxNavigableDay } from "@/lib/challenge";
+import { totalXp } from "@/lib/game";
+import { CelebrationBanner } from "@/components/CelebrationBanner";
+import { PlayerCard } from "@/components/PlayerCard";
+import { DayCard } from "@/components/DayCard";
+import { PhaseCard } from "@/components/PhaseCard";
 
 export const dynamic = "force-dynamic";
-
-function StatusRow({
-  icon: Icon,
-  label,
-  ok,
-  value,
-}: {
-  icon: typeof Dumbbell;
-  label: string;
-  ok: boolean;
-  value?: string | null;
-}) {
-  return (
-    <div className="flex items-center justify-between py-2.5 border-b border-border/70 last:border-b-0">
-      <span className="flex items-center gap-3 text-sm text-ink">
-        <span
-          className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 ${
-            ok ? "bg-brass/15 text-brass" : "bg-border/40 text-muted"
-          }`}
-        >
-          <Icon className="h-4 w-4" />
-        </span>
-        {label}
-      </span>
-      <span className={`text-xs font-semibold ${ok ? "text-brass" : "text-muted"}`}>
-        {ok && value ? value : ok ? "✓" : "×"}
-      </span>
-    </div>
-  );
-}
 
 export default async function DashboardPage() {
   const lang = resolveLang();
@@ -56,14 +20,7 @@ export default async function DashboardPage() {
   const streak = computeStreak(daysMap);
   const currentDayNumber = maxNavigableDay(streak);
   const currentDay = daysMap.get(currentDayNumber) ?? defaultDay(currentDayNumber);
-
-  const waterPct = Math.min(100, Math.round((currentDay.water_ml / WATER_GOAL_ML) * 100));
-  const tasksDone = completedTaskCount(currentDay);
-  const mealsDone = [
-    currentDay.breakfast_photo_url,
-    currentDay.lunch_photo_url,
-    currentDay.dinner_photo_url,
-  ].filter(Boolean).length;
+  const es = lang === "es";
 
   return (
     <>
@@ -73,70 +30,22 @@ export default async function DashboardPage() {
 
       <PlayerCard xp={totalXp(rows)} day={currentDayNumber} streak={streak} lang={lang} />
 
-      <section className="card-base p-5 flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <ProgressRing value={currentDayNumber} max={75} label={`${t(lang, "day")} / 75`} />
-          <StreakFlame streak={streak} label={t(lang, "streak")} />
-        </div>
-
-        <div className="flex flex-col gap-1.5">
-          <div className="flex items-center justify-between text-xs">
-            <span className="label-caps">{t(lang, "waterOfDay")}</span>
-            <span className="num text-muted">{waterPct}%</span>
-          </div>
-          <div className="h-2 w-full rounded-full bg-border overflow-hidden">
-            <div
-              className="h-full rounded-full bg-steel transition-all"
-              style={{ width: `${waterPct}%` }}
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <span className="label-caps">{t(lang, "tasksCompleted")}</span>
-          <span className="num text-sm font-semibold text-ink">{tasksDone}/7</span>
-        </div>
-
-        <Link
-          href={`/day/${currentDayNumber}`}
-          className="btn-chunky text-center text-sm py-3.5"
-        >
-          {t(lang, "goToDay")} {currentDayNumber}
-        </Link>
-      </section>
+      <DayCard day={currentDay} dayNumber={currentDayNumber} streak={streak} daysMap={daysMap} lang={lang} />
 
       <PhaseCard day={currentDayNumber} lang={lang} />
 
-      <section className="card-base px-3 py-1">
-        <StatusRow
-          icon={Dumbbell}
-          label={t(lang, "indoorWorkout")}
-          ok={currentDay.indoor_workout}
-          value={
-            currentDay.indoor_type === "other"
-              ? currentDay.indoor_type_custom
-              : currentDay.indoor_type
-                ? t(lang, `ex_${currentDay.indoor_type}` as DictKey)
-                : null
-          }
-        />
-        <StatusRow
-          icon={Bike}
-          label={t(lang, "outdoorWorkout")}
-          ok={currentDay.outdoor_workout}
-          value={
-            currentDay.outdoor_type === "other"
-              ? currentDay.outdoor_type_custom
-              : currentDay.outdoor_type
-                ? t(lang, `ex_${currentDay.outdoor_type}` as DictKey)
-                : null
-          }
-        />
-        <StatusRow icon={Camera} label={t(lang, "progressPhoto")} ok={!!currentDay.progress_photo_url} />
-        <StatusRow icon={UtensilsCrossed} label={`${t(lang, "meals")} ${mealsDone}/3`} ok={mealsDone === 3} />
-        <StatusRow icon={BookOpen} label={t(lang, "book")} ok={currentDay.book} />
-        <StatusRow icon={Wine} label={t(lang, "diet")} ok={currentDay.diet} />
-      </section>
+      <Link
+        href={`/day/${currentDayNumber}`}
+        className="btn-chunky relative overflow-hidden flex items-center justify-center gap-2 py-5 text-sm font-game"
+      >
+        <span>
+          {es ? "IR AL DÍA" : "GO TO DAY"} {currentDayNumber}
+        </span>
+        <ArrowRight className="h-5 w-5" />
+        <svg viewBox="0 0 80 50" className="absolute right-3 bottom-0 h-10 opacity-40" aria-hidden>
+          <path d="M0 50 L26 8 L40 30 L54 14 L80 50Z" fill="#7A1F00" />
+        </svg>
+      </Link>
     </>
   );
 }

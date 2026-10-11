@@ -5,15 +5,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#F2F2F7",
-        card: "#FFFFFF",
-        border: "#E5E5EA",
-        ink: "#1C1C1E",
-        muted: "#8E8E93",
-        ember: "#E5484D",
-        olive: "#34C759",
-        steel: "#0A84FF",
-        brass: "#F2711C",
+        bg: "#0A1020",
+        card: "#101A2E",
+        border: "#1F2C45",
+        ink: "#F2F5FA",
+        muted: "#8B98B0",
+        ember: "#FF5C5C",
+        olive: "#22C55E",
+        steel: "#2F8CFF",
+        brass: "#FF5A1F",
+        panel: "#070C18",
       },
       fontFamily: {
         sans: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
@@ -21,7 +22,7 @@ const config: Config = {
         mono: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        card: "0 1px 2px rgba(0,0,0,0.04)",
+        card: "0 1px 2px rgba(0,0,0,0.35)",
       },
       keyframes: {
         "fade-in": {

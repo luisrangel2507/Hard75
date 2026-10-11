@@ -16,13 +16,13 @@ export function LevelUp({ level, onClose }: { level: number; onClose: () => void
 
   return (
     <div
-      className="fixed inset-0 z-50 bg-ink/60 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in"
+      className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-6 animate-fade-in"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
       <div className="w-full max-w-xs rounded-3xl bg-card p-7 flex flex-col items-center gap-3 text-center shadow-xl">
-        <span className="h-14 w-14 rounded-2xl border-b-4 border-[#B5500F] bg-brass text-white flex items-center justify-center">
+        <span className="h-14 w-14 rounded-2xl border-b-4 border-[#B63A0E] bg-brass text-white flex items-center justify-center">
           <Zap className="h-7 w-7" />
         </span>
         <p className="font-game text-[11px] text-brass animate-blink">{es ? "¡NIVEL NUEVO!" : "LEVEL UP!"}</p>

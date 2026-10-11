@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarCheck, LayoutGrid, LineChart, User } from "lucide-react";
+import { CalendarCheck, LineChart, Mountain, User } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 
 export function TabBar() {
@@ -10,7 +10,7 @@ export function TabBar() {
   const pathname = usePathname();
 
   const tabs = [
-    { href: "/", label: t("dashboard"), Icon: LayoutGrid, active: pathname === "/" },
+    { href: "/", label: t("dashboard"), Icon: Mountain, active: pathname === "/" },
     {
       href: "/today",
       label: t("today"),
@@ -24,23 +24,20 @@ export function TabBar() {
   return (
     <nav
       aria-label="Tabs"
-      className="fixed bottom-0 inset-x-0 z-30 bg-bg/90 backdrop-blur-md border-t border-border/70 pb-[env(safe-area-inset-bottom)]"
+      className="fixed bottom-0 inset-x-0 z-30 bg-panel/95 backdrop-blur-md border-t border-border pb-[env(safe-area-inset-bottom)]"
     >
       <ul className="max-w-2xl mx-auto grid grid-cols-4 px-2 py-1.5">
         {tabs.map(({ href, label, Icon, active }) => (
-          <li key={href}>
+          <li key={href} className="relative">
+            {active && <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-0.5 w-10 rounded-full bg-brass" />}
             <Link
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`flex flex-col items-center gap-0.5 py-1.5 rounded-xl text-[10px] font-semibold transition active:scale-95 ${
+              className={`flex flex-col items-center gap-0.5 py-1.5 rounded-xl text-[11px] font-semibold transition active:scale-95 ${
                 active ? "text-brass" : "text-muted hover:text-ink"
               }`}
             >
-              <span
-                className={`h-7 w-12 rounded-full flex items-center justify-center transition-colors ${
-                  active ? "bg-brass/15" : ""
-                }`}
-              >
+              <span className="h-7 w-12 flex items-center justify-center">
                 <Icon className="h-[18px] w-[18px]" />
               </span>
               {label}

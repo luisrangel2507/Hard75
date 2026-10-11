@@ -60,14 +60,14 @@ export function QuestBar({ day }: { day: ChallengeDay }) {
           <span
             key={i}
             className={`h-3.5 flex-1 rounded-md border-b-2 transition-all duration-300 ${
-              i < done ? (complete ? "bg-olive border-[#1F8A3B]" : "bg-brass border-[#B5500F]") : "bg-border border-[#D1D1D6]"
+              i < done ? (complete ? "bg-olive border-[#15803D]" : "bg-brass border-[#B63A0E]") : "bg-border border-[#16233A]"
             } ${complete ? "animate-level-bounce" : ""}`}
           />
         ))}
       </div>
 
       {isBoss && (
-        <div className="flex items-center gap-3 rounded-2xl bg-ink text-white px-3 py-2.5 border-b-4 border-black">
+        <div className="flex items-center gap-3 rounded-2xl bg-panel text-white px-3 py-2.5 border-b-4 border-black">
           <Swords className="h-5 w-5 shrink-0" />
           <div className="flex flex-col leading-tight">
             <span className="text-[11px] text-white/70">{es ? "Día de jefe" : "Boss day"} · +200 XP</span>

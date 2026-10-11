@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { LogOut } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
@@ -18,12 +17,22 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-10 bg-bg/90 backdrop-blur-md border-b border-border/70 shadow-[0_1px_12px_rgba(40,33,26,0.04)]">
+    <header className="sticky top-0 z-10 bg-bg/90 backdrop-blur-md border-b border-border">
       <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/sun-logo.png" alt="75 Rise" width={80} height={80} className="h-10 w-auto shrink-0" priority />
-          <span className="font-semibold text-sm text-ink hidden sm:inline whitespace-nowrap">
-            75 <span className="text-brass">RISE</span>
+          <span className="font-game text-xl italic text-white leading-none">75</span>
+          <svg viewBox="0 0 24 24" className="h-6 w-6 -ml-1" aria-hidden>
+            <defs>
+              <linearGradient id="hdr-sun" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#FFC24D" />
+                <stop offset="1" stopColor="#FF5A1F" />
+              </linearGradient>
+            </defs>
+            <circle cx="12" cy="12" r="10" fill="url(#hdr-sun)" />
+            <path d="M3 14h18M4.5 17.5h15M7 21h10" stroke="#0A1020" strokeWidth="1.4" />
+          </svg>
+          <span className="font-game text-[10px] text-brass hidden sm:inline whitespace-nowrap">
+            RISE
           </span>
         </Link>
         <div className="flex items-center gap-2">

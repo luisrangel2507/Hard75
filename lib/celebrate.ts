@@ -55,7 +55,7 @@ export function fireConfetti() {
   }
   ctx.scale(dpr, dpr);
 
-  const colors = ["#F2711C", "#E5484D", "#34C759", "#0A84FF", "#FFCC00"];
+  const colors = ["#FF5A1F", "#FF7A3D", "#22C55E", "#2F8CFF", "#FFCC00"];
   const pieces = Array.from({ length: 120 }, () => ({
     x: Math.random() * window.innerWidth,
     y: -20 - Math.random() * window.innerHeight * 0.3,

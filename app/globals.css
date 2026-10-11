@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 html {
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 body {
-  background-color: #f2f2f7;
-  background-image: radial-gradient(rgba(28, 28, 30, 0.07) 1px, transparent 1px);
+  background-color: #0a1020;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
   background-size: 16px 16px;
-  color: #1c1c1e;
+  color: #f2f5fa;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background-color: #f2711c;
+  background-color: #ff5a1f;
   color: #ffffff;
 }
 
@@ -24,10 +24,10 @@ body {
     @apply text-xs font-medium text-muted;
   }
   .btn-chunky {
-    @apply bg-brass text-white font-bold rounded-2xl border-b-4 border-[#B5500F] transition-transform active:translate-y-[3px] active:border-b-[1px] select-none;
+    @apply bg-brass text-white font-bold rounded-2xl border-b-4 border-[#B63A0E] transition-transform active:translate-y-[3px] active:border-b-[1px] select-none;
   }
   .btn-chunky-ink {
-    @apply bg-ink text-white font-bold rounded-2xl border-b-4 border-black transition-transform active:translate-y-[3px] active:border-b-[1px] select-none;
+    @apply bg-panel text-white font-bold rounded-2xl border-b-4 border-black transition-transform active:translate-y-[3px] active:border-b-[1px] select-none;
   }
   .font-game {
     font-family: var(--font-pixel), ui-monospace, monospace;

@@ -28,8 +28,8 @@ export function ShareProgress({
       if (!ctx) return;
 
       const gradient = ctx.createLinearGradient(0, 0, 0, height);
-      gradient.addColorStop(0, "#FBF6EC");
-      gradient.addColorStop(1, "#F3E7D2");
+      gradient.addColorStop(0, "#0A1020");
+      gradient.addColorStop(1, "#101A2E");
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
@@ -49,23 +49,23 @@ export function ShareProgress({
         ctx.restore();
       }
 
-      ctx.fillStyle = "#28211A";
+      ctx.fillStyle = "#F2F5FA";
       ctx.font = "700 64px sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("75 RISE", width / 2, 140);
 
       const sunset = ctx.createLinearGradient(0, 0, 0, 40);
       sunset.addColorStop(0, "#FFC94D");
-      sunset.addColorStop(1, "#FF3D7F");
+      sunset.addColorStop(1, "#FF7A3D");
       ctx.fillStyle = sunset;
       ctx.font = "600 32px sans-serif";
       ctx.fillText("EVERY DAMN DAY.", width / 2, 190);
 
-      ctx.fillStyle = "#FF6B45";
+      ctx.fillStyle = "#FF5A1F";
       ctx.font = "700 96px sans-serif";
       ctx.fillText(`DÍA ${dayNumber}`, width / 2, height - 120);
 
-      ctx.fillStyle = "#28211A";
+      ctx.fillStyle = "#F2F5FA";
       ctx.font = "600 40px sans-serif";
       ctx.fillText(`🔥 ${streak} días de racha`, width / 2, height - 60);
 
