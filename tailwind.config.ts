@@ -17,6 +17,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
+        pixel: ["var(--font-pixel)", "ui-monospace", "monospace"],
         mono: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
       },
       boxShadow: {
@@ -34,6 +35,18 @@ const config: Config = {
         "wave-scroll": {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
+        },
+        blink: {
+          "0%, 49%": { opacity: "1" },
+          "50%, 100%": { opacity: "0" },
+        },
+        shine: {
+          "0%": { transform: "translateX(-120%)" },
+          "100%": { transform: "translateX(320%)" },
+        },
+        "level-bounce": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-3px)" },
         },
         "xp-pop": {
           "0%": { transform: "translateY(8px) scale(0.8)", opacity: "0" },
@@ -53,6 +66,9 @@ const config: Config = {
         "wave-fast": "wave-scroll 3.5s linear infinite",
         bubble: "bubble 3s ease-in infinite",
         "xp-pop": "xp-pop 1.4s ease-out forwards",
+        blink: "blink 1s steps(1) infinite",
+        shine: "shine 2.6s ease-in-out infinite",
+        "level-bounce": "level-bounce 1.6s ease-in-out infinite",
       },
     },
   },

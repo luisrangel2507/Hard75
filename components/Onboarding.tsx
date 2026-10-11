@@ -158,11 +158,11 @@ export function Onboarding() {
               <div className="flex-1 flex flex-col items-center justify-center gap-2 py-6">
                 <div className="relative">
                   <div className="absolute inset-0 -m-8 rounded-full bg-gradient-to-br from-brass/25 to-ember/20 blur-2xl" />
-                  <p className="relative num font-bold leading-none text-[9rem] bg-brass bg-clip-text text-transparent">
+                  <p className="relative font-game leading-none text-[7rem] bg-brass bg-clip-text text-transparent">
                     {TOTAL_DAYS}
                   </p>
                 </div>
-                <span className="label-caps">{c.heroKicker}</span>
+                <span className="font-game text-[10px] text-ink animate-blink">▶ {lang === "es" ? "PRESIONA START" : "PRESS START"}</span>
               </div>
               <div className="flex flex-col gap-3">
                 <h1 className="text-4xl font-bold text-ink leading-tight">{c.heroTitle}</h1>
@@ -261,7 +261,7 @@ export function Onboarding() {
           <button
             type="button"
             onClick={() => (last ? finish() : setStep((s) => s + 1))}
-            className="flex-1 flex items-center justify-center gap-2 bg-brass text-white font-semibold text-sm rounded-xl py-3.5 hover:brightness-105 active:scale-[0.97] transition"
+            className="btn-chunky flex-1 flex items-center justify-center gap-2 text-sm py-3.5"
           >
             {last ? c.start : c.next}
             <ArrowRight className="h-4 w-4" />

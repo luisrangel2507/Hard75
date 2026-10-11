@@ -34,20 +34,20 @@ export function QuestBar({ day }: { day: ChallengeDay }) {
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col leading-tight">
-          <span className="label-caps">{es ? "Misión del día" : "Daily quest"}</span>
-          <span className="text-base font-bold text-ink">
+          <span className="font-game text-[9px] text-muted">{es ? "MISIÓN DEL DÍA" : "DAILY QUEST"}</span>
+          <span className={`text-base font-bold ${complete ? "text-olive" : "text-ink"}`}>
             {complete ? (es ? "¡Misión cumplida!" : "Quest complete!") : `${done}/${TASKS_PER_DAY} ${es ? "objetivos" : "objectives"}`}
           </span>
         </div>
         <div className="relative">
-          <span className="flex items-center gap-1 num text-sm font-bold text-brass">
+          <span className="flex items-center gap-1 font-game text-[11px] text-brass">
             <Zap className="h-3.5 w-3.5" />
             {dayXp(day)} XP
           </span>
           {pops.map((id) => (
             <span
               key={id}
-              className="absolute right-0 -top-1 num text-sm font-bold text-olive animate-xp-pop pointer-events-none whitespace-nowrap"
+              className="absolute right-0 -top-1 font-game text-[11px] text-olive animate-xp-pop pointer-events-none whitespace-nowrap"
             >
               +{XP_PER_TASK} XP
             </span>
@@ -59,19 +59,19 @@ export function QuestBar({ day }: { day: ChallengeDay }) {
         {Array.from({ length: TASKS_PER_DAY }, (_, i) => (
           <span
             key={i}
-            className={`h-2 flex-1 rounded-full transition-colors duration-300 ${
-              i < done ? (complete ? "bg-olive" : "bg-brass") : "bg-border"
-            }`}
+            className={`h-3.5 flex-1 rounded-md border-b-2 transition-all duration-300 ${
+              i < done ? (complete ? "bg-olive border-[#1F8A3B]" : "bg-brass border-[#B5500F]") : "bg-border border-[#D1D1D6]"
+            } ${complete ? "animate-level-bounce" : ""}`}
           />
         ))}
       </div>
 
       {isBoss && (
-        <div className="flex items-center gap-3 rounded-xl bg-ink text-white px-3 py-2.5">
+        <div className="flex items-center gap-3 rounded-2xl bg-ink text-white px-3 py-2.5 border-b-4 border-black">
           <Swords className="h-5 w-5 shrink-0" />
           <div className="flex flex-col leading-tight">
             <span className="text-[11px] text-white/70">{es ? "Día de jefe" : "Boss day"} · +200 XP</span>
-            <span className="text-sm font-semibold">{BOSSES[day.day_number][lang]}</span>
+            <span className="font-game text-[10px] leading-snug">{BOSSES[day.day_number][lang]}</span>
           </div>
         </div>
       )}

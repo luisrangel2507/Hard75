@@ -71,7 +71,7 @@ export default async function DashboardPage() {
         <CelebrationBanner title={t(lang, "celebrationTitle")} subtitle={t(lang, "celebrationSubtitle")} />
       )}
 
-      <PlayerCard xp={totalXp(rows)} day={currentDayNumber} lang={lang} />
+      <PlayerCard xp={totalXp(rows)} day={currentDayNumber} streak={streak} lang={lang} />
 
       <section className="card-base p-5 flex flex-col gap-4">
         <div className="flex items-center justify-between">
@@ -99,7 +99,7 @@ export default async function DashboardPage() {
 
         <Link
           href={`/day/${currentDayNumber}`}
-          className="text-center bg-brass text-white font-semibold text-sm rounded-xl py-3 hover:brightness-105 active:scale-[0.97] transition"
+          className="btn-chunky text-center text-sm py-3.5"
         >
           {t(lang, "goToDay")} {currentDayNumber}
         </Link>

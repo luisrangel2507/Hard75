@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
+
+const pixel = Press_Start_2P({ subsets: ["latin"], weight: "400", variable: "--font-pixel" });
 import { I18nProvider } from "@/components/I18nProvider";
 import { SplashScreen } from "@/components/SplashScreen";
 import { resolveLang } from "@/lib/langServer";
@@ -13,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const initialLang = resolveLang();
 
   return (
-    <html lang={initialLang}>
+    <html lang={initialLang} className={pixel.variable}>
       <body className="min-h-screen font-sans antialiased">
         <SplashScreen />
         <I18nProvider initialLang={initialLang}>{children}</I18nProvider>
