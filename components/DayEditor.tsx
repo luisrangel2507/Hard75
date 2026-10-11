@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Dumbbell, Bike, Wine } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
+import { LevelUp } from "@/components/LevelUp";
+import { levelFromXp, totalXp } from "@/lib/game";
 import { QuestBar } from "@/components/QuestBar";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { ReadingCard } from "@/components/ReadingCard";
@@ -31,6 +33,9 @@ export function DayEditor({
     () => initialDays.find((d) => d.day_number === dayNumber) ?? defaultDay(dayNumber)
   );
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [levelUp, setLevelUp] = useState<number | null>(null);
+  const daysRef = useRef(daysMap);
+  daysRef.current = daysMap;
   const pendingPatch = useRef<Partial<ChallengeDay>>({});
   const retryTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -58,7 +63,8 @@ export function DayEditor({
   async function persist(patch: Partial<ChallengeDay>) {
     setSaveStatus("saving");
     const wasComplete = isDayComplete(day);
-    const streakBefore = computeStreak(daysMap);
+    const before = daysRef.current;
+    const streakBefore = computeStreak(before);
     try {
       const res = await fetch(`/api/days/${dayNumber}`, {
         method: "PATCH",
@@ -68,15 +74,16 @@ export function DayEditor({
       if (res.ok) {
         const { day: updated } = await res.json();
         setDay(updated);
-        setDaysMap((prev) => {
-          const next = new Map(prev);
-          next.set(dayNumber, updated);
-          const streakAfter = computeStreak(next);
-          if ((!wasComplete && isDayComplete(updated)) || isAchievementUnlock(streakBefore, streakAfter)) {
-            celebrate();
-          }
-          return next;
-        });
+        const next = new Map(before);
+        next.set(dayNumber, updated);
+        setDaysMap(next);
+        const streakAfter = computeStreak(next);
+        if ((!wasComplete && isDayComplete(updated)) || isAchievementUnlock(streakBefore, streakAfter)) {
+          celebrate();
+        }
+        const levelBefore = levelFromXp(totalXp(Array.from(before.values())));
+        const levelAfter = levelFromXp(totalXp(Array.from(next.values())));
+        if (levelAfter > levelBefore) setLevelUp(levelAfter);
         setSaveStatus("saved");
       } else {
         handleSaveFailure(patch);
@@ -115,6 +122,7 @@ export function DayEditor({
 
   return (
     <>
+      {levelUp !== null && <LevelUp level={levelUp} onClose={() => setLevelUp(null)} />}
       <div className="flex items-center justify-between">
         <button
           type="button"
