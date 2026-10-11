@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Lock } from "lucide-react";
+import { Lock, Swords } from "lucide-react";
 import { ChallengeDay, TOTAL_DAYS } from "@/lib/types";
 import { isDayComplete, isDayLocked } from "@/lib/challenge";
+import { BOSS_DAYS } from "@/lib/game";
 
 export function DayGrid({
   daysByNumber,
@@ -21,9 +22,10 @@ export function DayGrid({
         const complete = isDayComplete(day);
         const locked = isDayLocked(n, streak);
         const isCurrent = n === currentDay;
+        const isBoss = (BOSS_DAYS as readonly number[]).includes(n);
 
         const base =
-          "aspect-square rounded-lg flex items-center justify-center text-[11px] num border transition active:scale-90";
+          `aspect-square ${isBoss ? "ring-2 ring-ink/80 ring-offset-1 ring-offset-bg" : ""} rounded-lg flex items-center justify-center text-[11px] num border transition active:scale-90`;
 
         if (locked) {
           return (
@@ -32,7 +34,7 @@ export function DayGrid({
               className={`${base} border-border/60 bg-card/50 text-muted/40 cursor-not-allowed`}
               title={n.toString()}
             >
-              <Lock className="h-3 w-3" />
+              {isBoss ? <Swords className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
             </div>
           );
         }
@@ -49,7 +51,7 @@ export function DayGrid({
                   : "border-border text-muted hover:text-ink hover:border-ink/40 bg-card"
             }`}
           >
-            {n}
+            {isBoss ? <Swords className="h-3.5 w-3.5" /> : n}
           </Link>
         );
       })}

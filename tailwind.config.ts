@@ -35,6 +35,11 @@ const config: Config = {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        "xp-pop": {
+          "0%": { transform: "translateY(8px) scale(0.8)", opacity: "0" },
+          "20%": { transform: "translateY(0) scale(1.1)", opacity: "1" },
+          "100%": { transform: "translateY(-28px) scale(1)", opacity: "0" },
+        },
         bubble: {
           "0%": { transform: "translateY(0) scale(0.7)", opacity: "0" },
           "15%": { opacity: "0.8" },
@@ -47,6 +52,7 @@ const config: Config = {
         "wave-slow": "wave-scroll 6s linear infinite",
         "wave-fast": "wave-scroll 3.5s linear infinite",
         bubble: "bubble 3s ease-in infinite",
+        "xp-pop": "xp-pop 1.4s ease-out forwards",
       },
     },
   },

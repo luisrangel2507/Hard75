@@ -12,6 +12,8 @@ import {
 import { StreakFlame } from "@/components/StreakFlame";
 import { CelebrationBanner } from "@/components/CelebrationBanner";
 import { ProgressRing } from "@/components/ProgressRing";
+import { PlayerCard } from "@/components/PlayerCard";
+import { totalXp } from "@/lib/game";
 import { PhaseCard } from "@/components/PhaseCard";
 import Link from "next/link";
 
@@ -68,6 +70,8 @@ export default async function DashboardPage() {
       {streak === 75 && (
         <CelebrationBanner title={t(lang, "celebrationTitle")} subtitle={t(lang, "celebrationSubtitle")} />
       )}
+
+      <PlayerCard xp={totalXp(rows)} day={currentDayNumber} lang={lang} />
 
       <section className="card-base p-5 flex flex-col gap-4">
         <div className="flex items-center justify-between">

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, Dumbbell, Bike, Wine } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
+import { QuestBar } from "@/components/QuestBar";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { ReadingCard } from "@/components/ReadingCard";
 import { WaterTracker } from "@/components/WaterTracker";
@@ -155,6 +156,8 @@ export function DayEditor({
                 : ""}
         </span>
       </div>
+
+      <QuestBar day={day} />
 
       <div className="flex flex-col gap-2.5">
         <WorkoutCard
