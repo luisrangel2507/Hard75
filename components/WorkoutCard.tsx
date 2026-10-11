@@ -8,27 +8,31 @@ import { DictKey } from "@/lib/i18n";
 
 export type Accent = "ember" | "olive" | "steel" | "brass";
 
-const ACCENT_STYLES: Record<Accent, { border: string; text: string; bg: string; solidBg: string}> = {
+const ACCENT_STYLES: Record<Accent, { border: string; checkedBorder: string; text: string; bg: string; solidBg: string}> = {
   ember: {
     border: "border-ember",
+    checkedBorder: "border-ember/60",
     text: "text-ember",
     bg: "bg-ember/10",
     solidBg: "bg-ember",
   },
   olive: {
     border: "border-olive",
+    checkedBorder: "border-olive/60",
     text: "text-olive",
     bg: "bg-olive/10",
     solidBg: "bg-olive",
   },
   steel: {
     border: "border-steel",
+    checkedBorder: "border-steel/60",
     text: "text-steel",
     bg: "bg-steel/10",
     solidBg: "bg-steel",
   },
   brass: {
     border: "border-brass",
+    checkedBorder: "border-brass/60",
     text: "text-brass",
     bg: "bg-brass/10",
     solidBg: "bg-brass",
@@ -68,7 +72,7 @@ export function WorkoutCard({
     <div
       className={`w-full rounded-2xl border px-4 py-3.5 transition flex flex-col gap-3 ${
         checked
-          ? "border-border bg-card shadow-card"
+          ? `${styles.checkedBorder} ${styles.bg} shadow-card`
           : "border-border bg-card shadow-card"
       }`}
     >

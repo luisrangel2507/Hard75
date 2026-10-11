@@ -10,6 +10,8 @@ import { AchievementBadges } from "@/components/AchievementBadges";
 import { BookShelf } from "@/components/BookShelf";
 import { ShareProgress } from "@/components/ShareProgress";
 import { DayGrid } from "@/components/DayGrid";
+import { levelFromXp, totalXp, titleForLevel } from "@/lib/game";
+import { isDayComplete } from "@/lib/challenge";
 
 export const dynamic = "force-dynamic";
 
@@ -24,26 +26,45 @@ export default async function ProgressPage() {
   const first = withProgressPhoto[0];
   const last = withProgressPhoto[withProgressPhoto.length - 1];
 
+  const xp = totalXp(rows);
+  const level = levelFromXp(xp);
+  const es = lang === "es";
+  const stats = [
+    { label: es ? "NIVEL" : "LEVEL", value: String(level), sub: titleForLevel(level, lang) },
+    { label: "XP", value: String(xp), sub: es ? "Total" : "Total" },
+    { label: es ? "DÍAS" : "DAYS", value: `${rows.filter((d) => isDayComplete(d)).length}/75`, sub: es ? "Completos" : "Complete" },
+  ];
+
   return (
     <>
+      <section className="grid grid-cols-3 gap-2.5">
+        {stats.map((s) => (
+          <div key={s.label} className="card-base p-3 flex flex-col items-center gap-1 text-center">
+            <span className="font-game text-[8px] text-muted">{s.label}</span>
+            <span className="font-game text-xl text-brass leading-none">{s.value}</span>
+            <span className="text-[10px] text-muted truncate max-w-full">{s.sub}</span>
+          </div>
+        ))}
+      </section>
+
       <section className="flex flex-col gap-2">
-        <p className="label-caps">{t(lang, "allDays")}</p>
+        <p className="section-title">{t(lang, "allDays")}</p>
         <DayGrid daysByNumber={daysMap} streak={streak} currentDay={currentDayNumber} />
       </section>
 
       <section className="card-base p-4 flex flex-col gap-2">
-        <span className="label-caps">{t(lang, "weightChart")}</span>
+        <span className="section-title">{t(lang, "weightChart")}</span>
         <WeightChart days={rows} />
       </section>
 
       <section className="flex flex-col gap-2">
-        <span className="label-caps">{t(lang, "achievements")}</span>
+        <span className="section-title">{t(lang, "achievements")}</span>
         <AchievementBadges streak={streak} lang={lang} />
       </section>
 
       {first && last && first.id !== last.id && (
         <section className="flex flex-col gap-2">
-          <span className="label-caps">{t(lang, "beforeAfter")}</span>
+          <span className="section-title">{t(lang, "beforeAfter")}</span>
           <div className="grid grid-cols-2 gap-2.5">
             <div className="flex flex-col gap-1.5">
               <div className="relative aspect-[3/4] rounded-lg overflow-hidden border border-border">
@@ -76,7 +97,7 @@ export default async function ProgressPage() {
       )}
 
       <section className="flex flex-col gap-2">
-        <span className="label-caps">{t(lang, "gallery")}</span>
+        <span className="section-title">{t(lang, "gallery")}</span>
         {withProgressPhoto.length === 0 ? (
           <div className="flex flex-col items-center gap-2 py-6 text-center">
             <div className="h-12 w-12 rounded-full bg-border/40 flex items-center justify-center">
@@ -104,7 +125,7 @@ export default async function ProgressPage() {
       </section>
 
       <section className="flex flex-col gap-2">
-        <span className="label-caps">{t(lang, "myLibrary")}</span>
+        <span className="section-title">{t(lang, "myLibrary")}</span>
         <BookShelf />
       </section>
 

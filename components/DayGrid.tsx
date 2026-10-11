@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { Lock, Swords } from "lucide-react";
-import { ChallengeDay, TOTAL_DAYS } from "@/lib/types";
+import { ChallengeDay } from "@/lib/types";
 import { isDayComplete, isDayLocked } from "@/lib/challenge";
 import { BOSS_DAYS } from "@/lib/game";
+import { PHASES } from "@/lib/phases";
+import { useI18n } from "@/components/I18nProvider";
 
 export function DayGrid({
   daysByNumber,
@@ -15,44 +17,59 @@ export function DayGrid({
   streak: number;
   currentDay: number;
 }) {
+  const { lang } = useI18n();
+  const es = lang === "es";
+
   return (
-    <div className="grid grid-cols-8 sm:grid-cols-10 gap-1.5">
-      {Array.from({ length: TOTAL_DAYS }, (_, i) => i + 1).map((n) => {
-        const day = daysByNumber.get(n);
-        const complete = isDayComplete(day);
-        const locked = isDayLocked(n, streak);
-        const isCurrent = n === currentDay;
-        const isBoss = (BOSS_DAYS as readonly number[]).includes(n);
-
-        const base =
-          `aspect-square ${isBoss ? "ring-2 ring-white/70 ring-offset-1 ring-offset-bg" : ""} rounded-lg flex items-center justify-center text-[11px] num border transition active:scale-90`;
-
-        if (locked) {
-          return (
-            <div
-              key={n}
-              className={`${base} border-border/60 bg-card/50 text-muted/40 cursor-not-allowed`}
-              title={n.toString()}
-            >
-              {isBoss ? <Swords className="h-3 w-3" /> : <Lock className="h-3 w-3" />}
-            </div>
-          );
-        }
-
+    <div className="flex flex-col gap-4">
+      {PHASES.map((phase) => {
+        const days = Array.from({ length: phase.end - phase.start + 1 }, (_, i) => phase.start + i);
+        const done = days.filter((n) => isDayComplete(daysByNumber.get(n))).length;
         return (
-          <Link
-            key={n}
-            href={`/day/${n}`}
-            className={`${base} ${
-              complete
-                ? "border-transparent bg-brass text-white font-semibold"
-                : isCurrent
-                  ? "border-2 border-brass text-ink bg-card font-semibold"
-                  : "border-border text-muted hover:text-ink hover:border-ink/40 bg-card"
-            }`}
-          >
-            {isBoss ? <Swords className="h-3.5 w-3.5" /> : n}
-          </Link>
+          <div key={phase.id} className="card-base p-3 flex flex-col gap-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-game text-[10px] text-white">
+                {es ? "MUNDO" : "WORLD"} {phase.id} · {phase.name[lang].toUpperCase()}
+              </span>
+              <span className="num text-[11px] text-muted">
+                {done}/{days.length}
+              </span>
+            </div>
+            <div className="grid grid-cols-5 gap-2">
+              {days.map((n) => {
+                const complete = isDayComplete(daysByNumber.get(n));
+                const locked = isDayLocked(n, streak);
+                const isCurrent = n === currentDay;
+                const isBoss = (BOSS_DAYS as readonly number[]).includes(n);
+                const base = `aspect-square rounded-xl flex items-center justify-center text-xs num border-b-4 transition active:scale-90 ${
+                  isBoss ? "ring-2 ring-white/70 ring-offset-2 ring-offset-card" : ""
+                }`;
+
+                if (locked) {
+                  return (
+                    <div key={n} className={`${base} border-[#0B1426] bg-[#0E1830] text-muted/50 cursor-not-allowed`}>
+                      {isBoss ? <Swords className="h-4 w-4" /> : <Lock className="h-3.5 w-3.5" />}
+                    </div>
+                  );
+                }
+                return (
+                  <Link
+                    key={n}
+                    href={`/day/${n}`}
+                    className={`${base} ${
+                      complete
+                        ? "border-[#B63A0E] bg-brass text-white font-bold"
+                        : isCurrent
+                          ? "border-[#B63A0E] bg-brass/20 text-brass font-bold ring-2 ring-brass animate-level-bounce"
+                          : "border-[#16233A] bg-border text-ink"
+                    }`}
+                  >
+                    {isBoss ? <Swords className="h-4 w-4" /> : n}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         );
       })}
     </div>

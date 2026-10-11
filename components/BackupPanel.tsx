@@ -36,7 +36,7 @@ export function BackupPanel() {
 
   return (
     <div className="card-base p-4 flex flex-col gap-3">
-      <span className="label-caps">{t("backup")}</span>
+      <span className="section-title">{t("backup")}</span>
       <div className="flex gap-2.5">
         <button
           onClick={handleExport}

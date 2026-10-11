@@ -13,7 +13,7 @@ export function AchievementBadges({ streak, lang }: { streak: number; lang: Lang
             key={d}
             className={`flex flex-col items-center gap-1.5 rounded-2xl border p-3 transition ${
               unlocked
-                ? "border-border bg-card"
+                ? "border-brass/60 bg-brass/10"
                 : "border-border bg-card opacity-50"
             }`}
           >

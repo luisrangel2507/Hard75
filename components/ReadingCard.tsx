@@ -134,7 +134,7 @@ export function ReadingCard({
     <div
       className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
         checked
-          ? "border-border bg-card"
+          ? "border-steel/60 bg-steel/10"
           : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
       }`}
     >

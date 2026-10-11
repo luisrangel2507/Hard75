@@ -134,10 +134,10 @@ export function DayEditor({
         </button>
 
         <div className="text-center">
-          <p className="label-caps">{t("day")}</p>
-          <p className="num text-2xl font-bold text-ink">
-            {dayNumber}
-            <span className="text-base text-muted">/{TOTAL_DAYS}</span>
+          <p className="font-game text-[10px] text-white/80">{t("day").toUpperCase()}</p>
+          <p className="font-game text-ink leading-none mt-1">
+            <span className="text-3xl text-brass">{dayNumber}</span>
+            <span className="text-sm">/{TOTAL_DAYS}</span>
           </p>
         </div>
 
@@ -202,7 +202,7 @@ export function DayEditor({
         <div
           className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
             day.diet
-              ? "border-border bg-card"
+              ? "border-olive/60 bg-olive/10"
               : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
           }`}
         >
@@ -279,7 +279,7 @@ export function DayEditor({
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <span className="label-caps">{t("notes")}</span>
+        <span className="section-title">{t("notes")}</span>
         <textarea
           value={day.notes}
           onChange={(e) => updateField("notes", e.target.value)}
