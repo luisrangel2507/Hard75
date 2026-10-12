@@ -6,24 +6,31 @@ import { Lang } from "@/lib/types";
 
 export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
   const phase = getPhase(day);
-  const { pct } = phaseProgress(day);
+  const { pct, dayInPhase, phaseLength } = phaseProgress(day);
   const es = lang === "es";
   const boss = nextBoss(day);
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-border flex flex-col">
-      <SceneImage name={`phase-${phase.id}`} variant="climb" />
-      <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-bg/10" />
+    <section className="relative overflow-hidden rounded-3xl border border-border bg-card flex flex-col">
+      <div className="absolute inset-y-0 right-0 w-[62%]">
+        <SceneImage name={`phase-${phase.id}`} variant="climb" />
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-card via-card/85 via-45% to-transparent" />
 
-      <div className="relative p-4 pt-5 flex flex-col gap-1 min-h-[210px]">
-        <span className="font-game text-[13px] text-white/70">
-          {es ? "FASE" : "PHASE"} {phase.id} {es ? "DE" : "OF"} {PHASES.length}
-        </span>
-        <h2 className="font-game text-4xl leading-tight text-white">{phase.name[lang].toUpperCase()}</h2>
-        <p className="text-sm text-white/90 max-w-[60%] leading-snug mt-1">{phase.tagline[lang]}</p>
+      <div className="relative p-4 pb-3 flex flex-col gap-1">
+        <div className="flex items-start justify-between gap-3">
+          <span className="font-game text-base text-white/70">
+            {es ? "Fase" : "Phase"} {phase.id} {es ? "de" : "of"} {PHASES.length}
+          </span>
+          <span className="text-sm text-white/90">
+            {es ? "Día" : "Day"} <span className="text-brass font-bold">{dayInPhase}</span> / {phaseLength}
+          </span>
+        </div>
+        <h2 className="font-game text-4xl leading-none text-white">{phase.name[lang]}</h2>
+        <p className="text-sm text-white/90 max-w-[58%] leading-snug mt-1.5">{phase.tagline[lang]}</p>
       </div>
 
-      <div className="relative px-4 pb-4 flex flex-col gap-3">
+      <div className="relative px-4 pb-4 flex flex-col gap-1.5">
         <div className="flex items-center">
           {PHASES.map((p, i) => {
             const reached = p.id <= phase.id;
@@ -46,15 +53,15 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
         </div>
         <div className="flex justify-between">
           {PHASES.map((p) => (
-            <span key={p.id} className={`text-xs ${p.id === phase.id ? "text-brass font-semibold" : "text-muted"}`}>
+            <span key={p.id} className={`text-sm ${p.id === phase.id ? "text-brass font-semibold" : "text-muted"}`}>
               {p.name[lang]}
             </span>
           ))}
         </div>
 
         {boss && (
-          <div className="flex items-center gap-3 rounded-2xl bg-panel/80 backdrop-blur border border-border px-3 py-2.5">
-            <span className="h-8 w-8 rounded-xl bg-brass text-white flex items-center justify-center shrink-0">
+          <div className="flex items-center gap-3 rounded-2xl bg-panel/70 border border-border px-3 py-2 mt-1">
+            <span className="h-7 w-7 rounded-lg bg-brass text-white flex items-center justify-center shrink-0">
               <Swords className="h-4 w-4" />
             </span>
             <div className="flex flex-col leading-tight min-w-0">

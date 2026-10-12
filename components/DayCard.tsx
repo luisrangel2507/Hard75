@@ -1,4 +1,5 @@
-import { Apple, BookOpen, Camera, Check, Droplets, Dumbbell, Flame, UtensilsCrossed } from "lucide-react";
+import Link from "next/link";
+import { Apple, ArrowRight, BookOpen, Camera, Check, Droplets, Dumbbell, Flame } from "lucide-react";
 import { isDayComplete } from "@/lib/challenge";
 import { ChallengeDay, Lang, TOTAL_DAYS, WATER_GOAL_ML } from "@/lib/types";
 
@@ -17,7 +18,7 @@ function Ring({
   label: string;
   sub: string;
 }) {
-  const size = 64;
+  const size = 58;
   const stroke = 5;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
@@ -27,7 +28,7 @@ function Ring({
 
   return (
     <div className="flex flex-col items-center gap-0.5 text-center">
-      <div className="relative h-16 w-16">
+      <div className="relative h-[58px] w-[58px]">
         <svg width={size} height={size} className="-rotate-90">
           <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-border" />
           <circle
@@ -42,14 +43,14 @@ function Ring({
             strokeDashoffset={c * (1 - Math.max(Math.min(pct, 100), 5) / 100)}
           />
         </svg>
-        <Icon className={`absolute inset-0 m-auto h-6 w-6 ${iconColor}`} />
+        <Icon className={`absolute inset-0 m-auto h-5 w-5 ${iconColor}`} />
         {done && (
           <span className="absolute -top-0.5 right-0 h-4 w-4 rounded-full bg-olive text-white flex items-center justify-center">
             <Check className="h-3 w-3" strokeWidth={3} />
           </span>
         )}
       </div>
-      <span className="num text-sm font-bold text-ink mt-1">{value}</span>
+      <span className="num text-base font-bold text-ink mt-1">{value}</span>
       <span className="text-xs text-ink/90 leading-tight">{label}</span>
       <span className={`text-[10px] leading-tight ${done ? "text-olive" : "text-muted"}`}>{sub}</span>
     </div>
@@ -75,8 +76,7 @@ export function DayCard({
   const weekStart = Math.floor((dayNumber - 1) / 7) * 7 + 1;
   const waterPct = Math.min(100, Math.round((day.water_ml / WATER_GOAL_ML) * 100));
   const workouts = Number(day.indoor_workout) + Number(day.outdoor_workout);
-  const meals = [day.breakfast_photo_url, day.lunch_photo_url, day.dinner_photo_url].filter(Boolean).length;
-
+  
   return (
     <section className="card-base p-4 flex flex-col gap-4">
       <div className="flex items-stretch justify-between gap-3">
@@ -115,7 +115,7 @@ export function DayCard({
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-y-4 gap-x-2">
+      <div className="grid grid-cols-5 gap-x-1">
         <Ring pct={waterPct} icon={Droplets} tone="steel" value={`${waterPct}%`} label={es ? "Agua" : "Water"} sub="3.8 L" />
         <Ring
           pct={(workouts / 2) * 100}
@@ -123,7 +123,7 @@ export function DayCard({
           tone="brass"
           value={`${workouts}/2`}
           label={es ? "Entrenos" : "Workouts"}
-          sub={es ? "Interior + exterior" : "Indoor + outdoor"}
+          sub={es ? "2 sesiones" : "2 sessions"}
         />
         <Ring
           pct={day.book ? 100 : 0}
@@ -131,33 +131,38 @@ export function DayCard({
           tone="brass"
           value={`${Number(day.book)}/1`}
           label={es ? "Lectura" : "Reading"}
-          sub={es ? "10+ páginas" : "10+ pages"}
+          sub={es ? "10+ págs" : "10+ pages"}
         />
         <Ring
           pct={day.diet ? 100 : 0}
           icon={Apple}
           tone="brass"
           value={`${Number(day.diet)}/1`}
-          label={es ? "Dieta" : "Healthy Diet"}
+          label={es ? "Dieta" : "Diet"}
           sub={es ? "Sin alcohol" : "No alcohol"}
-        />
-        <Ring
-          pct={(meals / 3) * 100}
-          icon={UtensilsCrossed}
-          tone="brass"
-          value={`${meals}/3`}
-          label={es ? "Comidas" : "Meals"}
-          sub={es ? "Con foto" : "Photo each"}
         />
         <Ring
           pct={day.progress_photo_url ? 100 : 0}
           icon={Camera}
           tone="brass"
           value={`${Number(!!day.progress_photo_url)}/1`}
-          label={es ? "Foto progreso" : "Progress Pic"}
+          label={es ? "Foto" : "Progress"}
           sub={day.progress_photo_url ? (es ? "Hecho" : "Done") : es ? "Pendiente" : "Pending"}
         />
       </div>
+
+      <Link
+        href={`/day/${dayNumber}`}
+        className="relative overflow-hidden flex items-center justify-center gap-2 py-4 text-xl font-game text-white rounded-2xl border-b-[3px] border-[#B63A0E] bg-gradient-to-b from-[#FF7A2E] to-[#F2480F] shadow-[0_6px_20px_rgba(255,90,31,0.3),inset_0_1px_0_rgba(255,255,255,0.35)] active:translate-y-[2px] transition-transform"
+      >
+        <svg viewBox="0 0 80 50" className="absolute left-3 bottom-0 h-9 opacity-35" aria-hidden>
+          <path d="M0 50 L26 8 L40 30 L54 14 L80 50Z" fill="#6E1E02" />
+        </svg>
+        <span>
+          {es ? "Ir al día" : "Go to day"} {dayNumber}
+        </span>
+        <ArrowRight className="h-5 w-5" />
+      </Link>
     </section>
   );
 }
