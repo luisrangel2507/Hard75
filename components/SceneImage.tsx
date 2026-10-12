@@ -1,16 +1,5 @@
-import fs from "node:fs";
-import path from "node:path";
+import { findImage } from "@/lib/images";
 import { MountainScene } from "@/components/MountainScene";
-
-const EXTENSIONS = ["jpg", "jpeg", "png", "webp"];
-
-function findImage(name: string): string | null {
-  for (const ext of EXTENSIONS) {
-    const file = `${name}.${ext}`;
-    if (fs.existsSync(path.join(process.cwd(), "public", "images", file))) return `/images/${file}`;
-  }
-  return null;
-}
 
 export function SceneImage({
   name,

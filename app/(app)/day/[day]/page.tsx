@@ -2,6 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { query } from "@/lib/db";
 import { ChallengeDay, TOTAL_DAYS } from "@/lib/types";
 import { buildDaysMap, computeStreak, maxNavigableDay } from "@/lib/challenge";
+import { findImage, findTaskImages } from "@/lib/images";
 import { DayEditor } from "@/components/DayEditor";
 
 export const dynamic = "force-dynamic";
@@ -21,8 +22,6 @@ export default async function DayPage({ params }: { params: { day: string } }) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <DayEditor key={dayNumber} initialDays={rows} dayNumber={dayNumber} />
-    </div>
+    <DayEditor key={dayNumber} initialDays={rows} dayNumber={dayNumber} images={findTaskImages()} heroImage={findImage("today-hero")} />
   );
 }

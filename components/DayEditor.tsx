@@ -2,11 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight, Dumbbell, Bike, Wine } from "lucide-react";
+import { Dumbbell, Bike, Flame, Wine } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { LevelUp } from "@/components/LevelUp";
 import { levelFromXp, totalXp } from "@/lib/game";
 import { TaskList } from "@/components/TaskList";
+import { TodayHero } from "@/components/TodayHero";
+import { Switch, TaskCard } from "@/components/TaskCard";
 import { QuestBar } from "@/components/QuestBar";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { ReadingCard } from "@/components/ReadingCard";
@@ -22,9 +24,13 @@ import { buildDaysMap, computeStreak, isDayComplete, weightTrend } from "@/lib/c
 export function DayEditor({
   initialDays,
   dayNumber,
+  images,
+  heroImage,
 }: {
   initialDays: ChallengeDay[];
   dayNumber: number;
+  images: Record<string, string | null>;
+  heroImage: string | null;
 }) {
   const { t, lang } = useI18n();
   const router = useRouter();
@@ -121,66 +127,33 @@ export function DayEditor({
   const prevDisabled = dayNumber <= 1;
   const nextDisabled = !complete || dayNumber >= TOTAL_DAYS;
 
+  const statusText =
+    saveStatus === "saving" ? t("saving") : saveStatus === "saved" ? t("saved") : saveStatus === "error" ? t("saveError") : "";
+  const es = lang === "es";
+
   return (
     <>
       {levelUp !== null && <LevelUp level={levelUp} onClose={() => setLevelUp(null)} />}
-      <div className="flex items-center justify-between">
-        <button
-          type="button"
-          disabled={prevDisabled}
-          onClick={() => router.push(`/day/${dayNumber - 1}`)}
-          className="p-2.5 rounded-full border border-border bg-card text-muted hover:text-ink active:scale-90 disabled:opacity-30 transition"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </button>
 
-        <div className="text-center">
-          <p className="font-game text-[13px] text-white/80">{t("day").toUpperCase()}</p>
-          <p className="font-game text-ink leading-none mt-1">
-            <span className="text-3xl text-brass">{dayNumber}</span>
-            <span className="text-sm">/{TOTAL_DAYS}</span>
-          </p>
-        </div>
-
-        <button
-          type="button"
-          disabled={nextDisabled}
-          onClick={() => router.push(`/day/${dayNumber + 1}`)}
-          className="p-2.5 rounded-full border border-border bg-card text-muted hover:text-ink active:scale-90 disabled:opacity-30 transition"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </button>
-      </div>
-
-      <div className="flex justify-end -mt-3">
-        <span
-          className={`text-[11px] ${saveStatus === "error" ? "text-ember font-semibold" : "text-muted"}`}
-        >
-          {saveStatus === "saving"
-            ? t("saving")
-            : saveStatus === "saved"
-              ? t("saved")
-              : saveStatus === "error"
-                ? t("saveError")
-                : ""}
-        </span>
-      </div>
-
-      <QuestBar day={day} />
-
-      <TaskList
-        day={day}
-        lang={lang}
-        onToggle={(field, value) => updateField(field, value)}
-        onJump={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+      <TodayHero
+        image={heroImage}
+        dayNumber={dayNumber}
+        onPrev={() => router.push(`/day/${dayNumber - 1}`)}
+        onNext={() => router.push(`/day/${dayNumber + 1}`)}
+        prevDisabled={prevDisabled}
+        nextDisabled={nextDisabled}
+        status={statusText}
+        tagline={es ? "Mantén la disciplina" : "Stay disciplined"}
       />
 
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-3.5">
         <WorkoutCard
           icon={Dumbbell}
           label={t("indoorWorkout")}
+          subtitle={es ? "45 minutos" : "45 minutes"}
           checked={day.indoor_workout}
-          accent="ember"
+          tone="orange"
+          image={images.indoor}
           types={INDOOR_TYPES}
           typeValue={day.indoor_type}
           customValue={day.indoor_type_custom}
@@ -192,8 +165,10 @@ export function DayEditor({
         <WorkoutCard
           icon={Bike}
           label={t("outdoorWorkout")}
+          subtitle={es ? "45 minutos" : "45 minutes"}
           checked={day.outdoor_workout}
-          accent="olive"
+          tone="green"
+          image={images.outdoor}
           types={OUTDOOR_TYPES}
           typeValue={day.outdoor_type}
           customValue={day.outdoor_type_custom}
@@ -206,80 +181,72 @@ export function DayEditor({
           checked={day.book}
           onToggle={(v) => updateField("book", v)}
           onPagesLogged={() => {}}
+          image={images.reading}
         />
-        <div
-          className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
-            day.diet
-              ? "border-olive/60 bg-olive/10"
-              : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
-          }`}
+        <TaskCard
+          icon={Wine}
+          tone="red"
+          title={t("diet")}
+          subtitle={es ? "Sigue tu plan. Sin comidas trampa." : "Follow your plan. No cheat meals."}
+          image={images.diet}
+          onHeaderClick={() => updateField("diet", !day.diet)}
+          right={<Switch checked={day.diet} onChange={(v) => updateField("diet", v)} label={t("diet")} />}
         >
-          <button
-            type="button"
-            onClick={() => updateField("diet", !day.diet)}
-            className="w-full flex items-center justify-between gap-3 active:scale-[0.97] transition-transform"
-          >
-            <span className="flex items-center gap-3">
-              <span
-                className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                  day.diet ? "bg-olive text-white" : "bg-border/40 text-muted"
-                }`}
-              >
-                <Wine className="h-4 w-4" />
-              </span>
-              <span className={`label-caps ${day.diet ? "text-ink" : ""}`}>{t("diet")}</span>
+          <div className="flex items-stretch rounded-2xl border border-white/15 bg-black/30 overflow-hidden w-[88%]">
+            <span className="flex items-center gap-2 px-3 py-3 text-sm text-ink/90 whitespace-nowrap border-r border-white/10">
+              <Flame className="h-4 w-4 text-brass" />
+              {t("calories")}
             </span>
-            <span className={`h-5 w-9 rounded-full relative transition-colors ${day.diet ? "bg-olive" : "bg-border"}`}>
-              <span
-                className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
-                  day.diet ? "translate-x-4" : ""
-                }`}
-              />
-            </span>
-          </button>
-          <div className="flex flex-col gap-1">
-            <span className="text-[11px] text-muted">{t("calories")}</span>
             <input
               type="text"
               inputMode="numeric"
               value={day.calories ?? ""}
               onChange={(e) => updateField("calories", e.target.value ? Number(e.target.value.replace(/\D/g, "")) : null)}
               placeholder={t("caloriesPlaceholder")}
-              className="num bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-olive"
+              className="num min-w-0 flex-1 bg-transparent px-3 text-sm text-ink placeholder:text-muted focus:outline-none"
             />
           </div>
+        </TaskCard>
+
+        <div id="task-water" className="scroll-mt-20">
+          <WaterTracker waterMl={day.water_ml} onChange={(v) => updateField("water_ml", v)} image={images.water} />
         </div>
-      </div>
 
-      <div id="task-water" className="scroll-mt-20">
-        <WaterTracker waterMl={day.water_ml} onChange={(v) => updateField("water_ml", v)} />
-      </div>
+        <WeightInput
+          weightKg={day.weight_kg}
+          onChange={(v) => updateField("weight_kg", v)}
+          trend={trend}
+          delta={delta}
+          previousDay={previousDay}
+        />
 
-      <WeightInput
-        weightKg={day.weight_kg}
-        onChange={(v) => updateField("weight_kg", v)}
-        trend={trend}
-        delta={delta}
-        previousDay={previousDay}
-      />
+        <div id="task-photo" className="scroll-mt-20">
+          <PhotoSlot
+            label={t("progressPhoto")}
+            currentUrl={day.progress_photo_url}
+            onChange={(url) => handlePhotoChange("progress_photo_url", url)}
+            aspect="portrait"
+          />
+        </div>
 
-      <div id="task-photo" className="scroll-mt-20">
-      <PhotoSlot
-        label={t("progressPhoto")}
-        currentUrl={day.progress_photo_url}
-        onChange={(url) => handlePhotoChange("progress_photo_url", url)}
-        aspect="portrait"
-      />
-      </div>
+        <div className="flex flex-col gap-1.5">
+          <span className="section-title">{t("notes")}</span>
+          <textarea
+            value={day.notes}
+            onChange={(e) => updateField("notes", e.target.value)}
+            placeholder={t("notesPlaceholder")}
+            rows={4}
+            className="bg-card border border-border rounded-2xl px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass resize-none"
+          />
+        </div>
 
-      <div className="flex flex-col gap-1.5">
-        <span className="section-title">{t("notes")}</span>
-        <textarea
-          value={day.notes}
-          onChange={(e) => updateField("notes", e.target.value)}
-          placeholder={t("notesPlaceholder")}
-          rows={4}
-          className="bg-card border border-border rounded-2xl px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass resize-none"
+        <QuestBar day={day} />
+
+        <TaskList
+          day={day}
+          lang={lang}
+          onToggle={(field, value) => updateField(field, value)}
+          onJump={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
         />
       </div>
     </>

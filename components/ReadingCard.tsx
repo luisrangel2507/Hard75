@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { BookOpen, Plus, Quote as QuoteIcon, Trash2 } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
+import { Switch, TaskCard } from "@/components/TaskCard";
 import { PhotoSlot } from "@/components/PhotoSlot";
 import { fetchWithTimeout } from "@/lib/fetchWithTimeout";
 import { Book, Quote } from "@/lib/types";
@@ -11,12 +12,14 @@ export function ReadingCard({
   checked,
   onToggle,
   onPagesLogged,
+  image,
 }: {
   checked: boolean;
   onToggle: (next: boolean) => void;
   onPagesLogged: () => void;
+  image?: string | null;
 }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const [books, setBooks] = useState<Book[]>([]);
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [activeBookId, setActiveBookId] = useState<string | null>(null);
@@ -131,33 +134,15 @@ export function ReadingCard({
     : null;
 
   return (
-    <div
-      className={`w-full rounded-2xl border px-4 py-3.5 flex flex-col gap-3 transition ${
-        checked
-          ? "border-steel/60 bg-steel/10"
-          : "border-border bg-card shadow-[0_1px_6px_rgba(40,33,26,0.04)]"
-      }`}
+    <TaskCard
+      icon={BookOpen}
+      tone="purple"
+      title={t("book")}
+      subtitle={lang === "es" ? "Desarrollo personal / No ficción" : "Personal development / Non-fiction"}
+      image={image}
+      onHeaderClick={() => onToggle(!checked)}
+      right={<Switch checked={checked} onChange={onToggle} label={t("book")} />}
     >
-      <div className="flex items-center justify-between gap-3">
-        <button type="button" onClick={() => onToggle(!checked)} className="flex items-center gap-3 active:scale-[0.97] transition-transform">
-          <span
-            className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-              checked ? "bg-steel text-white" : "bg-border/40 text-muted"
-            }`}
-          >
-            <BookOpen className="h-4 w-4" />
-          </span>
-          <span className={`label-caps ${checked ? "text-ink" : ""}`}>{t("book")}</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => onToggle(!checked)}
-          className={`h-5 w-9 rounded-full relative transition-colors active:scale-95 ${checked ? "bg-steel" : "bg-border"}`}
-        >
-          <span className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${checked ? "translate-x-4" : ""}`} />
-        </button>
-      </div>
-
       {loading ? (
         <div className="h-16 rounded-xl bg-border/40 animate-pulse" />
       ) : newBook ? (
@@ -327,6 +312,6 @@ export function ReadingCard({
           </div>
         </>
       )}
-    </div>
+    </TaskCard>
   );
 }

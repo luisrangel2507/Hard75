@@ -8,7 +8,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     <>
       <Onboarding />
       <Header />
-      <main className="max-w-2xl mx-auto px-4 pt-6 pb-28">
+      <main className="max-w-2xl mx-auto px-4 pt-6 pb-32">
         <PageTransition>{children}</PageTransition>
       </main>
       <TabBar />

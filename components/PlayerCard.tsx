@@ -12,7 +12,7 @@ export function PlayerCard({ xp, day, lang }: { xp: number; day: number; streak?
   const filled = Math.round((pct / 100) * SEGMENTS);
 
   return (
-    <section className="relative overflow-hidden -mx-4 -mt-6 flex-1 min-h-[215px] flex flex-col justify-end border-b border-border">
+    <section className="relative overflow-hidden -mx-4 -mt-6 flex-1 min-h-[200px] flex flex-col justify-end border-b border-border">
       <SceneImage name="hero" variant="hero" position="70% center" />
       <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 via-30% to-transparent to-60%" />
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/55 to-transparent" />

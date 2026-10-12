@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { CalendarCheck } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { LanguageToggle } from "@/components/LanguageToggle";
 
 export function Header() {
   const { t } = useI18n();
-  const router = useRouter();
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
-  const overlay = pathname === "/";
+  const bigLogoPage = pathname.startsWith("/day/");
+  const overlay = pathname === "/" || bigLogoPage;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 300);
@@ -21,12 +21,6 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  async function handleLogout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
-    router.refresh();
-  }
-
   return (
     <header
       className={`sticky top-0 z-20 h-14 transition-colors ${
@@ -34,7 +28,7 @@ export function Header() {
       }`}
     >
       <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className={`flex items-center gap-2 transition-opacity ${bigLogoPage && !scrolled ? "opacity-0 pointer-events-none" : ""}`}>
           <span className="font-game text-3xl italic text-white leading-none">75</span>
           <svg viewBox="0 0 24 24" className="h-6 w-6 -ml-1" aria-hidden>
             <defs>
@@ -52,13 +46,13 @@ export function Header() {
         </Link>
         <div className="flex items-center gap-2">
           <LanguageToggle />
-          <button
-            onClick={handleLogout}
-            title={t("logout")}
-            className="p-1.5 rounded-full text-muted hover:text-ember hover:bg-ember/10 active:scale-90 transition"
+          <Link
+            href="/progress"
+            title={t("progress")}
+            className="h-9 w-9 rounded-xl border border-border bg-black/25 backdrop-blur flex items-center justify-center text-white/85 hover:text-white active:scale-90 transition"
           >
-            <LogOut className="h-4 w-4" />
-          </button>
+            <CalendarCheck className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </header>

@@ -20,7 +20,7 @@ export default async function DashboardPage() {
   const currentDay = daysMap.get(currentDayNumber) ?? defaultDay(currentDayNumber);
 
   return (
-    <div className="flex flex-col gap-3 min-h-[calc(100dvh-7.5rem-env(safe-area-inset-bottom))] -mb-4">
+    <div className="flex flex-col gap-3 min-h-[calc(100dvh-8.5rem-env(safe-area-inset-bottom))] -mb-6">
       {streak === 75 && (
         <CelebrationBanner title={t(lang, "celebrationTitle")} subtitle={t(lang, "celebrationSubtitle")} />
       )}

@@ -4,46 +4,16 @@ import { useState } from "react";
 import { LucideIcon, Timer as TimerIcon } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { WorkoutTimer } from "@/components/WorkoutTimer";
+import { Switch, TONES, TaskCard, TaskTone } from "@/components/TaskCard";
 import { DictKey } from "@/lib/i18n";
 
-export type Accent = "ember" | "olive" | "steel" | "brass";
-
-const ACCENT_STYLES: Record<Accent, { border: string; checkedBorder: string; text: string; bg: string; solidBg: string}> = {
-  ember: {
-    border: "border-ember",
-    checkedBorder: "border-ember/60",
-    text: "text-ember",
-    bg: "bg-ember/10",
-    solidBg: "bg-ember",
-  },
-  olive: {
-    border: "border-olive",
-    checkedBorder: "border-olive/60",
-    text: "text-olive",
-    bg: "bg-olive/10",
-    solidBg: "bg-olive",
-  },
-  steel: {
-    border: "border-steel",
-    checkedBorder: "border-steel/60",
-    text: "text-steel",
-    bg: "bg-steel/10",
-    solidBg: "bg-steel",
-  },
-  brass: {
-    border: "border-brass",
-    checkedBorder: "border-brass/60",
-    text: "text-brass",
-    bg: "bg-brass/10",
-    solidBg: "bg-brass",
-  },
-};
-
 export function WorkoutCard({
-  icon: Icon,
+  icon,
   label,
+  subtitle,
   checked,
-  accent,
+  tone,
+  image,
   types,
   typeValue,
   customValue,
@@ -54,8 +24,10 @@ export function WorkoutCard({
 }: {
   icon: LucideIcon;
   label: string;
+  subtitle: string;
   checked: boolean;
-  accent: Accent;
+  tone: TaskTone;
+  image?: string | null;
   types: readonly string[];
   typeValue: string | null;
   customValue: string | null;
@@ -65,65 +37,41 @@ export function WorkoutCard({
   onTimerComplete: () => void;
 }) {
   const { t } = useI18n();
-  const styles = ACCENT_STYLES[accent];
+  const tn = TONES[tone];
   const [showTimer, setShowTimer] = useState(false);
 
   return (
-    <div
-      className={`w-full rounded-2xl border px-4 py-3.5 transition flex flex-col gap-3 ${
-        checked
-          ? `${styles.checkedBorder} ${styles.bg} shadow-card`
-          : "border-border bg-card shadow-card"
-      }`}
-    >
-      <div className="flex items-center justify-between gap-3">
-        <button type="button" onClick={() => onToggle(!checked)} className="flex items-center gap-3 active:scale-[0.97] transition-transform">
-          <span
-            className={`h-8 w-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-              checked ? `${styles.solidBg} text-white` : "bg-border/40 text-muted"
-            }`}
-          >
-            <Icon className="h-4 w-4" />
-          </span>
-          <span className={`label-caps ${checked ? "text-ink" : ""}`}>{label}</span>
-        </button>
-        <div className="flex items-center gap-2">
+    <TaskCard
+      icon={icon}
+      tone={tone}
+      title={label}
+      subtitle={subtitle}
+      image={image}
+      onHeaderClick={() => onToggle(!checked)}
+      right={
+        <>
           <button
             type="button"
             onClick={() => setShowTimer((s) => !s)}
-            className={`p-1.5 rounded-xl border transition active:scale-90 ${
-              showTimer ? `${styles.border} ${styles.text}` : "border-border text-muted hover:text-ink"
+            className={`h-10 w-10 rounded-full flex items-center justify-center border transition active:scale-90 ${
+              showTimer ? `border-white/40 ${tn.iconText} bg-white/10` : "border-white/15 bg-black/30 text-white/80"
             }`}
             title={t("workoutTimer")}
           >
-            <TimerIcon className="h-3.5 w-3.5" />
+            <TimerIcon className="h-4 w-4" />
           </button>
-          <button
-            type="button"
-            onClick={() => onToggle(!checked)}
-            className={`h-5 w-9 rounded-full relative transition-colors active:scale-95 ${
-              checked ? styles.solidBg : "bg-border"
-            }`}
-          >
-            <span
-              className={`absolute left-0.5 top-0.5 h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
-                checked ? "translate-x-4" : ""
-              }`}
-            />
-          </button>
-        </div>
-      </div>
-
-      <div className="flex flex-wrap gap-1.5">
+          <Switch checked={checked} onChange={onToggle} label={label} />
+        </>
+      }
+    >
+      <div className="flex flex-wrap gap-2">
         {types.map((type) => (
           <button
             key={type}
             type="button"
             onClick={() => onTypeChange(type)}
-            className={`px-2.5 py-1 rounded-full text-[11px] font-semibold border transition active:scale-95 ${
-              typeValue === type
-                ? `${styles.border} ${styles.bg} ${styles.text}`
-                : "border-border text-muted hover:text-ink"
+            className={`px-3.5 py-2 rounded-full text-sm font-medium border transition active:scale-95 ${
+              typeValue === type ? tn.chipOn : "border-white/15 bg-black/30 text-ink/90 hover:text-white"
             }`}
           >
             {t(`ex_${type}` as DictKey)}
@@ -137,11 +85,11 @@ export function WorkoutCard({
           value={customValue ?? ""}
           onChange={(e) => onCustomChange(e.target.value)}
           placeholder={t("customTypePlaceholder")}
-          className="bg-bg border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass"
+          className="bg-bg/80 border border-border rounded-xl px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-brass"
         />
       )}
 
-      {showTimer && <WorkoutTimer accentClass={styles.text} onComplete={onTimerComplete} />}
-    </div>
+      {showTimer && <WorkoutTimer accentClass={tn.iconText} onComplete={onTimerComplete} />}
+    </TaskCard>
   );
 }
