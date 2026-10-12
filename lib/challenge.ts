@@ -2,7 +2,7 @@ import { ChallengeDay, TOTAL_DAYS, WATER_GOAL_ML } from "./types";
 
 export function isDayComplete(day: Pick<ChallengeDay,
   "indoor_workout" | "outdoor_workout" | "diet" | "book" | "water_ml" |
-  "breakfast_photo_url" | "lunch_photo_url" | "dinner_photo_url" | "progress_photo_url"
+  "progress_photo_url"
 > | undefined | null): boolean {
   if (!day) return false;
   return (
@@ -11,9 +11,6 @@ export function isDayComplete(day: Pick<ChallengeDay,
     day.diet === true &&
     day.book === true &&
     day.water_ml >= WATER_GOAL_ML &&
-    !!day.breakfast_photo_url &&
-    !!day.lunch_photo_url &&
-    !!day.dinner_photo_url &&
     !!day.progress_photo_url
   );
 }
@@ -26,8 +23,6 @@ export function completedTaskCount(day: ChallengeDay | undefined | null): number
   if (day.diet) count++;
   if (day.book) count++;
   if (day.water_ml >= WATER_GOAL_ML) count++;
-  const mealsDone = [day.breakfast_photo_url, day.lunch_photo_url, day.dinner_photo_url].filter(Boolean).length;
-  if (mealsDone === 3) count++;
   if (day.progress_photo_url) count++;
   return count;
 }

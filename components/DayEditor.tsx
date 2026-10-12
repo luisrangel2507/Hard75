@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight, Dumbbell, Bike, Wine } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { LevelUp } from "@/components/LevelUp";
 import { levelFromXp, totalXp } from "@/lib/game";
+import { TaskList } from "@/components/TaskList";
 import { QuestBar } from "@/components/QuestBar";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { ReadingCard } from "@/components/ReadingCard";
@@ -25,7 +26,7 @@ export function DayEditor({
   initialDays: ChallengeDay[];
   dayNumber: number;
 }) {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const router = useRouter();
 
   const [daysMap, setDaysMap] = useState(() => buildDaysMap(initialDays));
@@ -167,6 +168,13 @@ export function DayEditor({
 
       <QuestBar day={day} />
 
+      <TaskList
+        day={day}
+        lang={lang}
+        onToggle={(field, value) => updateField(field, value)}
+        onJump={(id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+      />
+
       <div className="flex flex-col gap-2.5">
         <WorkoutCard
           icon={Dumbbell}
@@ -243,7 +251,9 @@ export function DayEditor({
         </div>
       </div>
 
-      <WaterTracker waterMl={day.water_ml} onChange={(v) => updateField("water_ml", v)} />
+      <div id="task-water" className="scroll-mt-20">
+        <WaterTracker waterMl={day.water_ml} onChange={(v) => updateField("water_ml", v)} />
+      </div>
 
       <WeightInput
         weightKg={day.weight_kg}
@@ -253,29 +263,13 @@ export function DayEditor({
         previousDay={previousDay}
       />
 
+      <div id="task-photo" className="scroll-mt-20">
       <PhotoSlot
         label={t("progressPhoto")}
         currentUrl={day.progress_photo_url}
         onChange={(url) => handlePhotoChange("progress_photo_url", url)}
         aspect="portrait"
       />
-
-      <div className="grid grid-cols-3 gap-2.5">
-        <PhotoSlot
-          label={t("breakfast")}
-          currentUrl={day.breakfast_photo_url}
-          onChange={(url) => handlePhotoChange("breakfast_photo_url", url)}
-        />
-        <PhotoSlot
-          label={t("lunch")}
-          currentUrl={day.lunch_photo_url}
-          onChange={(url) => handlePhotoChange("lunch_photo_url", url)}
-        />
-        <PhotoSlot
-          label={t("dinner")}
-          currentUrl={day.dinner_photo_url}
-          onChange={(url) => handlePhotoChange("dinner_photo_url", url)}
-        />
       </div>
 
       <div className="flex flex-col gap-1.5">

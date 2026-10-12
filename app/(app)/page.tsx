@@ -8,7 +8,6 @@ import { CelebrationBanner } from "@/components/CelebrationBanner";
 import { PlayerCard } from "@/components/PlayerCard";
 import { DayCard } from "@/components/DayCard";
 import { PhaseCard } from "@/components/PhaseCard";
-import { TaskList } from "@/components/TaskList";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +28,6 @@ export default async function DashboardPage() {
       <PlayerCard xp={totalXp(rows)} day={currentDayNumber} streak={streak} lang={lang} />
       <DayCard day={currentDay} dayNumber={currentDayNumber} streak={streak} daysMap={daysMap} lang={lang} />
       <PhaseCard day={currentDayNumber} lang={lang} />
-      <TaskList day={currentDay} dayNumber={currentDayNumber} lang={lang} />
     </>
   );
 }

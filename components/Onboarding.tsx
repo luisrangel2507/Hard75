@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowRight, Bike, BookOpen, Camera, Droplets, Dumbbell, Lock, UtensilsCrossed, Wine } from "lucide-react";
+import { ArrowRight, Bike, BookOpen, Camera, Droplets, Dumbbell, Lock, Wine } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { PHASES } from "@/lib/phases";
 import { Lang, TOTAL_DAYS } from "@/lib/types";
@@ -42,7 +42,7 @@ const COPY: Record<
     heroKicker: "El reto",
     heroTitle: "75 días. Cero excusas.",
     heroBody: "Una lista corta de reglas que cumples todos los días, sin saltarte ninguno. No es una dieta: es demostrarte que cumples lo que dices.",
-    rulesTitle: "Cada día, 7 reglas",
+    rulesTitle: "Cada día, 6 reglas",
     rulesBody: "Un día solo cuenta si cumples todas.",
     rules: [
       { icon: Dumbbell, title: "Entreno interior", detail: "Una sesión de fuerza, cardio o lo que elijas." },
@@ -50,7 +50,6 @@ const COPY: Record<
       { icon: Wine, title: "Dieta y sin alcohol", detail: "Comida limpia, sin trampas ni alcohol." },
       { icon: BookOpen, title: "Lee 10+ páginas", detail: "De un libro de no ficción o desarrollo personal." },
       { icon: Droplets, title: "3.8 L de agua", detail: "Súmalo durante el día desde la app." },
-      { icon: UtensilsCrossed, title: "Foto de tus 3 comidas", detail: "Desayuno, comida y cena como evidencia." },
       { icon: Camera, title: "Foto de progreso", detail: "Una foto diaria para ver tu cambio real." },
     ],
     phasesTitle: "Tres fases, un sentido",
@@ -69,7 +68,7 @@ const COPY: Record<
     heroKicker: "The challenge",
     heroTitle: "75 days. Zero excuses.",
     heroBody: "A short list of rules you hit every single day, no skipping. It's not a diet: it's proving to yourself that you do what you say.",
-    rulesTitle: "7 rules, every day",
+    rulesTitle: "6 rules, every day",
     rulesBody: "A day only counts when you hit them all.",
     rules: [
       { icon: Dumbbell, title: "Indoor workout", detail: "One session of strength, cardio or your pick." },
@@ -77,7 +76,6 @@ const COPY: Record<
       { icon: Wine, title: "Diet & no alcohol", detail: "Clean food, no cheats and no alcohol." },
       { icon: BookOpen, title: "Read 10+ pages", detail: "From a non-fiction or self-development book." },
       { icon: Droplets, title: "3.8 L of water", detail: "Add it up through the day from the app." },
-      { icon: UtensilsCrossed, title: "Photo of your 3 meals", detail: "Breakfast, lunch and dinner as proof." },
       { icon: Camera, title: "Progress photo", detail: "One photo a day to see your real change." },
     ],
     phasesTitle: "Three phases, one meaning",

@@ -4,7 +4,7 @@ import { completedTaskCount, isDayComplete } from "./challenge";
 export const XP_PER_TASK = 10;
 export const XP_FULL_DAY_BONUS = 30;
 export const XP_BOSS_BONUS = 200;
-export const TASKS_PER_DAY = 7;
+export const TASKS_PER_DAY = 6;
 
 export const BOSS_DAYS = [25, 50, 75] as const;
 
