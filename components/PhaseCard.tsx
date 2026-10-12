@@ -1,5 +1,5 @@
 import { Swords } from "lucide-react";
-import { MountainScene } from "@/components/MountainScene";
+import { SceneImage } from "@/components/SceneImage";
 import { nextBoss } from "@/lib/game";
 import { PHASES, getPhase, phaseProgress } from "@/lib/phases";
 import { Lang } from "@/lib/types";
@@ -12,14 +12,14 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
 
   return (
     <section className="relative overflow-hidden rounded-3xl border border-border flex flex-col">
-      <MountainScene variant="climb" className="absolute inset-0 h-full w-full" />
+      <SceneImage name={`phase-${phase.id}`} variant="climb" />
       <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/30 to-bg/10" />
 
       <div className="relative p-4 pt-5 flex flex-col gap-1 min-h-[210px]">
-        <span className="font-game text-[10px] text-white/70">
+        <span className="font-game text-[13px] text-white/70">
           {es ? "FASE" : "PHASE"} {phase.id} {es ? "DE" : "OF"} {PHASES.length}
         </span>
-        <h2 className="font-game text-2xl leading-tight text-white">{phase.name[lang].toUpperCase()}</h2>
+        <h2 className="font-game text-4xl leading-tight text-white">{phase.name[lang].toUpperCase()}</h2>
         <p className="text-sm text-white/90 max-w-[60%] leading-snug mt-1">{phase.tagline[lang]}</p>
       </div>
 

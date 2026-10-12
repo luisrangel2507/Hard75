@@ -40,8 +40,8 @@ export default async function ProgressPage() {
       <section className="grid grid-cols-3 gap-2.5">
         {stats.map((s) => (
           <div key={s.label} className="card-base p-3 flex flex-col items-center gap-1 text-center">
-            <span className="font-game text-[8px] text-muted">{s.label}</span>
-            <span className="font-game text-xl text-brass leading-none">{s.value}</span>
+            <span className="font-game text-[11px] text-muted">{s.label}</span>
+            <span className="font-game text-3xl text-brass leading-none">{s.value}</span>
             <span className="text-[10px] text-muted truncate max-w-full">{s.sub}</span>
           </div>
         ))}

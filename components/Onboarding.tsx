@@ -162,7 +162,7 @@ export function Onboarding() {
                     {TOTAL_DAYS}
                   </p>
                 </div>
-                <span className="font-game text-[10px] text-ink animate-blink">▶ {lang === "es" ? "PRESIONA START" : "PRESS START"}</span>
+                <span className="font-game text-[13px] text-ink animate-blink">▶ {lang === "es" ? "PRESIONA START" : "PRESS START"}</span>
               </div>
               <div className="flex flex-col gap-3">
                 <h1 className="text-4xl font-bold text-ink leading-tight">{c.heroTitle}</h1>

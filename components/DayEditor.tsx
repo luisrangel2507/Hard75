@@ -134,7 +134,7 @@ export function DayEditor({
         </button>
 
         <div className="text-center">
-          <p className="font-game text-[10px] text-white/80">{t("day").toUpperCase()}</p>
+          <p className="font-game text-[13px] text-white/80">{t("day").toUpperCase()}</p>
           <p className="font-game text-ink leading-none mt-1">
             <span className="text-3xl text-brass">{dayNumber}</span>
             <span className="text-sm">/{TOTAL_DAYS}</span>

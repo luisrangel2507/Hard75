@@ -24,7 +24,7 @@ export function TabBar() {
   return (
     <nav
       aria-label="Tabs"
-      className="fixed bottom-0 inset-x-0 z-30 bg-panel/95 backdrop-blur-md border-t border-border pb-[env(safe-area-inset-bottom)]"
+      className="fixed bottom-0 inset-x-0 z-30 bg-panel/95 backdrop-blur-md border-t border-x border-border rounded-t-3xl pb-[env(safe-area-inset-bottom)]"
     >
       <ul className="max-w-2xl mx-auto grid grid-cols-4 px-2 py-1.5">
         {tabs.map(({ href, label, Icon, active }) => (

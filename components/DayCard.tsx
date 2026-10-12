@@ -39,7 +39,7 @@ function Ring({
             strokeLinecap="round"
             className={`${color} transition-[stroke-dashoffset] duration-700`}
             strokeDasharray={c}
-            strokeDashoffset={c * (1 - Math.min(pct, 100) / 100)}
+            strokeDashoffset={c * (1 - Math.max(Math.min(pct, 100), 5) / 100)}
           />
         </svg>
         <Icon className={`absolute inset-0 m-auto h-6 w-6 ${iconColor}`} />
@@ -70,6 +70,8 @@ export function DayCard({
   lang: Lang;
 }) {
   const es = lang === "es";
+  const LETTERS = es ? ["D", "L", "M", "M", "J", "V", "S"] : ["S", "M", "T", "W", "T", "F", "S"];
+  const today = new Date();
   const weekStart = Math.floor((dayNumber - 1) / 7) * 7 + 1;
   const waterPct = Math.min(100, Math.round((day.water_ml / WATER_GOAL_ML) * 100));
   const workouts = Number(day.indoor_workout) + Number(day.outdoor_workout);
@@ -80,9 +82,9 @@ export function DayCard({
       <div className="flex items-stretch justify-between gap-3">
         <div className="flex flex-col justify-between gap-3 min-w-0">
           <div className="flex items-baseline gap-2">
-            <span className="font-game text-lg text-white">{es ? "DÍA" : "DAY"}</span>
-            <span className="font-game text-4xl text-brass leading-none">{dayNumber}</span>
-            <span className="font-game text-sm text-white">/{TOTAL_DAYS}</span>
+            <span className="font-game text-2xl text-white">{es ? "DÍA" : "DAY"}</span>
+            <span className="font-game text-6xl text-brass leading-none">{dayNumber}</span>
+            <span className="font-game text-base text-white">/{TOTAL_DAYS}</span>
           </div>
           <div className="flex gap-2" aria-label={es ? "Semana" : "Week"}>
             {Array.from({ length: 7 }, (_, i) => {
@@ -97,17 +99,17 @@ export function DayCard({
                       complete ? "bg-brass" : current ? "bg-brass/30 ring-2 ring-brass" : "bg-border"
                     }`}
                   />
-                  <span className="num text-[9px] text-muted">{n}</span>
+                  <span className="text-[10px] text-muted">{LETTERS[new Date(today.getTime() + (n - dayNumber) * 86400000).getDay()]}</span>
                 </div>
               );
             })}
           </div>
         </div>
         <div className="shrink-0 rounded-2xl bg-panel/60 border border-border px-4 py-2 flex flex-col items-center justify-center">
-          <span className="font-game text-[8px] text-muted">{es ? "RACHA" : "STREAK"}</span>
+          <span className="font-game text-[11px] text-muted">{es ? "RACHA" : "STREAK"}</span>
           <div className="flex items-center gap-1.5 mt-1">
             <Flame className={`h-5 w-5 ${streak > 0 ? "text-brass" : "text-muted"}`} />
-            <span className="font-game text-xl text-white">{streak}</span>
+            <span className="font-game text-3xl text-white">{streak}</span>
           </div>
           <span className="text-[10px] text-muted">{es ? "Días" : "Days"}</span>
         </div>

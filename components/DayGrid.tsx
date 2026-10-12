@@ -28,7 +28,7 @@ export function DayGrid({
         return (
           <div key={phase.id} className="card-base p-3 flex flex-col gap-3">
             <div className="flex items-center justify-between gap-2">
-              <span className="font-game text-[10px] text-white">
+              <span className="font-game text-[13px] text-white">
                 {es ? "MUNDO" : "WORLD"} {phase.id} · {phase.name[lang].toUpperCase()}
               </span>
               <span className="num text-[11px] text-muted">

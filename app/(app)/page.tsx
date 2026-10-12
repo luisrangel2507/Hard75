@@ -36,14 +36,14 @@ export default async function DashboardPage() {
 
       <Link
         href={`/day/${currentDayNumber}`}
-        className="btn-chunky relative overflow-hidden flex items-center justify-center gap-2 py-5 text-sm font-game"
+        className="relative overflow-hidden flex items-center justify-center gap-2 py-5 text-base font-game text-white rounded-2xl border-b-4 border-[#B63A0E] bg-gradient-to-b from-[#FF7A2E] to-[#F2480F] shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] active:translate-y-[3px] active:border-b-[1px] transition-transform"
       >
         <span>
           {es ? "IR AL DÍA" : "GO TO DAY"} {currentDayNumber}
         </span>
         <ArrowRight className="h-5 w-5" />
         <svg viewBox="0 0 80 50" className="absolute right-3 bottom-0 h-10 opacity-40" aria-hidden>
-          <path d="M0 50 L26 8 L40 30 L54 14 L80 50Z" fill="#7A1F00" />
+          <path d="M0 50 L26 8 L40 30 L54 14 L80 50Z" fill="#8A2A05" />
         </svg>
       </Link>
     </>

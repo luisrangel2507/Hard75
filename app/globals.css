@@ -24,18 +24,24 @@ body {
     @apply text-xs font-medium text-muted;
   }
   .btn-chunky {
-    @apply bg-brass text-white font-bold rounded-2xl border-b-4 border-[#B63A0E] transition-transform active:translate-y-[3px] active:border-b-[1px] select-none;
+    @apply bg-gradient-to-b from-[#FF7A2E] to-[#F2480F] text-white font-bold rounded-2xl border-b-[3px] border-[#B63A0E] shadow-[0_6px_20px_rgba(255,90,31,0.28)] transition-transform active:translate-y-[3px] active:border-b-[1px] select-none;
   }
   .btn-chunky-ink {
     @apply bg-panel text-white font-bold rounded-2xl border-b-4 border-black transition-transform active:translate-y-[3px] active:border-b-[1px] select-none;
   }
   .section-title {
-    font-family: var(--font-pixel), ui-monospace, monospace;
-    @apply text-[10px] text-white/80 uppercase leading-relaxed;
+    font-family: var(--font-pixel), system-ui, sans-serif;
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    @apply text-[13px] text-white/80 uppercase leading-relaxed;
   }
   .font-game {
-    font-family: var(--font-pixel), ui-monospace, monospace;
-    letter-spacing: 0.02em;
+    font-family: var(--font-pixel), system-ui, sans-serif;
+    font-style: italic;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
   .num {
     @apply tabular-nums;

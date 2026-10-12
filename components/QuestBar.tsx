@@ -34,20 +34,20 @@ export function QuestBar({ day }: { day: ChallengeDay }) {
     >
       <div className="flex items-center justify-between gap-3">
         <div className="flex flex-col leading-tight">
-          <span className="font-game text-[9px] text-muted">{es ? "MISIÓN DEL DÍA" : "DAILY QUEST"}</span>
+          <span className="font-game text-[12px] text-muted">{es ? "MISIÓN DEL DÍA" : "DAILY QUEST"}</span>
           <span className={`text-base font-bold ${complete ? "text-olive" : "text-ink"}`}>
             {complete ? (es ? "¡Misión cumplida!" : "Quest complete!") : `${done}/${TASKS_PER_DAY} ${es ? "objetivos" : "objectives"}`}
           </span>
         </div>
         <div className="relative">
-          <span className="flex items-center gap-1 font-game text-[11px] text-brass">
+          <span className="flex items-center gap-1 font-game text-[14px] text-brass">
             <Zap className="h-3.5 w-3.5" />
             {dayXp(day)} XP
           </span>
           {pops.map((id) => (
             <span
               key={id}
-              className="absolute right-0 -top-1 font-game text-[11px] text-olive animate-xp-pop pointer-events-none whitespace-nowrap"
+              className="absolute right-0 -top-1 font-game text-[14px] text-olive animate-xp-pop pointer-events-none whitespace-nowrap"
             >
               +{XP_PER_TASK} XP
             </span>
@@ -71,7 +71,7 @@ export function QuestBar({ day }: { day: ChallengeDay }) {
           <Swords className="h-5 w-5 shrink-0" />
           <div className="flex flex-col leading-tight">
             <span className="text-[11px] text-white/70">{es ? "Día de jefe" : "Boss day"} · +200 XP</span>
-            <span className="font-game text-[10px] leading-snug">{BOSSES[day.day_number][lang]}</span>
+            <span className="font-game text-[13px] leading-snug">{BOSSES[day.day_number][lang]}</span>
           </div>
         </div>
       )}

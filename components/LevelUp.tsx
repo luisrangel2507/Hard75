@@ -25,9 +25,9 @@ export function LevelUp({ level, onClose }: { level: number; onClose: () => void
         <span className="h-14 w-14 rounded-2xl border-b-4 border-[#B63A0E] bg-brass text-white flex items-center justify-center">
           <Zap className="h-7 w-7" />
         </span>
-        <p className="font-game text-[11px] text-brass animate-blink">{es ? "¡NIVEL NUEVO!" : "LEVEL UP!"}</p>
-        <p className="font-game text-6xl text-ink leading-none animate-level-bounce">{level}</p>
-        <p className="font-game text-xs text-brass">{titleForLevel(level, lang).toUpperCase()}</p>
+        <p className="font-game text-[14px] text-brass animate-blink">{es ? "¡NIVEL NUEVO!" : "LEVEL UP!"}</p>
+        <p className="font-game text-7xl text-ink leading-none animate-level-bounce">{level}</p>
+        <p className="font-game text-sm text-brass">{titleForLevel(level, lang).toUpperCase()}</p>
         <button
           type="button"
           onClick={onClose}

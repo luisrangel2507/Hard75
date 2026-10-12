@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Press_Start_2P } from "next/font/google";
+import { Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 
-const pixel = Press_Start_2P({ subsets: ["latin"], weight: "400", variable: "--font-pixel" });
+const pixel = Barlow_Condensed({ subsets: ["latin"], weight: ["600", "700", "800"], style: ["normal", "italic"], variable: "--font-pixel" });
 import { I18nProvider } from "@/components/I18nProvider";
 import { SplashScreen } from "@/components/SplashScreen";
 import { resolveLang } from "@/lib/langServer";
