@@ -18,7 +18,7 @@ function Ring({
   label: string;
   sub: string;
 }) {
-  const size = 58;
+  const size = 48;
   const stroke = 5;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
@@ -28,7 +28,7 @@ function Ring({
 
   return (
     <div className="flex flex-col items-center gap-0.5 text-center">
-      <div className="relative h-[58px] w-[58px]">
+      <div className="relative h-12 w-12">
         <svg width={size} height={size} className="-rotate-90">
           <circle cx={size / 2} cy={size / 2} r={r} fill="none" strokeWidth={stroke} className="stroke-border" />
           <circle
@@ -43,16 +43,15 @@ function Ring({
             strokeDashoffset={c * (1 - Math.max(Math.min(pct, 100), 5) / 100)}
           />
         </svg>
-        <Icon className={`absolute inset-0 m-auto h-5 w-5 ${iconColor}`} />
+        <Icon className={`absolute inset-0 m-auto h-[18px] w-[18px] ${iconColor}`} />
         {done && (
           <span className="absolute -top-0.5 right-0 h-4 w-4 rounded-full bg-olive text-white flex items-center justify-center">
             <Check className="h-3 w-3" strokeWidth={3} />
           </span>
         )}
       </div>
-      <span className="num text-base font-bold text-ink mt-1">{value}</span>
-      <span className="text-xs text-ink/90 leading-tight">{label}</span>
-      <span className={`text-[10px] leading-tight ${done ? "text-olive" : "text-muted"}`}>{sub}</span>
+      <span className="num text-sm font-bold text-ink mt-0.5">{value}</span>
+      <span className="text-[11px] text-ink/90 leading-tight">{label}</span>
     </div>
   );
 }
@@ -78,22 +77,22 @@ export function DayCard({
   const workouts = Number(day.indoor_workout) + Number(day.outdoor_workout);
   
   return (
-    <section className="card-base p-4 flex flex-col gap-4">
-      <div className="flex items-stretch justify-between gap-3">
-        <div className="flex flex-col justify-between gap-3 min-w-0">
+    <section className="card-base p-3 flex flex-col gap-3 shrink-0">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-2 min-w-0">
           <div className="flex items-baseline gap-2">
-            <span className="font-game text-2xl text-white">{es ? "DÍA" : "DAY"}</span>
-            <span className="font-game text-6xl text-brass leading-none">{dayNumber}</span>
-            <span className="font-game text-base text-white">/{TOTAL_DAYS}</span>
+            <span className="font-game text-lg text-white">{es ? "DÍA" : "DAY"}</span>
+            <span className="font-game text-4xl text-brass leading-none">{dayNumber}</span>
+            <span className="font-game text-sm text-white">/{TOTAL_DAYS}</span>
           </div>
-          <div className="flex gap-2" aria-label={es ? "Semana" : "Week"}>
+          <div className="flex gap-2 [@media(max-height:720px)]:hidden" aria-label={es ? "Semana" : "Week"}>
             {Array.from({ length: 7 }, (_, i) => {
               const n = weekStart + i;
               if (n > TOTAL_DAYS) return null;
               const complete = isDayComplete(daysMap.get(n));
               const current = n === dayNumber;
               return (
-                <div key={n} className="flex flex-col items-center gap-1">
+                <div key={n} className="flex flex-col items-center gap-0.5">
                   <span
                     className={`h-2.5 w-2.5 rounded-full ${
                       complete ? "bg-brass" : current ? "bg-brass/30 ring-2 ring-brass" : "bg-border"
@@ -105,13 +104,12 @@ export function DayCard({
             })}
           </div>
         </div>
-        <div className="shrink-0 rounded-2xl bg-panel/60 border border-border px-4 py-2 flex flex-col items-center justify-center">
-          <span className="font-game text-[11px] text-muted">{es ? "RACHA" : "STREAK"}</span>
-          <div className="flex items-center gap-1.5 mt-1">
-            <Flame className={`h-5 w-5 ${streak > 0 ? "text-brass" : "text-muted"}`} />
-            <span className="font-game text-3xl text-white">{streak}</span>
+        <div className="shrink-0 rounded-2xl bg-panel/60 border border-border px-3 py-2 flex items-center gap-2">
+          <Flame className={`h-6 w-6 ${streak > 0 ? "text-brass" : "text-muted"}`} />
+          <div className="flex flex-col leading-none">
+            <span className="font-game text-2xl text-white">{streak}</span>
+            <span className="text-[10px] text-muted mt-0.5">{es ? "Días de racha" : "Day streak"}</span>
           </div>
-          <span className="text-[10px] text-muted">{es ? "Días" : "Days"}</span>
         </div>
       </div>
 
@@ -153,7 +151,7 @@ export function DayCard({
 
       <Link
         href={`/day/${dayNumber}`}
-        className="relative overflow-hidden flex items-center justify-center gap-2 py-4 text-xl font-game text-white rounded-2xl border-b-[3px] border-[#B63A0E] bg-gradient-to-b from-[#FF7A2E] to-[#F2480F] shadow-[0_6px_20px_rgba(255,90,31,0.3),inset_0_1px_0_rgba(255,255,255,0.35)] active:translate-y-[2px] transition-transform"
+        className="relative overflow-hidden flex items-center justify-center gap-2 py-3 text-xl font-game text-white rounded-2xl border-b-[3px] border-[#B63A0E] bg-gradient-to-b from-[#FF7A2E] to-[#F2480F] shadow-[0_6px_20px_rgba(255,90,31,0.3),inset_0_1px_0_rgba(255,255,255,0.35)] active:translate-y-[2px] transition-transform"
       >
         <svg viewBox="0 0 80 50" className="absolute left-3 bottom-0 h-9 opacity-35" aria-hidden>
           <path d="M0 50 L26 8 L40 30 L54 14 L80 50Z" fill="#6E1E02" />

@@ -1,6 +1,4 @@
-import { Swords } from "lucide-react";
 import { SceneImage } from "@/components/SceneImage";
-import { nextBoss } from "@/lib/game";
 import { PHASES, getPhase, phaseProgress } from "@/lib/phases";
 import { Lang } from "@/lib/types";
 
@@ -8,16 +6,15 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
   const phase = getPhase(day);
   const { pct, dayInPhase, phaseLength } = phaseProgress(day);
   const es = lang === "es";
-  const boss = nextBoss(day);
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-border bg-card flex flex-col">
+    <section className="relative overflow-hidden rounded-3xl border border-border bg-card flex flex-col shrink-0">
       <div className="absolute inset-y-0 right-0 w-[62%]">
         <SceneImage name={`phase-${phase.id}`} variant="climb" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-card via-card/85 via-45% to-transparent" />
 
-      <div className="relative p-4 pb-3 flex flex-col gap-1">
+      <div className="relative px-4 pt-3 pb-2 flex flex-col gap-0.5">
         <div className="flex items-start justify-between gap-3">
           <span className="font-game text-base text-white/70">
             {es ? "Fase" : "Phase"} {phase.id} {es ? "de" : "of"} {PHASES.length}
@@ -26,11 +23,11 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
             {es ? "Día" : "Day"} <span className="text-brass font-bold">{dayInPhase}</span> / {phaseLength}
           </span>
         </div>
-        <h2 className="font-game text-4xl leading-none text-white">{phase.name[lang]}</h2>
-        <p className="text-sm text-white/90 max-w-[58%] leading-snug mt-1.5">{phase.tagline[lang]}</p>
+        <h2 className="font-game text-3xl leading-none text-white">{phase.name[lang]}</h2>
+        <p className="text-sm text-white/90 max-w-[58%] leading-snug mt-1 [@media(max-height:720px)]:hidden">{phase.tagline[lang]}</p>
       </div>
 
-      <div className="relative px-4 pb-4 flex flex-col gap-1.5">
+      <div className="relative px-4 pb-3 flex flex-col gap-1">
         <div className="flex items-center">
           {PHASES.map((p, i) => {
             const reached = p.id <= phase.id;
@@ -59,21 +56,6 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
           ))}
         </div>
 
-        {boss && (
-          <div className="flex items-center gap-3 rounded-2xl bg-panel/70 border border-border px-3 py-2 mt-1">
-            <span className="h-7 w-7 rounded-lg bg-brass text-white flex items-center justify-center shrink-0">
-              <Swords className="h-4 w-4" />
-            </span>
-            <div className="flex flex-col leading-tight min-w-0">
-              <span className="text-[11px] text-muted">
-                {boss.daysLeft === 0
-                  ? es ? "¡Hoy es el jefe!" : "Boss fight today!"
-                  : es ? `Jefe en ${boss.daysLeft} días (día ${boss.day})` : `Boss in ${boss.daysLeft} days (day ${boss.day})`}
-              </span>
-              <span className="text-sm font-semibold text-ink truncate">{boss.name[lang]}</span>
-            </div>
-          </div>
-        )}
       </div>
     </section>
   );

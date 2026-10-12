@@ -20,7 +20,7 @@ export default async function DashboardPage() {
   const currentDay = daysMap.get(currentDayNumber) ?? defaultDay(currentDayNumber);
 
   return (
-    <>
+    <div className="flex flex-col gap-3 min-h-[calc(100dvh-7.5rem-env(safe-area-inset-bottom))] -mb-4">
       {streak === 75 && (
         <CelebrationBanner title={t(lang, "celebrationTitle")} subtitle={t(lang, "celebrationSubtitle")} />
       )}
@@ -28,6 +28,6 @@ export default async function DashboardPage() {
       <PlayerCard xp={totalXp(rows)} day={currentDayNumber} streak={streak} lang={lang} />
       <DayCard day={currentDay} dayNumber={currentDayNumber} streak={streak} daysMap={daysMap} lang={lang} />
       <PhaseCard day={currentDayNumber} lang={lang} />
-    </>
+    </div>
   );
 }
