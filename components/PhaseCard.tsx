@@ -24,7 +24,7 @@ export function PhaseCard({ day, lang }: { day: number; lang: Lang }) {
           </span>
         </div>
         <h2 className="font-game text-3xl leading-none text-white">{phase.name[lang]}</h2>
-        <p className="text-sm text-white/90 max-w-[58%] leading-snug mt-1 [@media(max-height:720px)]:hidden">{phase.tagline[lang]}</p>
+        <p className="text-sm text-white/90 max-w-[58%] leading-snug mt-1 [@media(max-height:790px)]:hidden">{phase.tagline[lang]}</p>
       </div>
 
       <div className="relative px-4 pb-3 flex flex-col gap-1">

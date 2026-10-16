@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Apple, ArrowRight, BookOpen, Camera, Check, Droplets, Dumbbell, Flame } from "lucide-react";
+import { Apple, BookOpen, Camera, Check, Droplets, Dumbbell, Flame } from "lucide-react";
 import { isDayComplete } from "@/lib/challenge";
 import { ChallengeDay, Lang, TOTAL_DAYS, WATER_GOAL_ML } from "@/lib/types";
 
@@ -52,6 +51,7 @@ function Ring({
       </div>
       <span className="num text-sm font-bold text-ink mt-0.5">{value}</span>
       <span className="text-[11px] text-ink/90 leading-tight">{label}</span>
+      <span className={`text-[10px] leading-tight ${done ? "text-olive" : "text-muted"}`}>{sub}</span>
     </div>
   );
 }
@@ -121,7 +121,7 @@ export function DayCard({
           tone="brass"
           value={`${workouts}/2`}
           label={es ? "Entrenos" : "Workouts"}
-          sub={es ? "2 sesiones" : "2 sessions"}
+          sub={es ? "45 min" : "45 min"}
         />
         <Ring
           pct={day.book ? 100 : 0}
@@ -129,7 +129,7 @@ export function DayCard({
           tone="brass"
           value={`${Number(day.book)}/1`}
           label={es ? "Lectura" : "Reading"}
-          sub={es ? "10+ págs" : "10+ pages"}
+          sub={es ? "10 págs" : "10 pages"}
         />
         <Ring
           pct={day.diet ? 100 : 0}
@@ -137,7 +137,7 @@ export function DayCard({
           tone="brass"
           value={`${Number(day.diet)}/1`}
           label={es ? "Dieta" : "Diet"}
-          sub={es ? "Sin alcohol" : "No alcohol"}
+          sub={es ? "Sin trampas" : "No cheats"}
         />
         <Ring
           pct={day.progress_photo_url ? 100 : 0}
@@ -149,18 +149,6 @@ export function DayCard({
         />
       </div>
 
-      <Link
-        href={`/day/${dayNumber}`}
-        className="relative overflow-hidden flex items-center justify-center gap-2 py-3 text-xl font-game text-white rounded-2xl border-b-[3px] border-[#B63A0E] bg-gradient-to-b from-[#FF7A2E] to-[#F2480F] shadow-[0_6px_20px_rgba(255,90,31,0.3),inset_0_1px_0_rgba(255,255,255,0.35)] active:translate-y-[2px] transition-transform"
-      >
-        <svg viewBox="0 0 80 50" className="absolute left-3 bottom-0 h-9 opacity-35" aria-hidden>
-          <path d="M0 50 L26 8 L40 30 L54 14 L80 50Z" fill="#6E1E02" />
-        </svg>
-        <span>
-          {es ? "Ir al día" : "Go to day"} {dayNumber}
-        </span>
-        <ArrowRight className="h-5 w-5" />
-      </Link>
     </section>
   );
 }

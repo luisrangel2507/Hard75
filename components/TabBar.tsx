@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CalendarCheck, House, LineChart, User } from "lucide-react";
+import { CalendarCheck, LineChart, Mountain, User } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 
 export function TabBar() {
@@ -10,7 +10,7 @@ export function TabBar() {
   const pathname = usePathname();
 
   const tabs = [
-    { href: "/", label: t("dashboard"), Icon: House, active: pathname === "/" },
+    { href: "/", label: t("dashboard"), Icon: Mountain, active: pathname === "/" },
     {
       href: "/today",
       label: t("today"),
