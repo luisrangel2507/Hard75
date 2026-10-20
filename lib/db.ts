@@ -1,5 +1,7 @@
-import { Pool } from "pg";
+import { Pool, types } from "pg";
 import { SCHEMA_STATEMENTS } from "./schema";
+
+types.setTypeParser(1700, (value) => parseFloat(value));
 
 declare global {
   // eslint-disable-next-line no-var

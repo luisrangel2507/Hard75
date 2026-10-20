@@ -75,3 +75,11 @@ Las fotos se comprimen en el navegador (máx. ~800px de ancho, JPEG calidad 0.7)
 ## Respaldo
 
 Desde la pantalla de Progreso puedes exportar todo el progreso como JSON descargable (incluye las fotos en base64), o importar un JSON para restaurar (esto reemplaza los datos actuales).
+
+## Para probadores
+
+- Entra con el `APP_PASSCODE` configurado en el servicio.
+- La base se migra sola la primera vez que la app la consulta; no hace falta correr SQL a mano.
+- Un día se desbloquea al completar el anterior. Las 6 tareas: entreno interior, entreno exterior, dieta, lectura, 3.8 L de agua y foto de progreso.
+- Perfil → **Reiniciar reto** borra días, libros, citas y fotos para volver a empezar (pide confirmación).
+- Fotos opcionales de portada en `public/images/` (ver `public/images/README.md`).
