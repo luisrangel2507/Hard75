@@ -7,15 +7,17 @@ html {
 }
 
 body {
-  background-color: #0a1020;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 16px 16px;
-  color: #f2f5fa;
+  background-color: #0b0908;
+  background-image:
+    radial-gradient(120% 55% at 50% -12%, rgba(255, 122, 61, 0.5), rgba(255, 122, 61, 0.14) 48%, transparent 72%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #f7f2ed;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background-color: #ff5a1f;
+  background-color: #f4722b;
   color: #ffffff;
 }
 
@@ -31,23 +33,18 @@ body {
   }
   .section-title {
     font-family: var(--font-pixel), system-ui, sans-serif;
-    font-style: italic;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    @apply text-[13px] text-white/80 uppercase leading-relaxed;
+    @apply text-sm font-medium text-white/70;
   }
   .font-game {
     font-family: var(--font-pixel), system-ui, sans-serif;
-    font-style: italic;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
   .num {
     @apply tabular-nums;
   }
   .card-base {
-    @apply bg-card border border-border rounded-2xl shadow-card;
+    @apply bg-white/[0.045] border border-white/10 backdrop-blur-xl rounded-3xl shadow-card;
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;

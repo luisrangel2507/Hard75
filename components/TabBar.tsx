@@ -11,12 +11,7 @@ export function TabBar() {
 
   const tabs = [
     { href: "/", label: t("dashboard"), Icon: Mountain, active: pathname === "/" },
-    {
-      href: "/today",
-      label: t("today"),
-      Icon: CalendarCheck,
-      active: pathname === "/today" || pathname.startsWith("/day/"),
-    },
+    { href: "/today", label: t("today"), Icon: CalendarCheck, active: pathname === "/today" || pathname.startsWith("/day/") },
     { href: "/progress", label: t("progress"), Icon: LineChart, active: pathname === "/progress" },
     { href: "/profile", label: t("profile"), Icon: User, active: pathname === "/profile" },
   ];
@@ -24,23 +19,23 @@ export function TabBar() {
   return (
     <nav
       aria-label="Tabs"
-      className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-30 bg-panel/95 backdrop-blur-md border border-border rounded-3xl"
+      className="fixed inset-x-4 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-30 rounded-full border border-white/10 bg-black/60 backdrop-blur-xl px-2 py-2"
     >
-      <ul className="max-w-2xl mx-auto grid grid-cols-4 px-2 py-1.5">
+      <ul className="flex items-center justify-between">
         {tabs.map(({ href, label, Icon, active }) => (
-          <li key={href} className="relative">
-            {active && <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-0.5 w-10 rounded-full bg-brass" />}
+          <li key={href} className="flex-1 flex justify-center">
             <Link
               href={href}
+              aria-label={label}
               aria-current={active ? "page" : undefined}
-              className={`flex flex-col items-center gap-0.5 py-1.5 rounded-xl text-[11px] font-semibold transition active:scale-95 ${
-                active ? "text-brass" : "text-muted hover:text-ink"
+              className={`flex items-center justify-center gap-2 rounded-full h-12 transition-all active:scale-95 ${
+                active
+                  ? "bg-gradient-to-b from-[#FF8A47] to-[#E8590C] text-white px-5 shadow-[0_6px_24px_rgba(244,114,43,0.45)]"
+                  : "w-12 text-white/60 hover:text-white"
               }`}
             >
-              <span className="h-7 w-12 flex items-center justify-center">
-                <Icon className="h-[18px] w-[18px]" />
-              </span>
-              {label}
+              <Icon className="h-5 w-5" />
+              {active && <span className="text-sm font-semibold">{label}</span>}
             </Link>
           </li>
         ))}

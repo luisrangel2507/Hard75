@@ -15,7 +15,7 @@ export function Header() {
   const [streak, setStreak] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const bigLogoPage = pathname.startsWith("/day/");
-  const overlay = pathname === "/" || bigLogoPage;
+  const overlay = bigLogoPage;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 300);

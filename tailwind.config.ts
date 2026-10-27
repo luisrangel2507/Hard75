@@ -5,19 +5,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#0A1020",
-        card: "#101A2E",
-        border: "#1F2C45",
-        ink: "#F2F5FA",
-        muted: "#8B98B0",
+        bg: "#0B0908",
+        card: "#15110F",
+        border: "#2B2321",
+        ink: "#F7F2ED",
+        muted: "#A59B94",
         ember: "#FF5C5C",
         olive: "#22C55E",
         steel: "#2F8CFF",
-        brass: "#FF5A1F",
-        panel: "#070C18",
+        brass: "#F4722B",
+        panel: "#080605",
       },
       fontFamily: {
-        sans: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
+        sans: ["var(--font-pixel)", "-apple-system", "system-ui", "sans-serif"],
         pixel: ["var(--font-pixel)", "ui-monospace", "monospace"],
         mono: ["-apple-system", "BlinkMacSystemFont", "\"SF Pro Text\"", "system-ui", "sans-serif"],
       },
